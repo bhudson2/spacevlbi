@@ -1,4 +1,4 @@
-.. module:: TimeLoop
+.. module:: spacevlbi
 
 TimeLoop
 ========
