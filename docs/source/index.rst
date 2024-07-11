@@ -17,6 +17,14 @@ Contents
 --------
 
 .. toctree::
+   :maxdepth: 2
+   :caption: Contents:
 
    usage
-   api
+   TimeLoop
+   Orbit
+   Attitude
+   Constraints
+   Observation
+   Station
+   Figures
