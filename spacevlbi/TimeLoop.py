@@ -1,12 +1,9 @@
-# -*- coding: utf-8 -*-
-"""
-TimeLoop.py
+# TimeLoop.py
 
-The primary simulation function of spacevlbi, executing all major functionality
- of the tool.
+# The primary simulation function of spacevlbi, executing all major functionality
+#  of the tool.
 
-@author: BenHudson - 05/07/2024
-"""
+# @author: BenHudson - 05/07/2024
 
 from spacevlbi.Orbit import OrbitPropagation, SatGroundAccess
 from spacevlbi.Attitude import AttitudePropagation
