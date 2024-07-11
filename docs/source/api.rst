@@ -4,11 +4,17 @@ API
 .. autosummary::
    :toctree: generated
 
-   spacevlbi/TimeLoop
-   spacevlbi/Orbit
-   spacevlbi/Attitude
-   spacevlbi/Constraints
-   spacevlbi/Observation
-   spacevlbi/Figures
-   spacevlbi/Station
-
+.. automodule:: spacevlbi.TimeLoop
+    :members:
+.. automodule:: spacevlbi.Orbit
+    :members:
+.. automodule:: spacevlbi.Attitude
+    :members:
+.. automodule:: spacevlbi.Constraints
+    :members:
+.. automodule:: spacevlbi.Observation
+    :members:
+.. automodule:: spacevlbi.Figures
+    :members:
+.. automodule:: spacevlbi.Station
+    :members:
