@@ -1,0 +1,26 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+dependencies = ["astropy", "numpy", "poliastro", "matplotlib", "os"]
+name = "spacevlbi"
+version = "1.0.0"
+dynamic = ["version"]
+authors = [
+  { name="Ben Hudson", email="bhudson@kispe.co.uk" },
+]
+description = "Python package to simulate and optimise space-based VLBI missions"
+readme = "README.md"
+license = {file = "LICENSE"}
+keywords = ["Astronomy, VLBI, Space Mission Simulation, Mission Optimisation"]
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3.8",
+    "License :: OSI Approved :: GNU GPLv3",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/BHudson1599/spacevlbi"
