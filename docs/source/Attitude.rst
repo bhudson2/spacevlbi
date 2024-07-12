@@ -1,4 +1,4 @@
-.. module:: spacevlbi
+.. module:: Attitude
 
 Attitude
 ========
