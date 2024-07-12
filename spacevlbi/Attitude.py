@@ -23,7 +23,7 @@ def AttitudePropagation(spaceTelescopes, rSun, rMoon, sourceRa, sourceDec):
 
     :param spaceTelescopes: Array of :class:`spacevlbi.Station.SpaceTelescope`
     objects, defaults to None
-    :type spaceTelescopes: :class:`spacevlbi.Station.SpaceTelescope`
+    :type spaceTelescopes: :class:`spacevlbi.Station.SpaceTelescope` 
     :param rSun: Sun position vector in ECI frame in metres, defaults to None
     :type rSun: float
     :param rMoon: Moon position vector in ECI frame in metres, defaults to None
