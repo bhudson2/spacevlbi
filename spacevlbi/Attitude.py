@@ -133,17 +133,19 @@ def AttitudePropagation(spaceTelescopes, rSun, rMoon, sourceRa, sourceDec):
 
 def TRIAD(r1,r2,b1,b2):
     """TRIAD algorithm to calculate the attitude matrix from two pairs of body
-       and inertial constraint vectors.
+    and inertial constraint vectors.
 
-       Args:
-           r1 (float): Inertial pointing vector
-           r2 (float): Inertial constraint vector
-           b1 (float): Body pointing vector
-           b2 (float): Body constraint vector
-
-       Returns:
-           attMat (float): Attitude Matrix
-    """  
+    :param r1: Inertial pointing vector, defaults to None
+    :type r1: SpaceTelescope
+    :param r2: Inertial constraint vector, defaults to None
+    :type r2: float
+    :param b1: Body pointing vector, defaults to None
+    :type b1: float
+    :param b2: Body constraint vector, defaults to None
+    :type b2: float
+    :return: attMat: Attitude Matrix
+    :rtype attMat: np.array
+    """
     
     rCross = cross(r1,r2) / norm(cross(r1,r2))
     bCross = cross(b1,b2) / norm(cross(b1,b2))
