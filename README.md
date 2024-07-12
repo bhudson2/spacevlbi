@@ -10,15 +10,15 @@ Please email benhudson@tudelft.nl if you have any questions.
 Installation
 ------------
 
-The latest version is available on `PyPi <https://pypi.org/project/spacevlbi/>`_. Ensure that pip is installed and run the following command:
+The latest version is available on [PyPi](https://pypi.org/project/spacevlbi/). Ensure that pip is installed and run the following command:
 
 `pip install spacevlbi`
 
-Installing with pip will install/update all of the required libraries automatically (`numpy <http://www.numpy.org/>`_, `poliastro <https://www.poliastro.space/>`_, `matplotlib <http://www.matplotlib.org/>`_, `astropy <http://www.astropy.org/>`).
+Installing with pip will install/update all of the required libraries automatically ([numpy](http://www.numpy.org/), [poliastro](https://www.poliastro.space/), [matplotlib](http://www.matplotlib.org/), [astropy](http://www.astropy.org/)).
 
 Documentation
 -------------
-More detailed documentation for the package is available `here <https://spacevlbi.readthedocs.io/en/latest/>`_.
+More detailed documentation for the package is available [here](https://spacevlbi.readthedocs.io/en/latest/).
 
 License
 -------
