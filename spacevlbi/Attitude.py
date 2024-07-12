@@ -16,21 +16,24 @@ from astropy import units as u
 
 def AttitudePropagation(spaceTelescopes, rSun, rMoon, sourceRa, sourceDec):
     """Propagate space telescope's attitude state. This function calculates
-       attitude matrix required to point the antenna at the target source. The
-       constraint axis is currently pointed in a direction perpendicular to the
-       antenna direction. This function could be updated to provide further
-       control over the constraint axis by changing the definition of r2.
+    attitude matrix required to point the antenna at the target source. The
+    constraint axis is currently pointed in a direction perpendicular to the
+    antenna direction. This function could be updated to provide further
+    control over the constraint axis by changing the definition of r2.
 
-       Args:
-           spaceTelescopes (obj): Array of SpaceTelescope objects
-           rSun (float): Sun position vector in ECI frame, metres
-           rMoon (float): Moon position vector in ECI frame, metres
-           sourceRa (float): Right ascension of target source, deg
-           sourceDec (float): Declination of target source, deg
-
-       Returns:
-           spaceTelescopes (obj): Array of SpaceTelescope objects
-    """   
+    :param spaceTelescopes: Array of spaceTelescope objects, defaults to None
+    :type spaceTelescopes: SpaceTelescope
+    :param rSun: Sun position vector in ECI frame in metres, defaults to None
+    :type rSun: float
+    :param rMoon: Moon position vector in ECI frame in metres, defaults to None
+    :type rMoon: float
+    :param sourceRa: Right ascension of target source in degrees, defaults to None
+    :type sourceRa: float
+    :param sourceDec: Declination of target source in degrees, defaults to None
+    :type sourceRa: float
+    :return: spaceTelescopes: Array of spaceTelescope objects
+    :rtype spaceTelescopes: SpaceTelescope
+    """
     
     # Iterate through space telescopes
     for j in range(len(spaceTelescopes)):
