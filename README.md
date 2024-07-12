@@ -14,7 +14,7 @@ The latest version is available on `PyPi <https://pypi.org/project/spacevlbi/>`_
 
 .. code-block:: bash
 
-    pip install spacevlbi
+`pip install spacevlbi`
 
 Installing with pip will install/update all of the required libraries automatically (`numpy <http://www.numpy.org/>`_, `poliastro <https://www.poliastro.space/>`_, `matplotlib <http://www.matplotlib.org/>`_, `astropy <http://www.astropy.org/>`).
 
