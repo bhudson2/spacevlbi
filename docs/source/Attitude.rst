@@ -2,5 +2,5 @@
 
 Attitude
 ========
-.. automodule:: spacevlbi.Attitude
+.. automodule:: spacevlbi/Attitude
     :members:
