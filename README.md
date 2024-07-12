@@ -24,4 +24,4 @@ More detailed documentation for the package is available `here <https://spacevlb
 
 License
 -------
-ehtim is licensed under GPLv3. See LICENSE.txt for more details.
+spacevlbi is licensed under GPLv3. See LICENSE.txt for more details.
