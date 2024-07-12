@@ -21,8 +21,9 @@ def AttitudePropagation(spaceTelescopes, rSun, rMoon, sourceRa, sourceDec):
     direction. This function could be updated to provide further
     control over the constraint axis by changing the definition of r2.
 
-    :param spaceTelescopes: Array of spaceTelescope objects, defaults to None
-    :type spaceTelescopes: SpaceTelescope
+    :param spaceTelescopes: Array of :class:`spacevlbi.Station.SpaceTelescope`
+    objects, defaults to None
+    :type spaceTelescopes: :class:`spacevlbi.Station.SpaceTelescope`
     :param rSun: Sun position vector in ECI frame in metres, defaults to None
     :type rSun: float
     :param rMoon: Moon position vector in ECI frame in metres, defaults to None
