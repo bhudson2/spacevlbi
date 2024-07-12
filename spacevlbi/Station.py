@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
-"""
-Station.py
-
-This file contains the definitions of three classes used throughout spacevlbi:
-SpaceTelescope, GroundTelescope and GroundStation. Also included are classes
-for defining spacecraft components that can be modelled within the tool.
-
-@author: BenHudson - 09/07/2024
-"""
+#
+# Station.py
+#
+# This file contains the definitions of three classes used throughout spacevlbi:
+# SpaceTelescope, GroundTelescope and GroundStation. Also included are classes
+# for defining spacecraft components that can be modelled within the tool.
+#
+# @author: BenHudson - 09/07/2024
 
 from astropy.coordinates import SkyCoord,GCRS,ITRS
 from astropy import constants as const

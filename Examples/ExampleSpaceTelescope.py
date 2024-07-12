@@ -1,28 +1,26 @@
 # -*- coding: utf-8 -*-
-"""
-ExampleSpaceTelescope.py
-
-An example instance of the SpaceTelescope class. The modelled spacecraft is
-representative of the preliminary concept of operations of the Black Hole 
-Explorer (BHEX). More detailed elements of the design defined here are for
-example only and are not intended to accurately represent BHEX's final design
-- https://www.blackholeexplorer.org/
-
-@author: BenHudson - 05/07/2024
-"""
+#
+# ExampleSpaceTelescope.py
+#
+# An example instance of the SpaceTelescope class. The modelled spacecraft is
+# representative of the preliminary concept of operations of the Black Hole 
+# Explorer (BHEX). More detailed elements of the design defined here are for
+# example only and are not intended to accurately represent BHEX's final design
+# - https://www.blackholeexplorer.org/
+#
+# @author: BenHudson - 05/07/2024
 
 from spacevlbi import Station
 import numpy as np
 
 def BaselineBHEX(initTime):
     """Example SpaceTelescope object implementation for the Black Hole Explorer
-       (BHEX).
-       
-       Args:
-           initTime (time): Simulation start datetime
-           
-       Returns:
-           sc (obj): SpaceTelescope object
+    (BHEX).
+
+    :param initTime: Simulation start datetime, defaults to None
+    :type initTime: str    
+    :return: sc: SpaceTelescope object representing BHEX
+    :rtype sc: SpaceTelescope
     """
     
 ###############################################################################

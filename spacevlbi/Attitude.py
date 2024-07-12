@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
-"""
-Attitude.py
-
-Contains the function required to propagate a space telescope's attitude state
-in spacevlbi.
-
-@author: BenHudson - 05/07/2024
-"""
+# Attitude.py
+#
+# Contains the function required to propagate a space telescope's attitude state
+# in spacevlbi.
+#
+# @author: BenHudson - 05/07/2024
 
 import numpy as np
 from numpy.linalg import norm, inv
@@ -21,19 +19,18 @@ def AttitudePropagation(spaceTelescopes, rSun, rMoon, sourceRa, sourceDec):
     direction. This function could be updated to provide further
     control over the constraint axis by changing the definition of r2.
 
-    :param spaceTelescopes: Array of :class:`spacevlbi.Station.SpaceTelescope`
-    objects, defaults to None
-    :type spaceTelescopes: :class:`spacevlbi.Station.SpaceTelescope` 
+    :param spaceTelescopes: Array of SpaceTelescope objects, defaults to None
+    :type spaceTelescopes: list
     :param rSun: Sun position vector in ECI frame in metres, defaults to None
-    :type rSun: float
+    :type rSun: numpy.ndarray
     :param rMoon: Moon position vector in ECI frame in metres, defaults to None
-    :type rMoon: float
+    :type rMoon: numpy.ndarray
     :param sourceRa: Right ascension of target source in degrees, defaults to None
     :type sourceRa: float
     :param sourceDec: Declination of target source in degrees, defaults to None
-    :type sourceRa: float
+    :type sourceDec: float
     :return: spaceTelescopes: Array of spaceTelescope objects
-    :rtype spaceTelescopes: SpaceTelescope
+    :rtype spaceTelescopes: list
     """
     
     # Iterate through space telescopes
@@ -137,15 +134,15 @@ def TRIAD(r1,r2,b1,b2):
     and inertial constraint vectors.
 
     :param r1: Inertial pointing vector, defaults to None
-    :type r1: SpaceTelescope
+    :type r1: numpy.ndarray
     :param r2: Inertial constraint vector, defaults to None
-    :type r2: float
+    :type r2: numpy.ndarray
     :param b1: Body pointing vector, defaults to None
-    :type b1: float
+    :type b1: numpy.ndarray
     :param b2: Body constraint vector, defaults to None
-    :type b2: float
+    :type b2: numpy.ndarray
     :return: attMat: Attitude Matrix
-    :rtype attMat: np.array
+    :rtype attMat: numpy.ndarray
     """
     
     rCross = cross(r1,r2) / norm(cross(r1,r2))

@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
-"""
-ExampleSetup.py
+#
+# ExampleSetup.py
+#
+# An example implementation of the spacevlbi package to demonstrate how the
+# functions can be executed to perform simulation of a space-based VLBI mission.
+# The example given is a simplified representation of the Black Hole Explorer
+# (BHEX) - https://www.blackholeexplorer.org/
 
-An example implementation of the spacevlbi package to demonstrate how the
-functions can be executed to perform simulation of a space-based VLBI mission.
-The example given is a simplified representation of the Black Hole Explorer
-(BHEX) - https://www.blackholeexplorer.org/
-
-@author: BenHudson - 05/07/2024
-"""
+# @author: BenHudson - 05/07/2024
 
 from spacevlbi import Station
 from spacevlbi.TimeLoop import TimeLoop

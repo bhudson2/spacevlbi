@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
-"""
-Observation.py
-
-Functions required to simulate VLBI observations of target source and calculate
-baselines in spacevlbi.
-
-@author: BenHudson - 05/07/2024
-"""
+#
+# Observation.py
+#
+# Functions required to simulate VLBI observations of target source and calculate
+# baselines in spacevlbi.
+#
+# @author: BenHudson - 05/07/2024
 
 from spacevlbi.Constraints import ObsMask
 from astropy import constants as const
@@ -22,25 +21,33 @@ from spacevlbi import Constraints
 def Baselines(i, spaceTelescopes, groundTelescopes, sourceRa, sourceDec, \
               frequency, simLength, timeStep, allsky):
     """Calculate baselines formed by an array of a given source (or evaluated
-       for a range of locations across the celestial sphere is allsky == 1).
-       Baselines that couldn't be formed due to the impact of a functional
-       constraint are also calculated.
+    for a range of locations across the celestial sphere is allsky == 1).
+    Baselines that couldn't be formed due to the impact of a functional
+    constraint are also calculated.
 
-       Args:
-           i (int): Current time step
-           spaceTelescopes (obj): Array of SpaceTelescope objects
-           groundTelescopes (obj): Array of GroundTelescope objects
-           sourceRa (float): Right ascension of target source, deg
-           sourceDec (float): Declination of target source, deg
-           frequency (float): Observational frequency, Hz
-           simLength (int): Length of simulation, sec
-           timeStep (int): Simulation time step, sec
-           allysky (BOOL): Calculate allsky coverage?
-
-       Returns:
-           spaceTelescopes (obj): Array of SpaceTelescope objects
-           groundTelescopes (obj): Array of GroundTelescope objects
-    """  
+    :param i: Current time step, defaults to None
+    :type i: int
+    :param spaceTelescopes: Array of SpaceTelescope objects, defaults to None
+    :type spaceTelescopes: list
+    :param groundTelescopes: Array of GroundTelescope objects, defaults to None
+    :type groundTelescopes: list
+    :param sourceRa: Right ascension of target source in degrees, defaults to None
+    :type sourceRa: float
+    :param sourceDec: Declination of target source in degrees, defaults to None
+    :type sourceDec: float
+    :param frequency: Observation frequency in Hz, defaults to None
+    :type frequency: float
+    :param simLength: simulation duration in seconds, defaults to None
+    :type simLength: int
+    :param timeStep: simulation time step in seconds, defaults to None
+    :type timeStep: int
+    :param allsky: Calculate all-sky coverage? Defaults to None
+    :type allsky: bool    
+    :return: spaceTelescopes: Array of spaceTelescope objects
+    :rtype spaceTelescopes: list
+    :return: groundTelescopes: Array of GroundStation objects
+    :rtype groundTelescopes: list
+    """
     
     # Speed of light
     c = const.c

@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
-"""
-TimeLoop.py
-
-The primary simulation function of spacevlbi, executing all major functionality
- of the tool.
-
-@author: BenHudson - 05/07/2024
-"""
+#
+# TimeLoop.py
+#
+# The primary simulation function of spacevlbi, executing all major functionality
+# of the tool.
+#
+# @author: BenHudson - 05/07/2024
 
 from spacevlbi.Orbit import OrbitPropagation, SatGroundAccess
 from spacevlbi.Attitude import AttitudePropagation
@@ -26,29 +25,42 @@ solar_system_ephemeris.set("jpl")
 def TimeLoop(initTime, simLength, timeStep, spaceTelescopes, groundTelescopes,\
              groundStations, frequency, sourceRa, sourceDec, dutyCycle, \
              intTime, allsky):
-    
     """Iterate through time loop and perform space VLBI simulation.
 
-       Args:
-           initTime (time): Simulation start datetime
-           simLength (int): Simulation duration, sec
-           timeStep (int): Simulation time step, sec
-           spaceTelescopes (obj): Array of SpaceTelescope objects
-           groundTelescopes (obj): Array of GroundTelescope objects
-           groundStations (obj): Array of GroundStation objects
-           frequency (int): Observation frequency, Hz
-           sourceRa (float): Right ascension of target source, deg
-           sourceDec (float): Declination of target source, deg
-           dutyCycle (int): Time from start of one integration to the next, sec
-           intTime (int): Integration time of instrument, sec
-           allysky (BOOL): Calculate all-sky coverage?
-
-       Returns:
-           spaceTelescopes (obj): Array of SpaceTelescope objects
-           groundTelescopes (obj): Array of GroundTelescope objects
-           groundStations (obj): Array of GroundStation objects
-           simTime (Time): Timeseries of simulation time
-    """   
+    :param initTime: Simulation start datetime, defaults to None
+    :type initTime: str
+    :param simLength: simulation duration in seconds, defaults to None
+    :type simLength: int
+    :param timeStep: simulation time step in seconds, defaults to None
+    :type timeStep: int
+    :param spaceTelescopes: Array of SpaceTelescope objects, defaults to None
+    :type spaceTelescopes: SpaceTelescope
+    :param groundTelescopes: Array of GroundTelescope objects, defaults to None
+    :type groundTelescopes: list
+    :param groundStations: Array of GroundStation objects, defaults to None
+    :type groundStations: list
+    :param frequency: Observation frequency in Hz, defaults to None
+    :type frequency: float
+    :param sourceRa: Right ascension of target source in degrees, defaults to None
+    :type sourceRa: float
+    :param sourceDec: Declination of target source in degrees, defaults to None
+    :type sourceDec: float
+    :param dutyCycle: Time from start of one integration to the next in seconds,
+    defaults to None
+    :type dutyCycle: int
+    :param intTime: Integration time of instrument, defaults to None
+    :type intTime: int
+    :param allsky: Calculate all-sky coverage? Defaults to None
+    :type allsky: bool
+    :return: spaceTelescopes: Array of spaceTelescope objects
+    :rtype spaceTelescopes: list
+    :return: groundTelescopes: Array of GroundStation objects
+    :rtype groundTelescopes: list
+    :return: groundStations: Array of GroundStation objects
+    :rtype groundStations: list
+    :return simTime: Timeseries of simulation time, defaults to None
+    :rtype simTime: list
+    """
     
     # Create time series for simulation
     simTime = TimeSeries(time_start=initTime, time_delta=timeStep * u.s,\

@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
-"""
-Constraints.py
-
-Implementation of the functional constraints that apply to the space telescopes
-and the ground telescopes that will impact when observations can be performed
-in spacevlbi.
-
-@author: BenHudson - 05/07/2024
-"""
+#
+# Constraints.py
+#
+# Implementation of the functional constraints that apply to the space telescopes
+# and the ground telescopes that will impact when observations can be performed
+# in spacevlbi.
+#
+# @author: BenHudson - 05/07/2024
 
 from astropy import constants as const
 from astropy import units as u
@@ -21,21 +20,31 @@ from numpy import vstack, dot, degrees, radians, cos, sin, arccos, arctan
 
 def ObsLimits(spaceTelescopes, groundTelescopes, groundStations, sourceRa, \
               sourceDec, rSun, rMoon):
-    """Calculate whether any of the functional constraints which can limit when
-       observations can be performed are in effect at the current time.
+    """Calculate whether any of the functional constraints are stopping an
+    observation from being performed at the current time step.
 
-       Args:
-           spaceTelescopes (obj): Array of SpaceTelescope objects
-           groundTelescopes (obj): Array of GroundTelescope objects
-           groundStations (obj): Array of GroundStation objects
-           sourceRa (float): Right ascension of target source, deg
-           sourceDec (float): Declination of target source, deg
-           rSun (float): Sun position vector in ECI frame, metres
-           rMoon (float): Moon position vector in ECI frame, metres
-
-       Returns:
-           spaceTelescopes (obj): Array of SpaceTelescope objects
-    """   
+    :param spaceTelescopes: Array of SpaceTelescope objects
+    objects, defaults to None
+    :type spaceTelescopes: list
+    :param groundTelescopes: Array of GroundTelescope objects
+    objects, defaults to None
+    :type groundTelescopes: list
+    :param groundStations: Array of GroundStation objects
+    objects, defaults to None
+    :type groundStations: list
+    :param sourceRa: Right ascension of target source in degrees, defaults to None
+    :type sourceRa: float
+    :param sourceDec: Declination of target source in degrees, defaults to None
+    :type sourceDec: float
+    :param rSun: Sun position vector in ECI frame in metres, defaults to None
+    :type rSun: numpy.ndarray
+    :param rMoon: Moon position vector in ECI frame in metres, defaults to None
+    :type rMoon: numpy.ndarray
+    :return: spaceTelescopes: Array of SpaceTelescope objects
+    :rtype spaceTelescopes: list
+    :return: groundTelescopes: Array of GroundTelescope objects
+    :rtype groundTelescopes: list
+    """
     
     # Iterate through space telescopes and calculate functional constraints
     for j in range(len(spaceTelescopes)):
@@ -212,17 +221,18 @@ def ObsLimits(spaceTelescopes, groundTelescopes, groundStations, sourceRa, \
 
 def SourceVisibility(ra, dec, position):
     """Calculate whether source at given right ascension and declination is in
-       view of a space telescope (i.e. not blocked by the Earth).
+    view of a space telescope (i.e. not blocked by the Earth).
 
-       Args:
-           ra (float): Source right ascension, degrees
-           dec (float): Source declination, degrees
-           position (float): Spacecraft position vector, metres
-
-       Returns:
-           visibility (BOOL): Flag indicating whether source is in view of
-                              spacecraft. In View == 1, Obstructed == 0
-    """  
+    :param ra: Right ascension of target source in degrees, defaults to None
+    :type ra: float
+    :param dec: Declination of target source in degrees, defaults to None
+    :type dec: float
+    :param position: Spacecraft ECI position vector in metres, defaults to None
+    :type position: numpy.ndarray
+    :return: visibility: Flag indicating whether source is in view of
+    spacecraft. In View == 1, Obstructed == 0.
+    :rtype visibility: bool
+    """
     
     R_Earth = const.R_earth
     # Calculate Earth-source unit vector
@@ -245,16 +255,18 @@ def SourceVisibility(ra, dec, position):
 
 def Elevation(position, ra, dec):
     """Calculate elevation of target source from horizon at a ground telescope
-       location.
+    location in topocentric frame.
 
-       Args:
-           position (float): Ground telescope position vector in ECI, metres
-           ra (float): Right ascension of target source, deg
-           dec (float): Declination of target source, deg
-
-       Returns:
-           el (float): Elevation of target source from horizon, deg
-    """  
+    :param position: GroundTelescope ECI position vector in metres, defaults to
+    None
+    :param ra: Right ascension of target source in degrees, defaults to None
+    :type ra: float
+    :param dec: Declination of target source in degrees, defaults to None
+    :type dec: float
+    :type position: numpy.ndarray
+    :return: el: Elevation of target source from horizon in degrees
+    :rtype el: float
+    """
     
     # Calculate source vector in ECI
     sourceECI = np.array([cos(radians(dec)) * cos(radians(ra)), \
@@ -278,14 +290,16 @@ def Elevation(position, ra, dec):
 def ObsMask(telescope1, telescope2):
     """Calculate mask on observations caused by functional constraints.
 
-       Args:
-           telescope1 (obj): Space or ground telescope object
-           telescope2 (obj): Space or ground telescope object
-
-       Returns:
-           obsFlag (BOOL): Flag indicating whether observation can be performed
-                           by these two antenna at the current time step
-    """  
+    :param telescope1: SpaceTelescope or GroundTelescope object
+    objects, defaults to None
+    :type telescope1: SpaceTelescope or GroundTelescope
+    :param telescope2: SpaceTelescope or GroundTelescope object
+    objects, defaults to None
+    :type telescope2: SpaceTelescope or GroundTelescope
+    :return: obsFlag: Flag indicating whether observation can be performed
+    by these two antenna at the current time step
+    :rtype obsFlag: bool
+    """
     
     # Check telescope1 functional constraint flags
     if telescope1.__class__.__name__ == 'SpaceTelescope':

@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
-"""
-Orbit.py
-
-Contains the functions required to model a space telescope's orbit in spacevlbi.
-
-@author: BenHudson - 05/07/2024
-"""
+#
+# Orbit.py
+#
+# Contains the functions required to model a space telescope's orbit in spacevlbi.
+#
+# @author: BenHudson - 05/07/2024
 
 import numpy as np
 from numpy.linalg import norm
@@ -27,9 +26,9 @@ def OrbitPropagation(spaceTelescopes, time, duration, rSun, rMoon):
     harmonics. Additional perturbing forces can be added by editing the Force
     function.
 
-    :param spaceTelescopes: Array of :class:`spacevlbi.Station.SpaceTelescope`
+    :param spaceTelescopes: Array of SpaceTelescope objects
     objects, defaults to None
-    :type spaceTelescopes: :class:`spacevlbi.Station.SpaceTelescope` 
+    :type spaceTelescopes: list 
     :param time: Current time in simulation, defaults to None
     :type time: str
     :param duration: Time across which to propagate orbits, defaults to None
@@ -39,7 +38,7 @@ def OrbitPropagation(spaceTelescopes, time, duration, rSun, rMoon):
     :param rMoon: Moon position vector in ECI frame in metres, defaults to None
     :type rMoon: float
     :return: spaceTelescopes: Array of spaceTelescope objects
-    :rtype spaceTelescopes: SpaceTelescope
+    :rtype spaceTelescopes: list
     """
 
     # Iterate through spaceTelescopes
@@ -76,14 +75,16 @@ def OrbitPropagation(spaceTelescopes, time, duration, rSun, rMoon):
 def Force(t0, u_, k):
     """Force model for performing orbit propagation.
 
-       Args:
-           t0 (float): Current simulation time, sec
-           u_ (float): Current position, velocity state vector, m
-           k (float): Gravitational parameter of central body
+    :param t0: Current simulation time in seconds, defaults to None
+    :type t0: float 
+    :param u_: Current spacecraft state vector in ECI, defaults to None
+    :type u_: numpy.ndarray
+    :param k: Gravitational parameter of central body, defaults to None
+    :type k: float
 
-       Returns:
-           accel (float): Acceleration vector imparted by perturbations, m/s**2
-    """   
+    :return: accel: Acceleration vector imparted by perturbations in m/s^2
+    :rtype accel: float
+    """
 
     du_kep = func_twobody(t0, u_, k)
     # J2 acceleration
@@ -106,17 +107,22 @@ def Force(t0, u_, k):
 
 def SatGroundAccess(spaceTelescopes, groundStations, time):
     """Calculate range and elevation between space telescopes and groundstations,
-       measured in topocentric frame.
+    measured in topocentric frame.
 
-       Args:
-           spaceTelescopes (obj): Array of SpaceTelescope objects
-           groundStations (obj): Array of GroundStation objects
-           time (Time): Current time in simulation
+    :param spaceTelescopes: Array of SpaceTelescope objects
+    objects, defaults to None
+    :type spaceTelescopes: list
+    :param groundStations: Array of GroundStation objects
+    objects, defaults to None
+    :type groundStations: list
+    :param time: Current simulation time, defaults to None
+    :type time: str
 
-       Returns:
-           spaceTelescopes (obj): Array of SpaceTelescope objects
-           groundStations (obj): Array of GroundStation objects
-    """   
+    :return: spaceTelescopes: Array of SpaceTelescope objects
+    :rtype spaceTelescopes: list
+    :return: groundStations: Array of GroundStation objects
+    :rtype groundStations: list
+    """
            
     # Iterate through ground stations, transform coordinates to ECI and 
     # calculate range and elevation
