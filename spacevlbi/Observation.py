@@ -23,7 +23,7 @@ def Baselines(i, spaceTelescopes, groundTelescopes, sourceRa, sourceDec, \
     """Calculate baselines formed by an array of a given source (or evaluated
     for a range of locations across the celestial sphere is allsky == 1).
     Baselines that couldn't be formed due to the impact of a functional
-    constraint are also calculated.
+    constraint are also calculated. 
 
     :param i: Current time step, defaults to None
     :type i: int
