@@ -23,20 +23,24 @@ from poliastro.core.perturbations import J2_perturbation, J3_perturbation
 
 def OrbitPropagation(spaceTelescopes, time, duration, rSun, rMoon):
     """Propagate space telescopes' orbits using poliastro Orbit functionality.
-       Propagation currently includes following perturbations: Earth J2, J3
-       harmonics. Additional perturbing forces can be added by editing the Force
-       function.
+    Propagation currently includes following perturbations: Earth J2, J3
+    harmonics. Additional perturbing forces can be added by editing the Force
+    function.
 
-       Args:
-           spaceTelescopes (obj): Array of SpaceTelescope objects
-           time (Time): Current time in simulation
-           duration (int): Time across which to propagate orbits
-           rSun (float): Sun position vector in ECI frame, metres
-           rMoon (float): Moon position vector in ECI frame, metres
-
-       Returns:
-           spaceTelescopes (obj): Array of SpaceTelescope objects
-    """   
+    :param spaceTelescopes: Array of :class:`spacevlbi.Station.SpaceTelescope`
+    objects, defaults to None
+    :type spaceTelescopes: :class:`spacevlbi.Station.SpaceTelescope` 
+    :param time: Current time in simulation, defaults to None
+    :type time: str
+    :param duration: Time across which to propagate orbits, defaults to None
+    :type duration: int
+    :param rSun: Sun position vector in ECI frame in metres, defaults to None
+    :type rSun: float
+    :param rMoon: Moon position vector in ECI frame in metres, defaults to None
+    :type rMoon: float
+    :return: spaceTelescopes: Array of spaceTelescope objects
+    :rtype spaceTelescopes: SpaceTelescope
+    """
 
     # Iterate through spaceTelescopes
     for j in range(len(spaceTelescopes)):
