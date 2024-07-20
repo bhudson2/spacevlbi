@@ -25,28 +25,27 @@ def Optimisation(spaceTelescopes, telescopeSelect, sunExcl, earthExcl, \
 
     :param spaceTelescopes: Array of SpaceTelescope objects, defaults to None
     :type spaceTelescopes: list
-    :param telescopeSelect: Index of spaceTelescope array to plot attitude
-    sphere of, defaults to None
+    :param telescopeSelect: Index of spaceTelescope array to optimise, defaults to None
     :type telescopeSelect: int
-    :param sunExcl: Minimum angle between the unit's normal vector and the
-    Sun's limb for an observation to take place in degrees, defaults to None
+    :param sunExcl: Minimum angle between the unit's normal vector and the 
+        Sun's limb for an observation to take place in degrees, defaults to None
     :type sunExcl: float
-    :param earthExcl:  Minimum angle between the unit's normal vector and the
-    Earth's limb for an observation to take place in degrees, defaults to None
+    :param earthExcl:  Minimum angle between the unit's normal vector and the 
+        Earth's limb for an observation to take place in degrees, defaults to None
     :type earthExcl: float
-    :param moonExcl:  Minimum angle between the unit's normal vector and the
-    Moon's limb for an observation to take place in degrees, defaults to None
+    :param moonExcl:  Minimum angle between the unit's normal vector and the 
+        Moon's limb for an observation to take place in degrees, defaults to None
     :type moonExcl: float
     :param direction:  "lessthan" or "greaterthan" Whether the angle between 
-    the unit normal vector and the celestial body should be greater than or 
-    less than the earthExcl, sunExcl or moonExcl in order for an observation to
-    take place. E.g. for a star tracker, direction is set to lessthan and the 
-    sunExcl parameter is set to the exclusion angle of the star tracker unit, 
-    defaults to greaterthan
+        the unit normal vector and the celestial body should be greater than 
+        or less than the earthExcl, sunExcl or moonExcl in order for an 
+        observation to take place. E.g. for a star tracker, direction is set 
+        to lessthan and the sunExcl parameter is set to the exclusion angle of 
+        the star tracker unit, defaults to greaterthan
     :type direction: str
-    :return: optList: List of unit vectors in the spacecraft body-fixed frame
-    and the associated number of time steps for which the Sun, Earth and/or
-    Moon exclusion angles were violated. I.e. Smaller number is more optimal.
+    :return optList: List of unit vectors in the spacecraft body-fixed frame 
+        and the associated number of time steps for which the Sun, Earth and/or
+        Moon exclusion angles were violated. I.e. Smaller number is more optimal.
     :rtype optList: list
     """
     

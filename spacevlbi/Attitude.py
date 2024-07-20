@@ -33,7 +33,7 @@ def AttitudePropagation(spaceTelescopes, rSun, rMoon, sourceRa, sourceDec, i,
     :type i: int
     :param timeStep: simulation time step in seconds, defaults to None
     :type timeStep: int
-    :return: spaceTelescopes: Array of spaceTelescope objects
+    :return spaceTelescopes: Array of spaceTelescope objects
     :rtype spaceTelescopes: list
     """
     
@@ -156,7 +156,7 @@ def TRIAD(r1,r2,b1,b2):
     :type b1: numpy.ndarray
     :param b2: Body constraint vector, defaults to None
     :type b2: numpy.ndarray
-    :return: attMat: Attitude Matrix
+    :return attMat: Attitude Matrix
     :rtype attMat: numpy.ndarray
     """
     

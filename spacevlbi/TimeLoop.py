@@ -43,18 +43,18 @@ def TimeLoop(initTime, simLength, timeStep, spaceTelescopes, groundTelescopes,\
     :type sourceRa: float
     :param sourceDec: Declination of target source in degrees, defaults to None
     :type sourceDec: float
-    :param dutyCycle: Time from start of one integration to the next in seconds,
-    defaults to None
+    :param dutyCycle: Time from start of one integration to the next in seconds, 
+        defaults to None
     :type dutyCycle: int
     :param intTime: Integration time of instrument, defaults to None
     :type intTime: int
     :param allsky: Calculate all-sky coverage? Defaults to None
     :type allsky: bool
-    :return: spaceTelescopes: Array of spaceTelescope objects
+    :return spaceTelescopes: Array of spaceTelescope objects
     :rtype spaceTelescopes: list
-    :return: groundTelescopes: Array of GroundStation objects
+    :return groundTelescopes: Array of GroundStation objects
     :rtype groundTelescopes: list
-    :return: groundStations: Array of GroundStation objects
+    :return groundStations: Array of GroundStation objects
     :rtype groundStations: list
     :return simTime: Timeseries of simulation time, defaults to None
     :rtype simTime: list

@@ -38,9 +38,9 @@ def ObsLimits(spaceTelescopes, groundTelescopes, groundStations, sourceRa, \
     :type rSun: numpy.ndarray
     :param rMoon: Moon position vector in ECI frame in metres, defaults to None
     :type rMoon: numpy.ndarray
-    :return: spaceTelescopes: Array of SpaceTelescope objects
+    :return spaceTelescopes: Array of SpaceTelescope objects
     :rtype spaceTelescopes: list
-    :return: groundTelescopes: Array of GroundTelescope objects
+    :return groundTelescopes: Array of GroundTelescope objects
     :rtype groundTelescopes: list
     """
     
@@ -230,8 +230,8 @@ def SourceVisibility(ra, dec, position):
     :type dec: float
     :param position: Spacecraft ECI position vector in metres, defaults to None
     :type position: numpy.ndarray
-    :return: visibility: Flag indicating whether source is in view of
-    spacecraft. In View == 1, Obstructed == 0.
+    :return visibility: Flag indicating whether source is in view of spacecraft.
+        In View == 1, Obstructed == 0.
     :rtype visibility: bool
     """
     
@@ -258,8 +258,8 @@ def Elevation(position, ra, dec):
     """Calculate elevation of target source from horizon at a ground telescope
     location in topocentric frame.
 
-    :param position: GroundTelescope ECI position vector in metres, defaults to
-    None
+    :param position: GroundTelescope ECI position vector in metres, defaults to 
+        None
     :param ra: Right ascension of target source in degrees, defaults to None
     :type ra: float
     :param dec: Declination of target source in degrees, defaults to None
@@ -291,14 +291,12 @@ def Elevation(position, ra, dec):
 def ObsMask(telescope1, telescope2):
     """Calculate mask on observations caused by functional constraints.
 
-    :param telescope1: SpaceTelescope or GroundTelescope object
-    objects, defaults to None
+    :param telescope1: SpaceTelescope or GroundTelescope object, defaults to None
     :type telescope1: SpaceTelescope or GroundTelescope
-    :param telescope2: SpaceTelescope or GroundTelescope object
-    objects, defaults to None
+    :param telescope2: SpaceTelescope or GroundTelescope object, defaults to None
     :type telescope2: SpaceTelescope or GroundTelescope
-    :return: obsFlag: Flag indicating whether observation can be performed
-    by these two antenna at the current time step
+    :return obsFlag: Flag indicating whether observation can be performed by 
+        these two antenna at the current time step
     :rtype obsFlag: bool
     """
     

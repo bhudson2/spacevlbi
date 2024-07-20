@@ -24,8 +24,7 @@ def OrbitPropagation(spaceTelescopes, time, duration, rSun, rMoon):
     harmonics. Additional perturbing forces can be added by editing the Force
     function.
 
-    :param spaceTelescopes: Array of SpaceTelescope objects
-    objects, defaults to None
+    :param spaceTelescopes: Array of SpaceTelescope objects, defaults to None
     :type spaceTelescopes: list 
     :param time: Current time in simulation, defaults to None
     :type time: str
@@ -35,7 +34,7 @@ def OrbitPropagation(spaceTelescopes, time, duration, rSun, rMoon):
     :type rSun: float
     :param rMoon: Moon position vector in ECI frame in metres, defaults to None
     :type rMoon: float
-    :return: spaceTelescopes: Array of spaceTelescope objects
+    :return spaceTelescopes: Array of spaceTelescope objects
     :rtype spaceTelescopes: list
     """
 
@@ -79,8 +78,7 @@ def Force(t0, u_, k):
     :type u_: numpy.ndarray
     :param k: Gravitational parameter of central body, defaults to None
     :type k: float
-
-    :return: accel: Acceleration vector imparted by perturbations in m/s^2
+    :return accel: Acceleration vector imparted by perturbations in m/s^2
     :rtype accel: float
     """
 
@@ -107,18 +105,15 @@ def SatGroundAccess(spaceTelescopes, groundStations, time):
     """Calculate range and elevation between space telescopes and groundstations,
     measured in topocentric frame.
 
-    :param spaceTelescopes: Array of SpaceTelescope objects
-    objects, defaults to None
+    :param spaceTelescopes: Array of SpaceTelescope objects, defaults to None
     :type spaceTelescopes: list
-    :param groundStations: Array of GroundStation objects
-    objects, defaults to None
+    :param groundStations: Array of GroundStation objects, defaults to None
     :type groundStations: list
     :param time: Current simulation time, defaults to None
     :type time: str
-
-    :return: spaceTelescopes: Array of SpaceTelescope objects
+    :return spaceTelescopes: Array of SpaceTelescope objects
     :rtype spaceTelescopes: list
-    :return: groundStations: Array of GroundStation objects
+    :return groundStations: Array of GroundStation objects
     :rtype groundStations: list
     """
            

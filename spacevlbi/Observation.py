@@ -39,9 +39,9 @@ def Baselines(i, spaceTelescopes, groundTelescopes, sourceRa, sourceDec, \
     :type timeStep: int
     :param allsky: Calculate all-sky coverage? Defaults to None
     :type allsky: bool    
-    :return: spaceTelescopes: Array of spaceTelescope objects
+    :return spaceTelescopes: Array of spaceTelescope objects
     :rtype spaceTelescopes: list
-    :return: groundTelescopes: Array of GroundStation objects
+    :return groundTelescopes: Array of GroundStation objects
     :rtype groundTelescopes: list
     """
     

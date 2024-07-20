@@ -136,7 +136,7 @@ def UvPlot(spaceTelescopes, groundTelescopes, allsky, plotLost=1):
     :param groundTelescopes: Array of GroundTelescope objects, defaults to None
     :type groundTelescopes: list
     :param plotLost: Plot baselines lost due to functional constraints? 
-    Defaults to None
+        Defaults to None
     :type plotLost: bool
     :param allysky: Calculate all-sky coverage? Defaults to 1
     :type allysky: bool
@@ -323,8 +323,8 @@ def AttitudeSphere(spaceTelescopes, telescopeSelect=0, azim=45, elev=30, \
 
     :param spaceTelescopes: Array of SpaceTelescope objects, defaults to None
     :type spaceTelescopes: list
-    :param telescopeSelect: Index of spaceTelescope array to plot attitude
-    sphere of, defaults to None
+    :param telescopeSelect: Index of spaceTelescope array to plot attitude 
+        sphere of, defaults to None
     :type telescopeSelect: int
     :param azim: Plot viewing angle, azimuth in X-Y plane, defaults to 45
     :type azim: float
@@ -539,8 +539,8 @@ def SolarPanelIncidence(spaceTelescopes, telescopeSelect, simTime):
 
     :param spaceTelescopes: Array of SpaceTelescope objects, defaults to None
     :type spaceTelescopes: list
-    :param telescopeSelect: Index of spaceTelescope array to plot attitude
-    sphere of, defaults to None
+    :param telescopeSelect: Index of spaceTelescope array to plot solar panel 
+        incidence of, defaults to None
     :type telescopeSelect: int
     :param simTime: Timeseries of simulation time, defaults to None
     :type simTime: list
@@ -601,8 +601,8 @@ def GroundStationElevation(spaceTelescopes, telescopeSelect, groundStations,\
 
     :param spaceTelescopes: Array of SpaceTelescope objects, defaults to None
     :type spaceTelescopes: list
-    :param telescopeSelect: Index of spaceTelescope array to plot attitude
-    sphere of, defaults to None
+    :param telescopeSelect: Index of spaceTelescope array to plot ground 
+        station elevation of, defaults to None
     :type telescopeSelect: int
     :param groundStations: Array of GroundStation objects, defaults to None
     :type groundStations: list
@@ -668,7 +668,7 @@ def Cone3D(p0, p1, R0, R1, n):
     :param R1: Radius at base, defaults to None
     :type R1: float
     param n: Number of radial steps used in cone surface generation, defaults 
-    to None
+        to None
     :type n: int
     """
     # vector in direction of axis
