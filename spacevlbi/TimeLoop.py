@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 # TimeLoop.py
 #
 # The primary simulation function of spacevlbi, executing all major functionality
@@ -104,7 +102,7 @@ def TimeLoop(initTime, simLength, timeStep, spaceTelescopes, groundTelescopes,\
         
         # Spacecraft Attitude Propagation
         spaceTelescopes = AttitudePropagation(spaceTelescopes, rSun, \
-                            rMoon, sourceRa, sourceDec)
+                            rMoon, sourceRa, sourceDec, i, timeStep)
         
         # Calculate Range / Elevation from Spacecraft to Ground Stations
         spaceTelescopes, groundStations = SatGroundAccess(spaceTelescopes, \

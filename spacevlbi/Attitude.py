@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Attitude.py
 #
 # Contains the function required to propagate a space telescope's attitude state
@@ -12,7 +11,8 @@ from numpy import cross, matmul, vstack, dot, degrees, radians, cos, sin, arccos
 from astropy import constants as const
 from astropy import units as u
 
-def AttitudePropagation(spaceTelescopes, rSun, rMoon, sourceRa, sourceDec):
+def AttitudePropagation(spaceTelescopes, rSun, rMoon, sourceRa, sourceDec, i, 
+                        timeStep):
     """Propagate space telescope's attitude state. This function calculates
     attitude matrix required to point the antenna at the target source. The
     constraint axis is pointed in a direction perpendicular to the antenna 
@@ -29,6 +29,10 @@ def AttitudePropagation(spaceTelescopes, rSun, rMoon, sourceRa, sourceDec):
     :type sourceRa: float
     :param sourceDec: Declination of target source in degrees, defaults to None
     :type sourceDec: float
+    :param i: Current time step, defaults to None
+    :type i: int
+    :param timeStep: simulation time step in seconds, defaults to None
+    :type timeStep: int
     :return: spaceTelescopes: Array of spaceTelescope objects
     :rtype spaceTelescopes: list
     """
@@ -56,12 +60,23 @@ def AttitudePropagation(spaceTelescopes, rSun, rMoon, sourceRa, sourceDec):
                             rSatMoon))
             
         # Calculate attitude matrix to point antenna at target
-        b1 = spaceTelescopes[j].pointingVector  # Body pointing axis
-        b2 = spaceTelescopes[j].constraintVector  # Body constraint axis
+        b1 = spaceTelescopes[j].pointingVector[0]  # Body pointing axis
+        b2 = spaceTelescopes[j].constraintVector[0]  # Body constraint axis
+        r1 = rSource  # Inertial pointing axis
+        # Inertial constraint axis excluding roll angle
+        r2Temp = cross(r1, b1) / norm(cross(r1, b1))
         
-        r1 = rSource;  # Inertial pointing axis
-        r2 = cross(r1, b1) / norm(cross(r1, b1))  # Inertial constraint axis
+        # Include roll angle. Find latest attitude transition
+        rollAngle = spaceTelescopes[j].rollAngle
+        lastAngleFound = 0
+        theta = 0
+        for k in range(1,int(len(rollAngle)/2)):
+            if ((i*timeStep) > rollAngle[k*-2]) and (lastAngleFound == 0):
+                theta = radians(spaceTelescopes[j].rollAngle[k*-2 + 1])
+                lastAngleFound = 1
         
+        r2 = cos(theta)*r2Temp + sin(theta)*cross(b1, r2Temp) + (1 - cos(theta))* \
+             dot(b1, r2Temp) * b1
         # Calculate attitude matrix
         attMat = TRIAD(r1,r2,b1,b2)
         

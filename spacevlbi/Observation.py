@@ -1,7 +1,3 @@
-# -*- coding: utf-8 -*-
-#
-# Observation.py
-#
 # Functions required to simulate VLBI observations of target source and calculate
 # baselines in spacevlbi.
 #

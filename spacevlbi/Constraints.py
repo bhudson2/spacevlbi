@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 # Constraints.py
 #
 # Implementation of the functional constraints that apply to the space telescopes
@@ -72,11 +70,14 @@ def ObsLimits(spaceTelescopes, groundTelescopes, groundStations, sourceRa, \
         spaceTelescopes[j].moonLimbAngle = vstack((spaceTelescopes[j].moonLimbAngle, \
                             moonLimb))
             
+        # Update Sun and Moon vectors in SpaceTelescope
+        spaceTelescopes[j].rSun = vstack((spaceTelescopes[j].rSun, satSun))
+        spaceTelescopes[j].rMoon = vstack((spaceTelescopes[j].rMoon, satMoon))
+        
         sunInertial = spaceTelescopes[j].sunInertial[-1,:]
         moonInertial = spaceTelescopes[j].moonInertial[-1,:]
         earthInertial = (-spaceTelescopes[j].eciPosition[-1,:]/ \
                             norm(spaceTelescopes[j].eciPosition[-1,:]))
-
             
         # Is the antenna pointing within Sun, Moon or Earth exclusion zones?
         radioPayloads = spaceTelescopes[j].radioPayloads
@@ -85,11 +86,11 @@ def ObsLimits(spaceTelescopes, groundTelescopes, groundStations, sourceRa, \
                 antennaInertial = radioPayloads[k].antennaInertial[-1,:]
             
                 sunAngle = abs(arccos(dot(antennaInertial, sunInertial)/ \
-                    (norm(antennaInertial)*norm(sunInertial))));
+                    (norm(antennaInertial)*norm(sunInertial)))) - sunLimb
                 moonAngle = abs(arccos(dot(antennaInertial, moonInertial)/ \
-                    (norm(antennaInertial)*norm(moonInertial))));
+                    (norm(antennaInertial)*norm(moonInertial)))) - moonLimb
                 earthAngle = abs(arccos(dot(antennaInertial, earthInertial)/ \
-                    (norm(antennaInertial)*norm(earthInertial))))-earthLimb;
+                    (norm(antennaInertial)*norm(earthInertial))))-earthLimb
         
                 if degrees(sunAngle.value) < radioPayloads[k].antSunExcl:
                     radioPayloads[k].sunFlag = vstack((radioPayloads[k].sunFlag,0))
@@ -171,7 +172,7 @@ def ObsLimits(spaceTelescopes, groundTelescopes, groundStations, sourceRa, \
                         spaceGround = spaceGround / norm(spaceGround)
                         commsGroundAngle = degrees(abs(arccos(dot(commsInertial, \
                                     spaceGround)/ (norm(commsInertial)* \
-                                    norm(spaceGround)))))
+                                    norm(spaceGround))))).value
                         commsFov = commsSystems[k].commsFov
                         angle[0,l] = commsGroundAngle
     
@@ -318,10 +319,18 @@ def ObsMask(telescope1, telescope2):
                 radioFlag = radioFlag * sunFlag * earthFlag * moonFlag
 
         strFlag = 1
+        strReq = telescope1.reqStarTrackers
+        strCount = 0
         if starTrackers != [] and telescope1.strModel == 1:    
             for j in range(len(starTrackers)):
                 blindFlag = starTrackers[j].strBlindFlag[-1,:]
-                strFlag = strFlag * blindFlag
+                if blindFlag == 0:
+                    strCount = strCount + 1
+            
+            if strCount < strReq:
+                strFlag = 0
+            else:
+                strFlag = 1
         
         radFlag = 1
         if radiators != [] and telescope1.radModel == 1:    

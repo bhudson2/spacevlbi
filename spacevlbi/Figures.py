@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 # Figures.py
 #
 # Functions to generate figures to show results of a spacevlbi simulation.
@@ -356,17 +354,18 @@ def AttitudeSphere(spaceTelescopes, telescopeSelect=0, azim=45, elev=30, \
     print("Generating attitude sphere...")
     
     textScale = 1.1
+    axisScale = 1.25
     
     # Extract SpaceTelescope from array and plot attitude sphere
     spaceTelescope = spaceTelescopes[telescopeSelect]
     
     # Plot spacecraft body axis
-    ax.plot([0,1], [0,0], [0,0], c='black')
-    ax.plot([0,0], [0,1], [0,0], c='black')
-    ax.plot([0,0], [0,0], [0,1], c='black')
-    ax.text(textScale, 0, 0, "X", color='black')
-    ax.text(0, textScale, 0, "Y", color='black')
-    ax.text(0, 0, textScale, "Z", color='black')
+    ax.plot([0,axisScale], [0,0], [0,0], c='black')
+    ax.plot([0,0], [0,axisScale], [0,0], c='black')
+    ax.plot([0,0], [0,0], [0,axisScale], c='black')
+    ax.text(1.3, 0, 0, "X", color='black')
+    ax.text(0, 1.3, 0, "Y", color='black')
+    ax.text(0, 0, 1.3, "Z", color='black')
     
     # Plot antenna surface
     if plotAntenna==1:
@@ -627,8 +626,6 @@ def GroundStationElevation(spaceTelescopes, telescopeSelect, groundStations,\
         for i in range(len(groundStations)):
             name = groundStations[i].name
             elevation = groundStations[i].satElev[1:]
-            print(time)
-            print(elevation)
             ax.plot(time, elevation, label=name)
             
         # Configure axes

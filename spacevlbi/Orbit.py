@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 # Orbit.py
 #
 # Contains the functions required to model a space telescope's orbit in spacevlbi.

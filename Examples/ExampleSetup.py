@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 # ExampleSetup.py
 #
 # An example implementation of the spacevlbi package to demonstrate how the
@@ -12,6 +10,7 @@
 from spacevlbi import Station
 from spacevlbi.TimeLoop import TimeLoop
 from spacevlbi import Figures
+from spacevlbi.Optimisation import Optimisation
 import numpy as np
 from poliastro.util import Time
 from ExampleSpaceTelescope import BaselineBHEX
@@ -43,25 +42,25 @@ bandwidth = 32e9  # bandwidth of observations, sec
 ###############################################################################
 
 # See GroundTelescope class for definition of input parameters
-ALMA = Station.GroundTelescope("ALMA", 73, 0.68, 1, 1, 76, \
+ALMA = Station.GroundTelescope("ALMA", 73, 0.68, 76, \
                 np.array([2225.0613,-5440.0617,-2481.6812]), 15, initTime)
-IRAM = Station.GroundTelescope("IRAM", 30, 0.47, 1, 1, 226, \
+IRAM = Station.GroundTelescope("IRAM", 30, 0.47, 226, \
                 np.array([5088.9678,-301.6812,3825.0122]), 15, initTime)
-APEX = Station.GroundTelescope("APEX", 12, 0.61, 1, 1, 118, \
+APEX = Station.GroundTelescope("APEX", 12, 0.61, 118, \
                 np.array([2225.0395, -5441.1976, -2479.3034]), 15, initTime)
-JCMT = Station.GroundTelescope("JCMT", 15, 0.52, 1, 1, 345, \
+JCMT = Station.GroundTelescope("JCMT", 15, 0.52, 345, \
                 np.array([-5464.5847, -2493.0012, 2150.6540]), 15, initTime)
-LMT = Station.GroundTelescope("LMT", 32.5, 0.28, 1, 1, 371, \
+LMT = Station.GroundTelescope("LMT", 32.5, 0.28, 371, \
                 np.array([-768.7156, -5988.5071, 2063.3549]), 15, initTime)
-SMA = Station.GroundTelescope("SMA", 14.7, 0.75, 1, 1, 285, \
+SMA = Station.GroundTelescope("SMA", 14.7, 0.75, 285, \
                 np.array([-5464.5555, -2492.9280, 2150.7972]), 15, initTime)
-SMT = Station.GroundTelescope("SMT", 10, 0.60, 1, 1, 291, \
+SMT = Station.GroundTelescope("SMT", 10, 0.60, 291, \
                 np.array([-1828.7962, -5054.4068, 3427.8652]), 15, initTime)
-SPT = Station.GroundTelescope("SPT", 6, 0.60, 1, 1, 118, \
+SPT = Station.GroundTelescope("SPT", 6, 0.60, 118, \
                 np.array([0.8098, -0.8169, -6359.5687]), 15, initTime)
-NOEMA = Station.GroundTelescope("NOEMA", 52,   0.50, 1, 1, 270,\
+NOEMA = Station.GroundTelescope("NOEMA", 52,   0.50, 270,\
                 np.array([4524.0004, 468.0421, 4460.5098]), 15, initTime)
-HAY = Station.GroundTelescope("HAY", 52, 0.50, 1, 1, 270, \
+HAY = Station.GroundTelescope("HAY", 52, 0.50, 270, \
                 np.array([1492.341, -4457.234,  4296.933]), 15, initTime)
 
 ###############################################################################
@@ -117,3 +116,11 @@ Figures.SolarPanelIncidence(spaceTelescopes, 0, simTime)
 
 # Plot elevation of space telescope from ground station
 Figures.GroundStationElevation(spaceTelescopes, 0, groundStations, simTime)
+
+###############################################################################
+# Optimisation
+###############################################################################
+
+# Run Optimisation function to determine optimal position for a star tracker
+# with a Sun and Earth minimum exclusion angle of 30 degrees.
+results = Optimisation(spaceTelescopes, 0, 30, 30, 0)

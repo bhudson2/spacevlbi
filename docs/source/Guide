@@ -1,0 +1,59 @@
+Guide
+=====
+
+.. _installation:
+
+Installation
+------------
+
+The latest version is available on 'PyPi <https://pypi.org/project/spacevlbi/>'.
+Ensure that pip is installed and run the following command:
+
+.. code-block:: console
+
+   pip install spacevlbi
+   
+Installing with pip will install/update all of the required libraries 
+automatically ('numpy <http://www.numpy.org/>', 'poliastro 
+<https://www.poliastro.space/>', 'matplotlib <http://www.matplotlib.org/>'', 
+'astropy <http://www.astropy.org/>').
+
+Introduction
+------------
+
+
+
+Provided in the Examples folder is the script ``ExampleSetup.py``. This script 
+shows how the package can be used to model a VLBI array with a single space 
+element. This example is based upon the preliminary concept for the 
+'Black Hole Explorer (BHEX)' <https://www.blackholeexplorer.org/>' mission. 
+The script ``ExampleSpaceTelescope.py`` shows how an object of the 
+SpaceTelescope class can be defined.
+
+Creating recipes
+----------------
+
+To retrieve a list of random ingredients,
+you can use the ``lumache.get_random_ingredients()`` function:
+
+.. autofunction:: lumache.get_random_ingredients
+
+The ``kind`` parameter should be either ``"meat"``, ``"fish"``,
+or ``"veggies"``. Otherwise, :py:func:`lumache.get_random_ingredients`
+will raise an exception.
+
+.. autoexception:: lumache.InvalidKindError
+
+For example:
+
+>>> import lumache
+>>> lumache.get_random_ingredients()
+['shells', 'gorgonzola', 'parsley']
+
+
+
+
+**Lumache** (/lu'make/) is a Python library for cooks and food lovers
+that creates recipes mixing random ingredients.
+It pulls data from the `Open Food Facts database <https://world.openfoodfacts.org/>`_
+and offers a *simple* and *intuitive* API.
