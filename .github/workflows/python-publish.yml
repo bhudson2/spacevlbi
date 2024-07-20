@@ -3,19 +3,6 @@ name: Publish Python 🐍 distribution 📦 to PyPI and TestPyPI
 on: push
 
 jobs:
-  jobs:
-  cleanup:
-    runs-on: ubuntu-latest
-    permissions: write-all
-
-    steps:
-      - name: 🗑 Delete deployment
-        uses: strumwolf/delete-deployment-environment@v2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          environment: github-pages
-          onlyRemoveDeployments: true
-          
   build:
     name: Build distribution 📦
     runs-on: ubuntu-latest
@@ -49,7 +36,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: pypi
-      url: https://pypi.org/p/spacevlbi  # Replace <package-name> with your PyPI project name
+      url: https://pypi.org/project/spacevlbi/  # Replace <package-name> with your PyPI project name
     permissions:
       id-token: write  # IMPORTANT: mandatory for trusted publishing
 
