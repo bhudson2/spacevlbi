@@ -1,6 +1,3 @@
-.. module:: Guide
-.. _Guide:
-
 Guide
 =====
 
@@ -21,6 +18,8 @@ automatically ('numpy <http://www.numpy.org/>', 'poliastro
 <https://www.poliastro.space/>', 'matplotlib <http://www.matplotlib.org/>'', 
 'astropy <http://www.astropy.org/>').
 
+.. _introduction:
+
 Introduction
 ------------
 
@@ -29,17 +28,17 @@ of the ``TimeLoop()`` function to conduct a simulation of a space VLBI mission.
 
 The ``SpaceTelescope`` class enables an Earth-orbiting space telescope to be 
 modelled, including a range of its key components which can affect when
-observations can take place (see the Space Telescope and Functional Constraints
+observations can take place (see the :ref:`spacetelescope` and :ref:`constraints`
 sections below).
 
 The ``GroundTelescope`` class enables a ground-based radio antenna to be
-modelled so that ground-space VLBI baselines can be simulated (see the Ground
-Telescope section below for more information).
+modelled so that ground-space VLBI baselines can be simulated (see the 
+:ref:`groundtelescope` section below for more information).
 
 The ``Ground Station`` class enables a ground-based station for space telescope
 telemetry, tracking and control (TT&C) to be modelled. This is useful for
-calculating the impact of a number of functional constraints (see the Ground
-Station and Functional Constraints sections below).
+calculating the impact of a number of functional constraints (see the 
+:ref:`groundstation` and :ref:`constraints` sections below).
 
 To model a purely space-based VLBI mission, two or more ``SpaceTelescope``
 objects must be created. To model a ground-space VLBI mission, two or more
@@ -88,49 +87,50 @@ element. This example is based upon the preliminary concept for the
 The script ``ExampleSpaceTelescope.py`` shows how an object of the 
 SpaceTelescope class can be defined.
 
+.. _spacetelescope:
 Space Telescope
 ---------------
 
-
+.. _radiopayload:
 Radio Payload
 ~~~~~~~~~~~~~
 
-
+.. _startracker:
 Star Tracker
 ~~~~~~~~~~~~
 
-
+.. _radiator:
 Radiator
 ~~~~~~~~
 
-
+.. _solarpanel:
 Solar Panel
 ~~~~~~~~~~~
 
-
+.. _commssystem:
 Communication System
 ~~~~~~~~~~~~~~~~~~~~
 
-
+.. _groundtelescope:
 Ground Telescope
 ----------------
 
-
+.. _groundstation:
 Ground Station
 --------------
 
-
+.. _orbitprop:
 Orbit Propagation
 -----------------
 
-
+.. _attitudeprop:
 Attitude Propagation
 --------------------
 
-
+.. _constraints:
 Functional Constraints
 ----------------------
 
-
+.. _optimisation:
 Optimisation
 ------------
