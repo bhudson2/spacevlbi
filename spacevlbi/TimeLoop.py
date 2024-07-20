@@ -32,7 +32,7 @@ def TimeLoop(initTime, simLength, timeStep, spaceTelescopes, groundTelescopes,\
     :param timeStep: simulation time step in seconds, defaults to None
     :type timeStep: int
     :param spaceTelescopes: Array of SpaceTelescope objects, defaults to None
-    :type spaceTelescopes: SpaceTelescope
+    :type spaceTelescopes: list
     :param groundTelescopes: Array of GroundTelescope objects, defaults to None
     :type groundTelescopes: list
     :param groundStations: Array of GroundStation objects, defaults to None
@@ -50,14 +50,14 @@ def TimeLoop(initTime, simLength, timeStep, spaceTelescopes, groundTelescopes,\
     :type intTime: int
     :param allsky: Calculate all-sky coverage? Defaults to None
     :type allsky: bool
-    :return spaceTelescopes: Array of spaceTelescope objects
-    :rtype spaceTelescopes: list
-    :return groundTelescopes: Array of GroundStation objects
-    :rtype groundTelescopes: list
-    :return groundStations: Array of GroundStation objects
-    :rtype groundStations: list
-    :return simTime: Timeseries of simulation time, defaults to None
-    :rtype simTime: list
+    :return: Array of SpaceTelescope objects
+    :rtype: list
+    :return: Array of GroundTelescope objects
+    :rtype: list
+    :return: Array of GroundStation objects
+    :rtype: list
+    :return: Timeseries of simulation time, defaults to None
+    :rtype: list
     """
     
     # Create time series for simulation

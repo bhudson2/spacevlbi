@@ -17,7 +17,7 @@ from spacevlbi import Constraints
 def Baselines(i, spaceTelescopes, groundTelescopes, sourceRa, sourceDec, \
               frequency, simLength, timeStep, allsky):
     """Calculate baselines formed by an array of a given source (or evaluated
-    for a range of locations across the celestial sphere is allsky == 1).
+    for a range of locations across the celestial sphere if allsky == 1).
     Baselines that couldn't be formed due to the impact of a functional
     constraint are also calculated. 
 
@@ -39,10 +39,10 @@ def Baselines(i, spaceTelescopes, groundTelescopes, sourceRa, sourceDec, \
     :type timeStep: int
     :param allsky: Calculate all-sky coverage? Defaults to None
     :type allsky: bool    
-    :return spaceTelescopes: Array of spaceTelescope objects
-    :rtype spaceTelescopes: list
-    :return groundTelescopes: Array of GroundStation objects
-    :rtype groundTelescopes: list
+    :return: Array of SpaceTelescope objects
+    :rtype: list
+    :return: Array of GroundTelescope objects
+    :rtype: list
     """
     
     # Speed of light

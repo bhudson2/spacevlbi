@@ -16,8 +16,7 @@ def AttitudePropagation(spaceTelescopes, rSun, rMoon, sourceRa, sourceDec, i,
     """Propagate space telescope's attitude state. This function calculates
     attitude matrix required to point the antenna at the target source. The
     constraint axis is pointed in a direction perpendicular to the antenna 
-    direction. This function could be updated to provide further
-    control over the constraint axis by changing the definition of r2.
+    direction, defined by the rollAngle parameter of a SpaceTelescope.
 
     :param spaceTelescopes: Array of SpaceTelescope objects, defaults to None
     :type spaceTelescopes: list
@@ -33,8 +32,8 @@ def AttitudePropagation(spaceTelescopes, rSun, rMoon, sourceRa, sourceDec, i,
     :type i: int
     :param timeStep: simulation time step in seconds, defaults to None
     :type timeStep: int
-    :return spaceTelescopes: Array of spaceTelescope objects
-    :rtype spaceTelescopes: list
+    :return: Array of SpaceTelescope objects
+    :rtype: list
     """
     
     # Iterate through space telescopes
@@ -156,8 +155,8 @@ def TRIAD(r1,r2,b1,b2):
     :type b1: numpy.ndarray
     :param b2: Body constraint vector, defaults to None
     :type b2: numpy.ndarray
-    :return attMat: Attitude Matrix
-    :rtype attMat: numpy.ndarray
+    :return: Attitude Matrix
+    :rtype: numpy.ndarray
     """
     
     rCross = cross(r1,r2) / norm(cross(r1,r2))

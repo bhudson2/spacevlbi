@@ -21,14 +21,11 @@ def ObsLimits(spaceTelescopes, groundTelescopes, groundStations, sourceRa, \
     """Calculate whether any of the functional constraints are stopping an
     observation from being performed at the current time step.
 
-    :param spaceTelescopes: Array of SpaceTelescope objects
-    objects, defaults to None
+    :param spaceTelescopes: Array of SpaceTelescope objects, defaults to None
     :type spaceTelescopes: list
-    :param groundTelescopes: Array of GroundTelescope objects
-    objects, defaults to None
+    :param groundTelescopes: Array of GroundTelescope objects, defaults to None
     :type groundTelescopes: list
-    :param groundStations: Array of GroundStation objects
-    objects, defaults to None
+    :param groundStations: Array of GroundStation objects, defaults to None
     :type groundStations: list
     :param sourceRa: Right ascension of target source in degrees, defaults to None
     :type sourceRa: float
@@ -38,10 +35,10 @@ def ObsLimits(spaceTelescopes, groundTelescopes, groundStations, sourceRa, \
     :type rSun: numpy.ndarray
     :param rMoon: Moon position vector in ECI frame in metres, defaults to None
     :type rMoon: numpy.ndarray
-    :return spaceTelescopes: Array of SpaceTelescope objects
-    :rtype spaceTelescopes: list
-    :return groundTelescopes: Array of GroundTelescope objects
-    :rtype groundTelescopes: list
+    :return: Array of SpaceTelescope objects
+    :rtype: list
+    :return: Array of GroundTelescope objects
+    :rtype: list
     """
     
     # Iterate through space telescopes and calculate functional constraints
@@ -230,9 +227,9 @@ def SourceVisibility(ra, dec, position):
     :type dec: float
     :param position: Spacecraft ECI position vector in metres, defaults to None
     :type position: numpy.ndarray
-    :return visibility: Flag indicating whether source is in view of spacecraft.
+    :return: Flag indicating whether source is in view of spacecraft.
         In View == 1, Obstructed == 0.
-    :rtype visibility: bool
+    :rtype: bool
     """
     
     R_Earth = const.R_earth
@@ -255,8 +252,8 @@ def SourceVisibility(ra, dec, position):
 ###############################################################################
 
 def Elevation(position, ra, dec):
-    """Calculate elevation of target source from horizon at a ground telescope
-    location in topocentric frame.
+    """Calculate elevation of a target source from the horizon at a ground 
+    telescope location in the topocentric frame.
 
     :param position: GroundTelescope ECI position vector in metres, defaults to 
         None
@@ -265,8 +262,8 @@ def Elevation(position, ra, dec):
     :param dec: Declination of target source in degrees, defaults to None
     :type dec: float
     :type position: numpy.ndarray
-    :return: el: Elevation of target source from horizon in degrees
-    :rtype el: float
+    :return: Elevation of target source from horizon in degrees
+    :rtype float
     """
     
     # Calculate source vector in ECI
@@ -289,15 +286,16 @@ def Elevation(position, ra, dec):
 ###############################################################################
 
 def ObsMask(telescope1, telescope2):
-    """Calculate mask on observations caused by functional constraints.
+    """For two specific antenna, calculate whether an observation can be
+    performed at the current time step.
 
     :param telescope1: SpaceTelescope or GroundTelescope object, defaults to None
     :type telescope1: SpaceTelescope or GroundTelescope
     :param telescope2: SpaceTelescope or GroundTelescope object, defaults to None
     :type telescope2: SpaceTelescope or GroundTelescope
-    :return obsFlag: Flag indicating whether observation can be performed by 
+    :return: Flag indicating whether observation can be performed by 
         these two antenna at the current time step
-    :rtype obsFlag: bool
+    :rtype: bool
     """
     
     # Check telescope1 functional constraint flags

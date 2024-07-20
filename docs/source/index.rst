@@ -18,7 +18,7 @@ applications, it can also be used more generally for modelling other types of
 astronomy mission and assessing the impact of the spacecraft design on the 
 science return.
 
-Check out the :doc:`Guide` section for further information.
+See the :doc:`Guide` section for further information.
 
 .. note::
 

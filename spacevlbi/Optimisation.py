@@ -13,8 +13,8 @@ from numpy.linalg import norm
 from numpy import arctan, dot, degrees, arccos
 from astropy import constants as const
 
-def Optimisation(spaceTelescopes, telescopeSelect, sunExcl, earthExcl, \
-                 moonExcl, direction="greaterthan"):
+def Optimisation(spaceTelescopes, sunExcl, earthExcl, \
+                 moonExcl, telescopeSelect=0, direction="greaterthan"):
     """Iterate through the entire attitude sphere and determine the positions
     at which the defined Sun, Earth and Moon exclusion angles are violated the
     least during the simulation. This function can be used to find the optimal 
@@ -25,28 +25,31 @@ def Optimisation(spaceTelescopes, telescopeSelect, sunExcl, earthExcl, \
 
     :param spaceTelescopes: Array of SpaceTelescope objects, defaults to None
     :type spaceTelescopes: list
-    :param telescopeSelect: Index of spaceTelescope array to optimise, defaults to None
+    :param telescopeSelect: Index of spaceTelescope array to optimise, defaults to 0
     :type telescopeSelect: int
-    :param sunExcl: Minimum angle between the unit's normal vector and the 
-        Sun's limb for an observation to take place in degrees, defaults to None
+    :param sunExcl: Sun exclusion angle in degrees. The direction parameter
+        controls whether the Sun angle must be less than or greater than this
+        value in order to perform an observation, defaults to None
     :type sunExcl: float
-    :param earthExcl:  Minimum angle between the unit's normal vector and the 
-        Earth's limb for an observation to take place in degrees, defaults to None
+    :param earthExcl: Earth exclusion anglle in degrees. The direction parameter
+        controls whether the Earth angle must be less than or greater than this
+        value in order to perform an observation, defaults to None
     :type earthExcl: float
-    :param moonExcl:  Minimum angle between the unit's normal vector and the 
-        Moon's limb for an observation to take place in degrees, defaults to None
+    :param moonExcl:  Moon exclusion angle in degrees. The direction parameter
+        controls whether the Moon angle must be less than or greater than this
+        value in order to perform an observation, defaults to None
     :type moonExcl: float
-    :param direction:  "lessthan" or "greaterthan" Whether the angle between 
+    :param direction:  "lessthan" or "greaterthan". Whether the angle between 
         the unit normal vector and the celestial body should be greater than 
         or less than the earthExcl, sunExcl or moonExcl in order for an 
         observation to take place. E.g. for a star tracker, direction is set 
-        to lessthan and the sunExcl parameter is set to the exclusion angle of 
-        the star tracker unit, defaults to greaterthan
+        to "lessthan" and the sunExcl parameter is set to the exclusion angle of 
+        the star tracker unit, defaults to "greaterthan"
     :type direction: str
-    :return optList: List of unit vectors in the spacecraft body-fixed frame 
+    :return: List of unit vectors in the spacecraft body-fixed frame 
         and the associated number of time steps for which the Sun, Earth and/or
         Moon exclusion angles were violated. I.e. Smaller number is more optimal.
-    :rtype optList: list
+    :rtype: list
     """
     
     # Extract space telescope and simulation length

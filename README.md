@@ -20,7 +20,7 @@ Documentation
 -------------
 More detailed documentation for the package is available [here](https://spacevlbi.readthedocs.io/en/latest/).
 
-Provided in the Examples folder is the script [ExampleSetup.py](Examples/ExampleSetup.py). This script shows how the package can be used to model a VLBI array with a single space element. This example is based upon the preliminary concept for the [Black Hole Explorer (BHEX)](https://www.blackholeexplorer.org/) mission. The script [ExampleSpaceTelescope.py](Examples/ExampleSpaceTelescope.py) shows how an object of the SpaceTelescope class can be defined.
+Provided in the Examples folder is the script ExampleSetup.py. This script shows how the package can be used to model a VLBI array with a single space element. This example is based upon the preliminary concept for the [Black Hole Explorer (BHEX)](https://www.blackholeexplorer.org/) mission. The script ExampleSpaceTelescope.py shows how an object of the SpaceTelescope class can be defined.
 
 License
 -------

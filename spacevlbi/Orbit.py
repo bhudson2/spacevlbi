@@ -20,7 +20,7 @@ from poliastro.core.perturbations import J2_perturbation, J3_perturbation
 
 def OrbitPropagation(spaceTelescopes, time, duration, rSun, rMoon):
     """Propagate space telescopes' orbits using poliastro Orbit functionality.
-    Propagation currently includes following perturbations: Earth J2, J3
+    Propagation currently includes following perturbations: Earth J2 and J3
     harmonics. Additional perturbing forces can be added by editing the Force
     function.
 
@@ -34,8 +34,8 @@ def OrbitPropagation(spaceTelescopes, time, duration, rSun, rMoon):
     :type rSun: float
     :param rMoon: Moon position vector in ECI frame in metres, defaults to None
     :type rMoon: float
-    :return spaceTelescopes: Array of spaceTelescope objects
-    :rtype spaceTelescopes: list
+    :return: Array of spaceTelescope objects
+    :rtype: list
     """
 
     # Iterate through spaceTelescopes
@@ -78,8 +78,8 @@ def Force(t0, u_, k):
     :type u_: numpy.ndarray
     :param k: Gravitational parameter of central body, defaults to None
     :type k: float
-    :return accel: Acceleration vector imparted by perturbations in m/s^2
-    :rtype accel: float
+    :return: Acceleration vector imparted by perturbations in m/s^2
+    :rtype: numpy.ndarray
     """
 
     du_kep = func_twobody(t0, u_, k)
@@ -111,10 +111,10 @@ def SatGroundAccess(spaceTelescopes, groundStations, time):
     :type groundStations: list
     :param time: Current simulation time, defaults to None
     :type time: str
-    :return spaceTelescopes: Array of SpaceTelescope objects
-    :rtype spaceTelescopes: list
-    :return groundStations: Array of GroundStation objects
-    :rtype groundStations: list
+    :return: Array of SpaceTelescope objects
+    :rtype: list
+    :return: Array of GroundStation objects
+    :rtype: list
     """
            
     # Iterate through ground stations, transform coordinates to ECI and 
