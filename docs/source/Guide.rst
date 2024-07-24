@@ -294,7 +294,7 @@ parameter is measured from the plane in which lies the celestial north pole
 direction and the target source direction. If viewing along the antenna 
 boresight, the roll angle is measured in a positive direction.
 
-.. image:: docs/source/RollAngle.png
+.. image:: RollAngle.png
     :height: 100px
 
 Future iterations of the tool may include other attitude control modes to 
