@@ -294,7 +294,7 @@ parameter is measured from the plane in which lies the celestial north pole
 direction and the target source direction. If viewing along the antenna 
 boresight, the roll angle is measured in a positive direction.
 
->> image:: RollAngle.png
+.. image:: RollAngle.png
     :height 100px
 
 Future iterations of the tool may include other attitude control modes to 
@@ -352,12 +352,6 @@ number of time steps within the simulation for which the functional constraint
 impacts observations). Some examples of how the ``Optimisation()`` function 
 can be used include:
 
-    * Star tracker position - User specifies minimum Sun / Earth / Moon exclusion 
-        angles for star tracker to provide useful attitude estimation and sets 
-        the ``direction`` parameter to "greaterthan"
-    * Radiator position - User specifies minimum Sun / Earth / Moon exclusion 
-        angles for radiator to provide required thermal emission and sets 
-        the ``direction`` parameter to "greaterthan"
-    * Communications system position - User specifies minimum Earth angle for 
-        comms system to achieve a link with the ground and sets the 
-        ``direction`` parameter to "lessthan".
+    * Star tracker position - User specifies minimum Sun / Earth / Moon exclusion angles for star tracker to provide useful attitude estimation and sets the ``direction`` parameter to "greaterthan"
+    * Radiator position - User specifies minimum Sun / Earth / Moon exclusion angles for radiator to provide required thermal emission and sets the ``direction`` parameter to "greaterthan"
+    * Communications system position - User specifies minimum Earth angle for comms system to achieve a link with the ground and sets the ``direction`` parameter to "lessthan".
