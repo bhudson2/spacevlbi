@@ -295,7 +295,7 @@ direction and the target source direction. If viewing along the antenna
 boresight, the roll angle is measured in a positive direction.
 
 .. image:: docs/source/RollAngle.png
-    :height 100px
+    :height: 100px
 
 Future iterations of the tool may include other attitude control modes to 
 model a wider range of spacecraft operations (e.g. Nadir pointing, Sun 
