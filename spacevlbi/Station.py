@@ -60,12 +60,12 @@ class SpaceTelescope:
             defaults to None
         :type constraintVector: numpy.ndarray
         :param rollAngle: Roll angle of space telescope in degrees about the 
-            pointingVector. Measured from the body-fixed axis pointed closest to 
-            the celestial north pole. Clockwise direction is positive when viewing
-            along the pointingVector direction. Roll angle control is achieved
-            by defining a list of the following format: [transition 1 time in sec, 
-            Roll angle 1 in degrees, transition 2 time in sec, roll angle 2, etc.],
-            defaults to None
+            pointingVector. Measured from the plane containing the celestial 
+            north pole and the target source direction. Clockwise direction is 
+            positive when viewing along the pointingVector direction. Roll 
+            angle control is achieved by defining a list of the following 
+            format: [transition 1 time in sec, Roll angle 1 in degrees, 
+            transition 2 time in sec, roll angle 2, etc.], defaults to None
         :type rollAngle: list
         :param radioPayloads: Array of RadioPayload objects, defaults to None
         :type radioPayloads: list
@@ -89,7 +89,7 @@ class SpaceTelescope:
         :param commsModel: Flag indicating whether CommsSystems should be
             modelled, defaults to None
         :type commsModel: bool
-        :param panelModel: Flag indicating whether SOlarPanels should be
+        :param panelModel: Flag indicating whether SolarPanels should be
             modelled, defaults to None
         :type panelModel: bool
         :return: SpaceTelescope object

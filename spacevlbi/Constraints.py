@@ -42,173 +42,175 @@ def ObsLimits(spaceTelescopes, groundTelescopes, groundStations, sourceRa, \
     """
     
     # Iterate through space telescopes and calculate functional constraints
-    for j in range(len(spaceTelescopes)):
-        position = spaceTelescopes[j].eciPosition[-1,:] << u.m
-        # Is the target source in view of the spacecraft?
-        vis = SourceVisibility(sourceRa, sourceDec, position)
-        spaceTelescopes[j].sourceVisibility = vstack((spaceTelescopes[j].sourceVisibility, \
-                            vis))
+    if spaceTelescopes:
+        for j in range(len(spaceTelescopes)):
+            position = spaceTelescopes[j].eciPosition[-1,:] << u.m
+            # Is the target source in view of the spacecraft?
+            vis = SourceVisibility(sourceRa, sourceDec, position)
+            spaceTelescopes[j].sourceVisibility = vstack((spaceTelescopes[j].sourceVisibility, \
+                                vis))
+                
+            # Calculate angle of Earth limb from spacecraft position vector
+            earthLimb = arctan(const.R_earth / norm(position))
+            spaceTelescopes[j].earthLimbAngle = vstack((spaceTelescopes[j].earthLimbAngle, \
+                                earthLimb))
+                
+            # Calculate angle of Sun limb from spacecraft position vector
+            satSun = rSun - position
+            sunLimb = arctan(const.R_sun / norm(satSun))
+            spaceTelescopes[j].sunLimbAngle = vstack((spaceTelescopes[j].sunLimbAngle, \
+                                sunLimb))
+                
+            # Calculate angle of Moon limb from spacecraft position vector
+            moonRad = 1737.4e3 << u.m
+            satMoon = rMoon - position
+            moonLimb = arctan(moonRad / norm(satMoon))
+            spaceTelescopes[j].moonLimbAngle = vstack((spaceTelescopes[j].moonLimbAngle, \
+                                moonLimb))
+                
+            # Update Sun and Moon vectors in SpaceTelescope
+            spaceTelescopes[j].rSun = vstack((spaceTelescopes[j].rSun, satSun))
+            spaceTelescopes[j].rMoon = vstack((spaceTelescopes[j].rMoon, satMoon))
             
-        # Calculate angle of Earth limb from spacecraft position vector
-        earthLimb = arctan(const.R_earth / norm(position))
-        spaceTelescopes[j].earthLimbAngle = vstack((spaceTelescopes[j].earthLimbAngle, \
-                            earthLimb))
+            sunInertial = spaceTelescopes[j].sunInertial[-1,:]
+            moonInertial = spaceTelescopes[j].moonInertial[-1,:]
+            earthInertial = (-spaceTelescopes[j].eciPosition[-1,:]/ \
+                                norm(spaceTelescopes[j].eciPosition[-1,:]))
+                
+            # Is the antenna pointing within Sun, Moon or Earth exclusion zones?
+            radioPayloads = spaceTelescopes[j].radioPayloads
+            if radioPayloads != []:
+                for k in range(len(radioPayloads)):
+                    antennaInertial = radioPayloads[k].antennaInertial[-1,:]
+                
+                    sunAngle = abs(arccos(dot(antennaInertial, sunInertial)/ \
+                        (norm(antennaInertial)*norm(sunInertial)))) - sunLimb
+                    moonAngle = abs(arccos(dot(antennaInertial, moonInertial)/ \
+                        (norm(antennaInertial)*norm(moonInertial)))) - moonLimb
+                    earthAngle = abs(arccos(dot(antennaInertial, earthInertial)/ \
+                        (norm(antennaInertial)*norm(earthInertial))))-earthLimb
             
-        # Calculate angle of Sun limb from spacecraft position vector
-        satSun = rSun - position
-        sunLimb = arctan(const.R_sun / norm(satSun))
-        spaceTelescopes[j].sunLimbAngle = vstack((spaceTelescopes[j].sunLimbAngle, \
-                            sunLimb))
-            
-        # Calculate angle of Moon limb from spacecraft position vector
-        moonRad = 1737.4e3 << u.m
-        satMoon = rMoon - position
-        moonLimb = arctan(moonRad / norm(satMoon))
-        spaceTelescopes[j].moonLimbAngle = vstack((spaceTelescopes[j].moonLimbAngle, \
-                            moonLimb))
-            
-        # Update Sun and Moon vectors in SpaceTelescope
-        spaceTelescopes[j].rSun = vstack((spaceTelescopes[j].rSun, satSun))
-        spaceTelescopes[j].rMoon = vstack((spaceTelescopes[j].rMoon, satMoon))
-        
-        sunInertial = spaceTelescopes[j].sunInertial[-1,:]
-        moonInertial = spaceTelescopes[j].moonInertial[-1,:]
-        earthInertial = (-spaceTelescopes[j].eciPosition[-1,:]/ \
-                            norm(spaceTelescopes[j].eciPosition[-1,:]))
-            
-        # Is the antenna pointing within Sun, Moon or Earth exclusion zones?
-        radioPayloads = spaceTelescopes[j].radioPayloads
-        if radioPayloads != []:
-            for k in range(len(radioPayloads)):
-                antennaInertial = radioPayloads[k].antennaInertial[-1,:]
-            
-                sunAngle = abs(arccos(dot(antennaInertial, sunInertial)/ \
-                    (norm(antennaInertial)*norm(sunInertial)))) - sunLimb
-                moonAngle = abs(arccos(dot(antennaInertial, moonInertial)/ \
-                    (norm(antennaInertial)*norm(moonInertial)))) - moonLimb
-                earthAngle = abs(arccos(dot(antennaInertial, earthInertial)/ \
-                    (norm(antennaInertial)*norm(earthInertial))))-earthLimb
-        
-                if degrees(sunAngle.value) < radioPayloads[k].antSunExcl:
-                    radioPayloads[k].sunFlag = vstack((radioPayloads[k].sunFlag,0))
+                    if degrees(sunAngle.value) < radioPayloads[k].antSunExcl:
+                        radioPayloads[k].sunFlag = vstack((radioPayloads[k].sunFlag,0))
+                    else:
+                        radioPayloads[k].sunFlag = vstack((radioPayloads[k].sunFlag,1))
+                    if degrees(moonAngle.value) < radioPayloads[j].antMoonExcl:
+                        radioPayloads[k].moonFlag = vstack((radioPayloads[k].moonFlag,0))
+                    else:
+                        radioPayloads[k].moonFlag= vstack((radioPayloads[k].moonFlag,1))
+                    if degrees(earthAngle.value) < radioPayloads[j].antEarthExcl:
+                        radioPayloads[k].earthFlag = vstack((radioPayloads[k].earthFlag,0))
+                    else:
+                        radioPayloads[k].earthFlag = vstack((radioPayloads[k].earthFlag,1))
                 else:
                     radioPayloads[k].sunFlag = vstack((radioPayloads[k].sunFlag,1))
-                if degrees(moonAngle.value) < radioPayloads[j].antMoonExcl:
-                    radioPayloads[k].moonFlag = vstack((radioPayloads[k].moonFlag,0))
-                else:
-                    radioPayloads[k].moonFlag= vstack((radioPayloads[k].moonFlag,1))
-                if degrees(earthAngle.value) < radioPayloads[j].antEarthExcl:
-                    radioPayloads[k].earthFlag = vstack((radioPayloads[k].earthFlag,0))
-                else:
+                    radioPayloads[k].moonFlag = vstack((radioPayloads[k].moonFlag,1))
                     radioPayloads[k].earthFlag = vstack((radioPayloads[k].earthFlag,1))
-            else:
-                radioPayloads[k].sunFlag = vstack((radioPayloads[k].sunFlag,1))
-                radioPayloads[k].moonFlag = vstack((radioPayloads[k].moonFlag,1))
-                radioPayloads[k].earthFlag = vstack((radioPayloads[k].earthFlag,1))
-            spaceTelescopes[j].radioPayloads = radioPayloads
-
-        # Are the star trackers pointing within Sun, Moon or Earth exclusion
-        # angles?
-        starTrackers = spaceTelescopes[j].starTrackers
-        if starTrackers != [] and spaceTelescopes[j].strModel == 1:
-            for k in range(len(starTrackers)):
-                strInertial = starTrackers[k].strInertial[-1,:]
-                strSunAngle = abs(arccos(dot(strInertial, sunInertial)/ \
-                    (norm(strInertial)*norm(sunInertial))))
-                strMoonAngle = abs(arccos(dot(strInertial, moonInertial)/ \
-                    (norm(strInertial)*norm(moonInertial))))
-                strEarthAngle = abs(arccos(dot(strInertial, earthInertial)/ \
-                    (norm(strInertial)*norm(earthInertial)))) - earthLimb;
-                if (degrees(strSunAngle).value<starTrackers[k].strSunExcl) or \
-                        (degrees(strMoonAngle).value<starTrackers[k].strMoonExcl) or \
-                        (degrees(strEarthAngle.value)<starTrackers[k].strEarthExcl):
-                   starTrackers[k].strBlindFlag = vstack((starTrackers[k].strBlindFlag,0))
-                else:
-                   starTrackers[k].strBlindFlag = vstack((starTrackers[k].strBlindFlag,1))
-            starTrackers[j].starTrackers = starTrackers
-                
-        # Are the radiators pointing within Sun, Moon or Earth exclusion angles?
-        radiators = spaceTelescopes[j].radiators
-        if radiators != [] and spaceTelescopes[j].radModel == 1:
-            for k in range(len(radiators)):   
-                radInertial = radiators[k].radInertial[-1,:]
-                radSunAngle = abs(arccos(dot(radInertial, sunInertial)/ \
-                    (norm(radInertial)*norm(sunInertial))));
-                radMoonAngle = abs(arccos(dot(radInertial, moonInertial)/ \
-                    (norm(radInertial)*norm(moonInertial))));
-                radEarthAngle = abs(arccos(dot(radInertial, earthInertial)/ \
-                    (norm(radInertial)*norm(earthInertial)))) - earthLimb;
-                if (degrees(radSunAngle.value)<radiators[k].radSunExcl) or \
-                        (degrees(radMoonAngle.value)<radiators[k].radMoonExcl) or \
-                        (degrees(radEarthAngle.value)<radiators[k].radEarthExcl):
-                   radiators[k].radBlindFlag = vstack((radiators[k].radBlindFlag,0))
-                else:
-                   radiators[k].radBlindFlag = vstack((radiators[j].radBlindFlag,1))
-            spaceTelescopes[j].radiators = radiators
-
-        # Are there any ground station limitations on observations?
-        commsSystems = spaceTelescopes[j].commsSystems
-        if commsSystems != [] and spaceTelescopes[j].commsModel == 1:
-            for k in range(len(commsSystems)):
-                # Is live downlink of the data being performed?
-                if commsSystems[k].groundReqObs == 1:
-                    # Initialise angle parameters
-                    angle = np.zeros((1, len(groundStations)))
-                    insight = np.zeros((1, len(groundStations)))
-                    # Iterate through ground stations
-                    for l in range(len(groundStations)):
-                        # Calculate elevation of ground station to spacecraft
-                        groundECI = groundStations[l].eciPosition[-1,:]
-                        el = groundStations[l].satElev[-1,j]
-                        minEl = groundStations[l].minEl
-                        
-                        # Caculate angle between spacecraft comms system normal
-                        # vector and the ground station
-                        commsInertial = commsSystems[k].commsInertial[-1,:]
-                        spaceGround = groundECI - position
-                        spaceGround = spaceGround / norm(spaceGround)
-                        commsGroundAngle = degrees(abs(arccos(dot(commsInertial, \
-                                    spaceGround)/ (norm(commsInertial)* \
-                                    norm(spaceGround))))).value
-                        commsFov = commsSystems[k].commsFov
-                        angle[0,l] = commsGroundAngle
+                spaceTelescopes[j].radioPayloads = radioPayloads
     
-                        # Sspacecraft must be above minEl and the comms terminal 
-                        # beamwidth / gimbal limit must be pointed within commFOV
-                        # of the ground station for a link to be maintained
-                        if (el < 90 and el > minEl) and commsGroundAngle <= commsFov:
-                            insight[0,l] = 1;
-                        else:
-                            insight[0,l] = 0;
-                            
-                    if len(commsSystems[k].commsGroundAngle) == 1:
-                        commsSystems[k].commsGroundAngle = \
-                            np.append(commsSystems[k].commsGroundAngle, \
-                                    np.zeros((1,len(groundStations)-1)))
-                    if len(commsSystems[k].groundStationInsight) == 1:
-                        commsSystems[k].groundStationInsight = \
-                            np.append(commsSystems[k].groundStationInsight, \
-                                    np.zeros((1,len(groundStations)-1)))
+            # Are the star trackers pointing within Sun, Moon or Earth exclusion
+            # angles?
+            starTrackers = spaceTelescopes[j].starTrackers
+            if starTrackers != [] and spaceTelescopes[j].strModel == 1:
+                for k in range(len(starTrackers)):
+                    strInertial = starTrackers[k].strInertial[-1,:]
+                    strSunAngle = abs(arccos(dot(strInertial, sunInertial)/ \
+                        (norm(strInertial)*norm(sunInertial))))
+                    strMoonAngle = abs(arccos(dot(strInertial, moonInertial)/ \
+                        (norm(strInertial)*norm(moonInertial))))
+                    strEarthAngle = abs(arccos(dot(strInertial, earthInertial)/ \
+                        (norm(strInertial)*norm(earthInertial)))) - earthLimb;
+                    if (degrees(strSunAngle).value<starTrackers[k].strSunExcl) or \
+                            (degrees(strMoonAngle).value<starTrackers[k].strMoonExcl) or \
+                            (degrees(strEarthAngle.value)<starTrackers[k].strEarthExcl):
+                       starTrackers[k].strBlindFlag = vstack((starTrackers[k].strBlindFlag,0))
+                    else:
+                       starTrackers[k].strBlindFlag = vstack((starTrackers[k].strBlindFlag,1))
+                starTrackers[j].starTrackers = starTrackers
                     
-                    commsSystems[k].commsGroundAngle = \
-                        vstack((commsSystems[k].commsGroundAngle, angle))
-                    commsSystems[k].groundStationInsight = \
-                        vstack((commsSystems[k].groundStationInsight, insight))
-            spaceTelescopes[j].commsSystems = commsSystems
+            # Are the radiators pointing within Sun, Moon or Earth exclusion angles?
+            radiators = spaceTelescopes[j].radiators
+            if radiators != [] and spaceTelescopes[j].radModel == 1:
+                for k in range(len(radiators)):   
+                    radInertial = radiators[k].radInertial[-1,:]
+                    radSunAngle = abs(arccos(dot(radInertial, sunInertial)/ \
+                        (norm(radInertial)*norm(sunInertial))));
+                    radMoonAngle = abs(arccos(dot(radInertial, moonInertial)/ \
+                        (norm(radInertial)*norm(moonInertial))));
+                    radEarthAngle = abs(arccos(dot(radInertial, earthInertial)/ \
+                        (norm(radInertial)*norm(earthInertial)))) - earthLimb;
+                    if (degrees(radSunAngle.value)<radiators[k].radSunExcl) or \
+                            (degrees(radMoonAngle.value)<radiators[k].radMoonExcl) or \
+                            (degrees(radEarthAngle.value)<radiators[k].radEarthExcl):
+                       radiators[k].radBlindFlag = vstack((radiators[k].radBlindFlag,0))
+                    else:
+                       radiators[k].radBlindFlag = vstack((radiators[j].radBlindFlag,1))
+                spaceTelescopes[j].radiators = radiators
     
-    for j in range(len(groundTelescopes)):
-        # Is the elevation between the ground station and target source
-        # within limits?
-        position = groundTelescopes[j].eciPosition[-1,:]
-        el = Elevation(position, sourceRa, sourceDec);
-        groundTelescopes[j].elevation = vstack((groundTelescopes[j].elevation,el));
-        minEl = groundTelescopes[j].minEl
-        if el < 90 and el > minEl:
-            groundTelescopes[j].elevationFlag = vstack((groundTelescopes[j].\
-                                                        elevationFlag,1));
-        else:
-            groundTelescopes[j].elevationFlag = vstack((groundTelescopes[j].\
-                                                        elevationFlag,0));
+            # Are there any ground station limitations on observations?
+            commsSystems = spaceTelescopes[j].commsSystems
+            if commsSystems != [] and spaceTelescopes[j].commsModel == 1:
+                for k in range(len(commsSystems)):
+                    # Is live downlink of the data being performed?
+                    if commsSystems[k].groundReqObs == 1:
+                        # Initialise angle parameters
+                        angle = np.zeros((1, len(groundStations)))
+                        insight = np.zeros((1, len(groundStations)))
+                        # Iterate through ground stations
+                        for l in range(len(groundStations)):
+                            # Calculate elevation of ground station to spacecraft
+                            groundECI = groundStations[l].eciPosition[-1,:]
+                            el = groundStations[l].satElev[-1,j]
+                            minEl = groundStations[l].minEl
+                            
+                            # Caculate angle between spacecraft comms system normal
+                            # vector and the ground station
+                            commsInertial = commsSystems[k].commsInertial[-1,:]
+                            spaceGround = groundECI - position
+                            spaceGround = spaceGround / norm(spaceGround)
+                            commsGroundAngle = degrees(abs(arccos(dot(commsInertial, \
+                                        spaceGround)/ (norm(commsInertial)* \
+                                        norm(spaceGround))))).value
+                            commsFov = commsSystems[k].commsFov
+                            angle[0,l] = commsGroundAngle
+        
+                            # Sspacecraft must be above minEl and the comms terminal 
+                            # beamwidth / gimbal limit must be pointed within commFOV
+                            # of the ground station for a link to be maintained
+                            if (el < 90 and el > minEl) and commsGroundAngle <= commsFov:
+                                insight[0,l] = 1;
+                            else:
+                                insight[0,l] = 0;
+                                
+                        if len(commsSystems[k].commsGroundAngle) == 1:
+                            commsSystems[k].commsGroundAngle = \
+                                np.append(commsSystems[k].commsGroundAngle, \
+                                        np.zeros((1,len(groundStations)-1)))
+                        if len(commsSystems[k].groundStationInsight) == 1:
+                            commsSystems[k].groundStationInsight = \
+                                np.append(commsSystems[k].groundStationInsight, \
+                                        np.zeros((1,len(groundStations)-1)))
+                        
+                        commsSystems[k].commsGroundAngle = \
+                            vstack((commsSystems[k].commsGroundAngle, angle))
+                        commsSystems[k].groundStationInsight = \
+                            vstack((commsSystems[k].groundStationInsight, insight))
+                spaceTelescopes[j].commsSystems = commsSystems
+    
+    if groundTelescopes:
+        for j in range(len(groundTelescopes)):
+            # Is the elevation between the ground station and target source
+            # within limits?
+            position = groundTelescopes[j].eciPosition[-1,:]
+            el = Elevation(position, sourceRa, sourceDec);
+            groundTelescopes[j].elevation = vstack((groundTelescopes[j].elevation,el));
+            minEl = groundTelescopes[j].minEl
+            if el < 90 and el > minEl:
+                groundTelescopes[j].elevationFlag = vstack((groundTelescopes[j].\
+                                                            elevationFlag,1));
+            else:
+                groundTelescopes[j].elevationFlag = vstack((groundTelescopes[j].\
+                                                            elevationFlag,0));
 
     return spaceTelescopes, groundTelescopes
 

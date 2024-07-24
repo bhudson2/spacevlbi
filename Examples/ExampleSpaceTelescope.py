@@ -54,16 +54,15 @@ def BaselineBHEX(initTime):
     # This axis will be pointed in a relative East direction, when viewing
     # along the pointing vector. Please see diagram in Documentation for
     # clarity
-    constraintVector = np.array([0,-1,0])
+    constraintVector = np.array([0,1,0])
     # Roll angle of space telescope in degrees about the pointingVector. 
     # Measured from the body-fixed axis pointed closest to the celestial north
     # pole. Clockwise direction is positive when viewing along the 
     # pointingVector direction. Please see diagram in Documentation for clarity.
     # rollAngle format: [time of transition 1 in sec, roll angle 1 in degrees,
     # etc.]
-    rollAngle = [0, 0, 86400/4, 180, 86400/2, 0]
-    rollAngle = [0,0]
-
+    rollAngle = [0, 0, 86400/4, 45, 86400/2, 90]
+    
 ###############################################################################
 #   Payload configuration
 ###############################################################################

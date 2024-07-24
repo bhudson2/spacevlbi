@@ -62,7 +62,7 @@ def TimeLoop(initTime, simLength, timeStep, spaceTelescopes, groundTelescopes,\
     
     # Create time series for simulation
     simTime = TimeSeries(time_start=initTime, time_delta=timeStep * u.s,\
-                         n_samples=round(simLength/timeStep))
+                         n_samples=np.floor(simLength/timeStep))
     
     # Initialise parameters for modelling integration time and duty cycle
     lastObservation = 0;
@@ -74,17 +74,18 @@ def TimeLoop(initTime, simLength, timeStep, spaceTelescopes, groundTelescopes,\
         print(str(i+1) + " / " + str(int((np.floor(simLength/timeStep)))))
         
         # Calculate ground telescope positions in ECI
-        for j in range(len(groundTelescopes)):
-            posECEF = groundTelescopes[j].ecefPosition 
-            # Transform ECEF TO ECI
-            ecef = SkyCoord(x=posECEF[0,0],y=posECEF[0,1],z=posECEF[0,2],\
-                            unit='m',frame='itrs',representation_type=\
-                            'cartesian', obstime = simTime.time[i])
-            eci = (ecef.transform_to(GCRS)).cartesian
-            # Update GroundTelescope objects
-            groundTelescopes[j].eciPosition = np.vstack((groundTelescopes[j]. \
-                            eciPosition, np.array([eci.x.value, eci.y.value, \
-                            eci.z.value]) << u.m))
+        if groundTelescopes:
+            for j in range(len(groundTelescopes)):
+                posECEF = groundTelescopes[j].ecefPosition 
+                # Transform ECEF TO ECI
+                ecef = SkyCoord(x=posECEF[0,0],y=posECEF[0,1],z=posECEF[0,2],\
+                                unit='m',frame='itrs',representation_type=\
+                                'cartesian', obstime = simTime.time[i])
+                eci = (ecef.transform_to(GCRS)).cartesian
+                # Update GroundTelescope objects
+                groundTelescopes[j].eciPosition = np.vstack((groundTelescopes[j]. \
+                                eciPosition, np.array([eci.x.value, eci.y.value, \
+                                eci.z.value]) << u.m))
                 
         # Calculate Sun and Moon positions using SPICE kernels
         sun = get_body('sun', simTime.time[i], ephemeris='de432s')

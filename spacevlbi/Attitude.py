@@ -37,108 +37,111 @@ def AttitudePropagation(spaceTelescopes, rSun, rMoon, sourceRa, sourceDec, i,
     """
     
     # Iterate through space telescopes
-    for j in range(len(spaceTelescopes)):
-        # Calculate unit vector of source in spacecraft inertial frame
-        sourceECI = np.array([cos(radians(sourceDec))*cos(radians(sourceRa)), \
-                              cos(radians(sourceDec))*sin(radians(sourceRa)), \
-                              sin(radians(sourceDec))])
-        earthSourceECI = (sourceECI / norm(sourceECI)) * const.kpc
-        # Extract spacecraft position vector
-        rECI = spaceTelescopes[j].eciPosition[-1,:] << u.m
-        rSource = (earthSourceECI - rECI)/np.linalg.norm(earthSourceECI - rECI)
-        # Update space telescope object
-        spaceTelescopes[j].sourceInertial = vstack((spaceTelescopes[j].sourceInertial, \
-                            rSource))
-            
-        # Calculate Sun and Moon vectors with respect to spacecraft
-        rSatSun = (rSun - rECI)/norm(rSun - rECI)
-        rSatMoon = (rMoon - rECI)/norm(rMoon - rECI)
-        spaceTelescopes[j].sunInertial = vstack((spaceTelescopes[j].sunInertial, \
-                            rSatSun))
-        spaceTelescopes[j].moonInertial = vstack((spaceTelescopes[j].moonInertial, \
-                            rSatMoon))
-            
-        # Calculate attitude matrix to point antenna at target
-        b1 = spaceTelescopes[j].pointingVector[0]  # Body pointing axis
-        b2 = spaceTelescopes[j].constraintVector[0]  # Body constraint axis
-        r1 = rSource  # Inertial pointing axis
-        # Inertial constraint axis excluding roll angle
-        r2Temp = cross(r1, b1) / norm(cross(r1, b1))
-        
-        # Include roll angle. Find latest attitude transition
-        rollAngle = spaceTelescopes[j].rollAngle
-        lastAngleFound = 0
-        theta = 0
-        for k in range(1,int(len(rollAngle)/2)):
-            if ((i*timeStep) > rollAngle[k*-2]) and (lastAngleFound == 0):
-                theta = radians(spaceTelescopes[j].rollAngle[k*-2 + 1])
-                lastAngleFound = 1
-        
-        r2 = cos(theta)*r2Temp + sin(theta)*cross(b1, r2Temp) + (1 - cos(theta))* \
-             dot(b1, r2Temp) * b1
-        # Calculate attitude matrix
-        attMat = TRIAD(r1,r2,b1,b2)
-        
-        # Propagate spacecraft attitude, rotate spacecraft component vectors
-        # Rotate antenna
-        radioPayloads = spaceTelescopes[j].radioPayloads
-        if radioPayloads != []:
-            for k in range(len(radioPayloads)):
-                antennaInertial = matmul(inv(attMat), radioPayloads[k].antBoresight.reshape((3,1)))
-                radioPayloads[k].antennaInertial = vstack((radioPayloads[k].antennaInertial, \
-                                antennaInertial.reshape((1,3))))
-            spaceTelescopes[j].radioPayloads = radioPayloads
-        
-        # Rotate star trackers
-        starTrackers = spaceTelescopes[j].starTrackers
-        if starTrackers != [] and spaceTelescopes[j].strModel == 1:
-            for k in range(len(starTrackers)):
-                strInertial = matmul(inv(attMat), starTrackers[k].strBoresight.reshape((3,1)))
-                starTrackers[k].strInertial = vstack((starTrackers[k].strInertial, \
-                                strInertial.reshape((1,3))))
-            spaceTelescopes[j].starTrackers = starTrackers
+    if spaceTelescopes:
+        for j in range(len(spaceTelescopes)):
+            # Calculate unit vector of source in spacecraft inertial frame
+            sourceECI = np.array([cos(radians(sourceDec))*cos(radians(sourceRa)), \
+                                  cos(radians(sourceDec))*sin(radians(sourceRa)), \
+                                  sin(radians(sourceDec))])
+            earthSourceECI = (sourceECI / norm(sourceECI)) * const.kpc
+            # Extract spacecraft position vector
+            rECI = spaceTelescopes[j].eciPosition[-1,:] << u.m
+            rSource = (earthSourceECI - rECI)/np.linalg.norm(earthSourceECI - rECI)
+            # Update space telescope object
+            spaceTelescopes[j].sourceInertial = vstack((spaceTelescopes[j].sourceInertial, \
+                                rSource))
                 
-        # Rotate solar panels and calculate beta angle
-        solarPanels = spaceTelescopes[j].solarPanels
-        if solarPanels != [] and spaceTelescopes[j].panelModel == 1:
-            for k in range(len(solarPanels)):            
-                panelInertial = matmul(inv(attMat), solarPanels[k].panelNorm.reshape((3,1)))
-                solarPanels[k].solarPanelInertial = vstack((solarPanels[k].solarPanelInertial, \
-                                panelInertial.reshape((1,3))))
-                betaAngle = abs(arccos(dot(rSatSun, panelInertial) / (norm(rSatSun) \
-                                * norm(panelInertial))))
-                solarPanels[k].betaAngle = vstack((solarPanels[k].betaAngle,\
-                                degrees(betaAngle)))
-            spaceTelescopes[j].solarPanels = solarPanels
-           
-        # Rotate radiator surface
-        radiators = spaceTelescopes[j].radiators
-        if radiators != [] and spaceTelescopes[j].radModel == 1:
-            for k in range(len(radiators)):      
-                radInertial = matmul(inv(attMat), radiators[k].radNorm.reshape((3,1)))
-                radiators[k].radInertial = vstack((radiators[k].radInertial, \
-                                radInertial.reshape((1,3))))
-            spaceTelescopes[j].radiators = radiators
+            # Calculate Sun and Moon vectors with respect to spacecraft
+            rSatSun = (rSun - rECI)/norm(rSun - rECI)
+            rSatMoon = (rMoon - rECI)/norm(rMoon - rECI)
+            spaceTelescopes[j].sunInertial = vstack((spaceTelescopes[j].sunInertial, \
+                                rSatSun))
+            spaceTelescopes[j].moonInertial = vstack((spaceTelescopes[j].moonInertial, \
+                                rSatMoon))
+                
+            # Calculate attitude matrix to point antenna at target
+            b1 = spaceTelescopes[j].pointingVector[0]  # Body pointing axis
+            b2 = spaceTelescopes[j].constraintVector[0]  # Body constraint axis
+            r1 = rSource  # Inertial pointing axis
+            # Inertial constraint axis excluding roll angle
+            r2Temp = cross(r1, b1) / norm(cross(r1, b1))
+            # Line temporary constraint axis parallel with celestial north
+            r2Temp = cross(-r2Temp, b1) / norm(cross(-r2Temp, b1))
             
-        # Rotate comms terminal
-        commsSystems = spaceTelescopes[j].commsSystems
-        if commsSystems != [] and spaceTelescopes[j].commsModel == 1:
-            for k in range(len(commsSystems)):
-                commsInertial = matmul(inv(attMat), commsSystems[k].commsNorm.reshape((3,1)))
-                commsSystems[k].commsInertial = vstack((commsSystems[k].commsInertial, \
-                                commsInertial.reshape((1,3))))
-            spaceTelescopes[j].commsSystems = commsSystems
-
-        # Rotate inertial vectors into spacecraft body frame
-        sunBody = matmul(attMat, rSatSun.reshape((3,1)))
-        spaceTelescopes[j].sunBody = vstack((spaceTelescopes[j].sunBody, \
-                            sunBody.reshape((1,3))))
-        moonBody = matmul(attMat, rSatMoon.reshape((3,1))) 
-        spaceTelescopes[j].moonBody = vstack((spaceTelescopes[j].moonBody, \
-                            moonBody.reshape((1,3))))
-        earthBody = matmul(attMat, (rECI / norm(rECI)).reshape((3,1)))
-        spaceTelescopes[j].earthBody = vstack((spaceTelescopes[j].earthBody, \
-                            earthBody.reshape((1,3))))
+            # Include roll angle. Find latest attitude transition
+            rollAngle = spaceTelescopes[j].rollAngle
+            lastAngleFound = 0
+            theta = 0
+            for k in range(1,int(len(rollAngle)/2)):
+                if ((i*timeStep) > rollAngle[k*-2]) and (lastAngleFound == 0):
+                    theta = radians(spaceTelescopes[j].rollAngle[k*-2 + 1])
+                    lastAngleFound = 1
+            
+            r2 = cos(theta)*r2Temp + sin(theta)*cross(r1, r2Temp) + (1 - cos(theta))* \
+                 dot(r1, r2Temp) * r1
+            # Calculate attitude matrix
+            attMat = TRIAD(r1,r2,b1,b2)
+            
+            # Propagate spacecraft attitude, rotate spacecraft component vectors
+            # Rotate antenna
+            radioPayloads = spaceTelescopes[j].radioPayloads
+            if radioPayloads != []:
+                for k in range(len(radioPayloads)):
+                    antennaInertial = matmul(inv(attMat), radioPayloads[k].antBoresight.reshape((3,1)))
+                    radioPayloads[k].antennaInertial = vstack((radioPayloads[k].antennaInertial, \
+                                    antennaInertial.reshape((1,3))))
+                spaceTelescopes[j].radioPayloads = radioPayloads
+            
+            # Rotate star trackers
+            starTrackers = spaceTelescopes[j].starTrackers
+            if starTrackers != [] and spaceTelescopes[j].strModel == 1:
+                for k in range(len(starTrackers)):
+                    strInertial = matmul(inv(attMat), starTrackers[k].strBoresight.reshape((3,1)))
+                    starTrackers[k].strInertial = vstack((starTrackers[k].strInertial, \
+                                    strInertial.reshape((1,3))))
+                spaceTelescopes[j].starTrackers = starTrackers
+                    
+            # Rotate solar panels and calculate beta angle
+            solarPanels = spaceTelescopes[j].solarPanels
+            if solarPanels != [] and spaceTelescopes[j].panelModel == 1:
+                for k in range(len(solarPanels)):            
+                    panelInertial = matmul(inv(attMat), solarPanels[k].panelNorm.reshape((3,1)))
+                    solarPanels[k].solarPanelInertial = vstack((solarPanels[k].solarPanelInertial, \
+                                    panelInertial.reshape((1,3))))
+                    betaAngle = abs(arccos(dot(rSatSun, panelInertial) / (norm(rSatSun) \
+                                    * norm(panelInertial))))
+                    solarPanels[k].betaAngle = vstack((solarPanels[k].betaAngle,\
+                                    degrees(betaAngle)))
+                spaceTelescopes[j].solarPanels = solarPanels
+               
+            # Rotate radiator surface
+            radiators = spaceTelescopes[j].radiators
+            if radiators != [] and spaceTelescopes[j].radModel == 1:
+                for k in range(len(radiators)):      
+                    radInertial = matmul(inv(attMat), radiators[k].radNorm.reshape((3,1)))
+                    radiators[k].radInertial = vstack((radiators[k].radInertial, \
+                                    radInertial.reshape((1,3))))
+                spaceTelescopes[j].radiators = radiators
+                
+            # Rotate comms terminal
+            commsSystems = spaceTelescopes[j].commsSystems
+            if commsSystems != [] and spaceTelescopes[j].commsModel == 1:
+                for k in range(len(commsSystems)):
+                    commsInertial = matmul(inv(attMat), commsSystems[k].commsNorm.reshape((3,1)))
+                    commsSystems[k].commsInertial = vstack((commsSystems[k].commsInertial, \
+                                    commsInertial.reshape((1,3))))
+                spaceTelescopes[j].commsSystems = commsSystems
+    
+            # Rotate inertial vectors into spacecraft body frame
+            sunBody = matmul(attMat, rSatSun.reshape((3,1)))
+            spaceTelescopes[j].sunBody = vstack((spaceTelescopes[j].sunBody, \
+                                sunBody.reshape((1,3))))
+            moonBody = matmul(attMat, rSatMoon.reshape((3,1))) 
+            spaceTelescopes[j].moonBody = vstack((spaceTelescopes[j].moonBody, \
+                                moonBody.reshape((1,3))))
+            earthBody = matmul(attMat, (rECI / norm(rECI)).reshape((3,1)))
+            spaceTelescopes[j].earthBody = vstack((spaceTelescopes[j].earthBody, \
+                                earthBody.reshape((1,3))))
         
     return spaceTelescopes
     

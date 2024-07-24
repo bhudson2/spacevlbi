@@ -112,10 +112,10 @@ Figures.UvPlot(spaceTelescopes, groundTelescopes, allsky, 1)
 Figures.AttitudeSphere(spaceTelescopes, 0, 45, 30)
 
 # Plot incidence angle of Sun on solar panels
-Figures.SolarPanelIncidence(spaceTelescopes, 0, simTime)
+Figures.SolarPanelIncidence(spaceTelescopes, simTime, 0)
 
 # Plot elevation of space telescope from ground station
-Figures.GroundStationElevation(spaceTelescopes, 0, groundStations, simTime)
+Figures.GroundStationElevation(spaceTelescopes, groundStations, simTime, 0)
 
 ###############################################################################
 # Optimisation

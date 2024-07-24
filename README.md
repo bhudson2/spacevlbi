@@ -25,3 +25,7 @@ Provided in the Examples folder is the script ExampleSetup.py. This script shows
 License
 -------
 spacevlbi is licensed under GPLv3. See LICENSE.txt for more details.
+
+Citation
+--------
+If you use spacevlbi in your publication, please cite: 
