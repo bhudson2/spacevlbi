@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-"""
-__init__.py
-
-@author: BenHudson - 05/07/2024
-"""
+#
+# __init__.py
+#
+#@author: BenHudson - 05/07/2024
 
 from spacevlbi.Attitude import *
 from spacevlbi.Constraints import *
@@ -12,3 +11,4 @@ from spacevlbi.Observation import *
 from spacevlbi.Orbit import *
 from spacevlbi.Station import *
 from spacevlbi.TimeLoop import *
+from spacevlbi.Optimisation import *

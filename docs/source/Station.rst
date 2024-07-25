@@ -2,19 +2,27 @@
 
 Station
 =======
-.. automodule:: spacevlbi.Station.SpaceTelescope
+.. autoclass:: spacevlbi.Station.SpaceTelescope
     :members:
-.. automodule:: spacevlbi.Station.GroundTelescope
+    .. automethod:: __init__
+.. autoclass:: spacevlbi.Station.GroundTelescope
     :members:
-.. automodule:: spacevlbi.Station.GroundStation
+    .. automethod:: __init__
+.. autoclass:: spacevlbi.Station.GroundStation
     :members:
-.. automodule:: spacevlbi.Station.RadioPayload
+    .. automethod:: __init__
+.. autoclass:: spacevlbi.Station.RadioPayload
     :members:
-.. automodule:: spacevlbi.Station.StarTracker
+    .. automethod:: __init__
+.. autoclass:: spacevlbi.Station.StarTracker
     :members:
-.. automodule:: spacevlbi.Station.Radiator
+    .. automethod:: __init__
+.. autoclass:: spacevlbi.Station.Radiator
     :members:
-.. automodule:: spacevlbi.Station.CommsSystem
+    .. automethod:: __init__
+.. autoclass:: spacevlbi.Station.CommsSystem
     :members:
-.. automodule:: spacevlbi.Station.SolarPanel
+    .. automethod:: __init__
+.. autoclass:: spacevlbi.Station.SolarPanel
     :members:
+    .. automethod:: __init__
