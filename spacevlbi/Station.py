@@ -153,32 +153,30 @@ class SpaceTelescope:
 
 class GroundTelescope:
     """Class to model a ground telescope within the spacevlbi package.
+    
+    :param name: Ground telescope name, defaults to None
+    :type name: str 
+    :param diameter: Antenna diameter in metres, defaults to None
+    :type diameter: float
+    :param apertureEff: Aperture efficiency due to surface design and losses
+        from surface deformations, defaults to None
+    :type apertureEff: float
+    :param sysTemp: System temperature in Kelvin, defaults to None
+    :type sysTemp: float
+    :param ecefPosition: Ground telescope position in Earth Centered, Earth
+        Fixed (ECEF) frame in km, defaults to None
+    :type ecefPosition: numpy.ndarray
+    :param minEl: Minimum elevation at which observation can be performed
+        in degrees, defaults to None
+    :type minEl: float
+    :param initTime: Simulation start time, defaults to None
+    :type initTime: str
+    :return: GroundTelescope object
+    :rtype: GroundTelescope
     """
     
     def __init__(self, name, diameter, apertureEff, sysTemp, \
                ecefPosition, minEl, initTime):
-        """GroundTelescope object initialisation function.
- 
-        :param name: Ground telescope name, defaults to None
-        :type name: str 
-        :param diameter: Antenna diameter in metres, defaults to None
-        :type diameter: float
-        :param apertureEff: Aperture efficiency due to surface design and losses
-            from surface deformations, defaults to None
-        :type apertureEff: float
-        :param sysTemp: System temperature in Kelvin, defaults to None
-        :type sysTemp: float
-        :param ecefPosition: Ground telescope position in Earth Centered, Earth
-            Fixed (ECEF) frame in km, defaults to None
-        :type ecefPosition: numpy.ndarray
-        :param minEl: Minimum elevation at which observation can be performed
-            in degrees, defaults to None
-        :type minEl: float
-        :param initTime: Simulation start time, defaults to None
-        :type initTime: str
-        :return: GroundTelescope object
-        :rtype: GroundTelescope
-        """
 
         self.name = name
         self.diameter = diameter
@@ -208,24 +206,23 @@ class GroundTelescope:
 
 class GroundStation:
     """Class to model a ground station within the spacevlbi package.
+    
+    :param name: Ground telescope name, defaults to None
+    :type name: str 
+    :param ecefPosition: Ground station position in Earth Centered, Earth
+        Fixed (ECEF) frame in km, defaults to None
+    :type ecefPosition: numpy.ndarray
+    :param minEl: Minimum elevation at which link with spacecraft can be 
+        achieved in degrees, defaults to None
+    :type minEl: float
+    :param initTime: Simulation start time, defaults to None
+    :type initTime: str
+    :return: GroundStation object
+    :rtype: GroundStation
     """
     
     def __init__(self, name, ecefPosition, minEl, initTime):
-        """GroundTelescope object initialisation function.
- 
-        :param name: Ground telescope name, defaults to None
-        :type name: str 
-        :param ecefPosition: Ground station position in Earth Centered, Earth
-            Fixed (ECEF) frame in km, defaults to None
-        :type ecefPosition: numpy.ndarray
-        :param minEl: Minimum elevation at which link with spacecraft can be 
-            achieved in degrees, defaults to None
-        :type minEl: float
-        :param initTime: Simulation start time, defaults to None
-        :type initTime: str
-        :return: GroundStation object
-        :rtype: GroundStation
-        """
+        
         self.name = name
         self.ecefPosition = ecefPosition*1000
         self.minEl = minEl
@@ -248,37 +245,35 @@ class GroundStation:
 
 class RadioPayload:
     """Class to model a radio astronomy payload onboard a SpaceTelescope.
+    
+    :param name: Radio payload name, defaults to None
+    :type name: str 
+    :param diameter: Antenna diameter in metres, defaults to None
+    :type diameter: float
+    :param apertureEff: Aperture efficiency due to surface design and losses
+        from surface deformations, defaults to None
+    :type apertureEff: float
+    :param sysTemp: System temperature in Kelvin, defaults to None
+    :type sysTemp: float        
+    :param antBoresight: Antenna boresight in body-fixed frame, defaults to
+        None
+    :type antBoresight: numpy.ndarray
+    :param antSunExcl: Exclusion angle between antenna boresight and the 
+        Sun's limb in degrees, defaults to None
+    :type antSunExcl: float
+    :param antEarthExcl: Exclusion angle between antenna boresight and the 
+        Earth's limb in degrees, defaults to None
+    :type antEarthExcl: float
+    :param antMoonExcl: Exclusion angle between antenna boresight and the 
+        Moon's limb in degrees, defaults to None
+    :type antMoonExcl: float
+    :return: RadioPayload object
+    :rtype: RadioPayload
     """
     
     def __init__(self, name, diameter, apertureEff, sysTemp,\
                  antBoresight, antSunExcl, antEarthExcl, \
                  antMoonExcl):
-        """RadioPayload object initialisation function.
- 
-        :param name: Radio payload name, defaults to None
-        :type name: str 
-        :param diameter: Antenna diameter in metres, defaults to None
-        :type diameter: float
-        :param apertureEff: Aperture efficiency due to surface design and losses
-            from surface deformations, defaults to None
-        :type apertureEff: float
-        :param sysTemp: System temperature in Kelvin, defaults to None
-        :type sysTemp: float        
-        :param antBoresight: Antenna boresight in body-fixed frame, defaults to
-            None
-        :type antBoresight: numpy.ndarray
-        :param antSunExcl: Exclusion angle between antenna boresight and the 
-            Sun's limb in degrees, defaults to None
-        :type antSunExcl: float
-        :param antEarthExcl: Exclusion angle between antenna boresight and the 
-            Earth's limb in degrees, defaults to None
-        :type antEarthExcl: float
-        :param antMoonExcl: Exclusion angle between antenna boresight and the 
-            Moon's limb in degrees, defaults to None
-        :type antMoonExcl: float
-        :return: RadioPayload object
-        :rtype: RadioPayload
-        """
  
         self.name = name
         self.diameter = diameter
@@ -300,29 +295,27 @@ class RadioPayload:
 
 class StarTracker:
     """Class to model a star tracker onboard a SpaceTelescope.
+    
+    :param name: Star tracker name, defaults to None
+    :type name: str       
+    :param strBoresight: Star tracker boresight in body-fixed frame, 
+        defaults to None
+    :type strBoresight: numpy.ndarray
+    :param strSunExcl: Exclusion angle between star tracker boresight and 
+        the Sun's limb in degrees, defaults to None
+    :type strSunExcl: float
+    :param strEarthExcl: Exclusion angle between star tracker boresight and
+        the Earth's limb in degrees, defaults to None
+    :type strEarthExcl: float
+    :param strMoonExcl: Exclusion angle between star tracker boresight and 
+        the Moon's limb in degrees, defaults to None
+    :type strMoonExcl: float
+    :return: StarTracker object
+    :rtype: StarTracker
     """
     
     def __init__(self, name, strBoresight, strSunExcl, strEarthExcl, \
                  strMoonExcl):
-        """StarTracker object initialisation function.
- 
-        :param name: Star tracker name, defaults to None
-        :type name: str       
-        :param strBoresight: Star tracker boresight in body-fixed frame, 
-            defaults to None
-        :type strBoresight: numpy.ndarray
-        :param strSunExcl: Exclusion angle between star tracker boresight and 
-            the Sun's limb in degrees, defaults to None
-        :type strSunExcl: float
-        :param strEarthExcl: Exclusion angle between star tracker boresight and
-            the Earth's limb in degrees, defaults to None
-        :type strEarthExcl: float
-        :param strMoonExcl: Exclusion angle between star tracker boresight and 
-            the Moon's limb in degrees, defaults to None
-        :type strMoonExcl: float
-        :return: StarTracker object
-        :rtype: StarTracker
-        """
         
         self.name = name
         self.strBoresight = strBoresight
@@ -337,30 +330,27 @@ class StarTracker:
     
 class Radiator:
     """Class to model a radiator onboard a SpaceTelescope.
+    
+    :param name: Radiator name, defaults to None
+    :type name: str       
+    :param radNorm: Radiator normal vector in body-fixed frame, 
+        defaults to None
+    :type radNorm: numpy.ndarray
+    :param radSunExcl: Exclusion angle between radiator normal and 
+        the Sun's limb in degrees, defaults to None
+    :type radSunExcl: float
+    :param radEarthExcl: Exclusion angle between radiator normal and
+        the Earth's limb in degrees, defaults to None
+    :type radEarthExcl: float
+    :param radMoonExcl: Exclusion angle between radiator normal and 
+        the Moon's limb in degrees, defaults to None
+    :type radMoonExcl: float
+    :return: Radiator object
+    :rtype: Radiator
     """
     
     def __init__(self, name, radNorm, radSunExcl, radEarthExcl, \
                  radMoonExcl):
-        """Radiator object initialisation function. If Radiator is 
-        blinded during simulation, observation cannot take place.
- 
-        :param name: Radiator name, defaults to None
-        :type name: str       
-        :param radNorm: Radiator normal vector in body-fixed frame, 
-            defaults to None
-        :type radNorm: numpy.ndarray
-        :param radSunExcl: Exclusion angle between radiator normal and 
-            the Sun's limb in degrees, defaults to None
-        :type radSunExcl: float
-        :param radEarthExcl: Exclusion angle between radiator normal and
-            the Earth's limb in degrees, defaults to None
-        :type radEarthExcl: float
-        :param radMoonExcl: Exclusion angle between radiator normal and 
-            the Moon's limb in degrees, defaults to None
-        :type radMoonExcl: float
-        :return: Radiator object
-        :rtype: Radiator
-        """
         
         self.name = name
         self.radNorm = radNorm
@@ -375,19 +365,17 @@ class Radiator:
         
 class SolarPanel:
     """Class to model a solar panel onboard a SpaceTelescope.
+    
+    :param name: Solar panel name, defaults to None
+    :type name: str       
+    :param panelNorm: Solar panel normal vector in body-fixed frame, 
+        defaults to None
+    :type panelNorm: numpy.ndarray
+    :return: SolarPanel object
+    :rtype: SolarPanel
     """
     
     def __init__(self, name, panelNorm):
-        """SolarPanel object initialisation function.
- 
-        :param name: Solar panel name, defaults to None
-        :type name: str       
-        :param panelNorm: Solar panel normal vector in body-fixed frame, 
-            defaults to None
-        :type panelNorm: numpy.ndarray
-        :return: SolarPanel object
-        :rtype: SolarPanel
-        """
         
         self.name = name
         self.panelNorm = panelNorm
@@ -399,29 +387,24 @@ class SolarPanel:
         
 class CommsSystem:
     """Class to model a communications system onboard a SpaceTelescope.
+    
+    :param name: Comms system name, defaults to None
+    :type name: str       
+    :param commsNorm: Comms system normal vector in body-fixed frame, 
+        defaults to None
+    :param commsFov: Defines the field of view of the comms system within 
+        which, if a ground station is insight, a link session can be
+        maintained. Could be the half angle beamwidth of a radio or the gimbal
+        limit of an optical terminal, etc., defaults to None
+    :type commsFov: float
+    :param groundReqObs: Ground station contact required for observations? 
+        Defaults to None
+    :type groundReqObs: bool
+    :return: CommsSystem object
+    :rtype: CommsSystem
     """
     
     def __init__(self, name, commsNorm, commsFov, groundReqObs):
-        """CommsSystem object initialisation function. CommsSystem can be used
-        to model systems such as optical terminals or RF communications systems
-        and perform analysis on the access times between the spacecraft and the 
-        ground.
- 
-        :param name: Comms system name, defaults to None
-        :type name: str       
-        :param commsNorm: Comms system normal vector in body-fixed frame, 
-            defaults to None
-        :param commsFov: Defines the field of view of the comms system within 
-            which, if a ground station is insight, a link session can be
-            maintained. Could be the half angle beamwidth of a radio or the gimbal
-            limit of an optical terminal, etc., defaults to None
-        :type commsFov: float
-        :param groundReqObs: Ground station contact required for observations? 
-            Defaults to None
-        :type groundReqObs: bool
-        :return: CommsSystem object
-        :rtype: CommsSystem
-        """
         
         self.name = name
         self.commsNorm = commsNorm
