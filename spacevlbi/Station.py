@@ -19,83 +19,81 @@ from poliastro.bodies import Earth
 
 class SpaceTelescope:
     """Class to model a space telescope within the spacevlbi package.
+
+    :param name: Space telescope name, defaults to None
+    :type name: str 
+    :param mass: Spacecraft mass in kg, defaults to None
+    :type mass: float
+    :param areaDrag: Spacecraft drag area in m^2, defaults to None
+    :type areaDrag: float
+    :param areaSolar: Spacecraft solar area in m^2, defaults to None
+    :type areaSOlar: float
+    :param cD: Drag coefficient, defaults to None
+    :type cD: float
+    :param cR: Solar reflectivity, defaults to None
+    :type cR: float
+    :param initTime: Simulation start time, defaults to None
+    :type initTime: str
+    :param a: Orbit semi-major axis in km, defaults to None
+    :type a: float
+    :param ecc: Orbit eccentricity, defaults to None
+    :type ecc: float
+    :param inc: Orbit inclination in degrees, defaults to None
+    :type inc: float
+    :param aop: Orbit argument of perigee in degrees, defaults to None
+    :type aop: float
+    :param ta: Orbit true anomaly in degrees, defaults to None
+    :type ta: float
+    :param pointingVector: Body-fixed vector to point at target source 
+        (should be same as RadioPayload.antennaBoresight), defaults to None
+    :type pointingVector: numpy.ndarray
+    :param constraintVector: Body-fixed vector to point in direction 
+        perpendicular to target source. Must be perpendicular to pointingVector,
+        defaults to None
+    :type constraintVector: numpy.ndarray
+    :param rollAngle: Roll angle of space telescope in degrees about the 
+        pointingVector. Measured from the plane containing the celestial 
+        north pole and the target source direction. Clockwise direction is 
+        positive when viewing along the pointingVector direction. Roll 
+        angle control is achieved by defining a list of the following 
+        format: [transition 1 time in sec, Roll angle 1 in degrees, 
+        transition 2 time in sec, roll angle 2, etc.], defaults to None
+    :type rollAngle: list
+    :param radioPayloads: Array of RadioPayload objects, defaults to None
+    :type radioPayloads: list
+    :param starTrackers: Array of StarTracker objects, defaults to None
+    :type starTrackers: list
+    :param reqStarTrackers: Number of star trackers that must not be
+        blinded to conduct an observation, defaults to None
+    :type reqStarTrackers: int
+    :param radiators: Array of Radiator objects, defaults to None
+    :type radiators: list
+    :param commsSystems: Array of CommsSystem objects, defaults to None
+    :type commsSystems: list
+    :param solarPanels: Array of SolarPanel objects, defaults to None
+    :type solarPanels: list
+    :param strModel: Flag indicating whether StarTrackers should be
+        modelled, defaults to None
+    :type strModel: bool
+    :param radModel: Flag indicating whether Radiators should be
+        modelled, defaults to None
+    :type radModel: bool
+    :param commsModel: Flag indicating whether CommsSystems should be
+        modelled, defaults to None
+    :type commsModel: bool
+    :param panelModel: Flag indicating whether SolarPanels should be
+        modelled, defaults to None
+    :type panelModel: bool
+    :return: SpaceTelescope object
+    :rtype: SpaceTelescope
     """
-    
+        
     def __init__(self, name, mass, areaDrag, areaSolar, cD, cR, initTime, a, \
                  ecc, inc, ra, aop, ta,  pointingVector, constraintVector, \
                  rollAngle, radioPayloads, starTrackers, reqStarTrackers, \
                  radiators, commsSystems, solarPanels, strModel, radModel, 
                  commsModel, panelModel):
-        """SpaceTelescope object initialisation function.
- 
-        :param name: Space telescope name, defaults to None
-        :type name: str 
-        :param mass: Spacecraft mass in kg, defaults to None
-        :type mass: float
-        :param areaDrag: Spacecraft drag area in m^2, defaults to None
-        :type areaDrag: float
-        :param areaSolar: Spacecraft solar area in m^2, defaults to None
-        :type areaSOlar: float
-        :param cD: Drag coefficient, defaults to None
-        :type cD: float
-        :param cR: Solar reflectivity, defaults to None
-        :type cR: float
-        :param initTime: Simulation start time, defaults to None
-        :type initTime: str
-        :param a: Orbit semi-major axis in km, defaults to None
-        :type a: float
-        :param ecc: Orbit eccentricity, defaults to None
-        :type ecc: float
-        :param inc: Orbit inclination in degrees, defaults to None
-        :type inc: float
-        :param aop: Orbit argument of perigee in degrees, defaults to None
-        :type aop: float
-        :param ta: Orbit true anomaly in degrees, defaults to None
-        :type ta: float
-        :param pointingVector: Body-fixed vector to point at target source 
-            (should be same as RadioPayload.antennaBoresight), defaults to None
-        :type pointingVector: numpy.ndarray
-        :param constraintVector: Body-fixed vector to point in direction 
-            perpendicular to target source. Must be perpendicular to pointingVector,
-            defaults to None
-        :type constraintVector: numpy.ndarray
-        :param rollAngle: Roll angle of space telescope in degrees about the 
-            pointingVector. Measured from the plane containing the celestial 
-            north pole and the target source direction. Clockwise direction is 
-            positive when viewing along the pointingVector direction. Roll 
-            angle control is achieved by defining a list of the following 
-            format: [transition 1 time in sec, Roll angle 1 in degrees, 
-            transition 2 time in sec, roll angle 2, etc.], defaults to None
-        :type rollAngle: list
-        :param radioPayloads: Array of RadioPayload objects, defaults to None
-        :type radioPayloads: list
-        :param starTrackers: Array of StarTracker objects, defaults to None
-        :type starTrackers: list
-        :param reqStarTrackers: Number of star trackers that must not be
-            blinded to conduct an observation, defaults to None
-        :type reqStarTrackers: int
-        :param radiators: Array of Radiator objects, defaults to None
-        :type radiators: list
-        :param commsSystems: Array of CommsSystem objects, defaults to None
-        :type commsSystems: list
-        :param solarPanels: Array of SolarPanel objects, defaults to None
-        :type solarPanels: list
-        :param strModel: Flag indicating whether StarTrackers should be
-            modelled, defaults to None
-        :type strModel: bool
-        :param radModel: Flag indicating whether Radiators should be
-            modelled, defaults to None
-        :type radModel: bool
-        :param commsModel: Flag indicating whether CommsSystems should be
-            modelled, defaults to None
-        :type commsModel: bool
-        :param panelModel: Flag indicating whether SolarPanels should be
-            modelled, defaults to None
-        :type panelModel: bool
-        :return: SpaceTelescope object
-        :rtype: SpaceTelescope
-        """
-        
+               
         self.name = name
         self.pointingVector = np.array([pointingVector])
         self.constraintVector = np.array([constraintVector])
