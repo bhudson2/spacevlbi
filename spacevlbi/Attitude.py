@@ -13,7 +13,7 @@ from astropy import units as u
 
 def AttitudePropagation(spaceTelescopes, rSun, rMoon, sourceRa, sourceDec, i, 
                         timeStep):
-    """Propagate space telescope's attitude state. This function calculates
+    """Propagate space telescope's attitude state. This function calculates the
     attitude matrix required to point the antenna at the target source. The
     constraint axis is pointed in a direction perpendicular to the antenna 
     direction, defined by the rollAngle parameter of a SpaceTelescope.

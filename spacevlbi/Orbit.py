@@ -21,7 +21,7 @@ from poliastro.core.perturbations import J2_perturbation, J3_perturbation
 def OrbitPropagation(spaceTelescopes, time, duration, rSun, rMoon):
     """Propagate space telescopes' orbits using poliastro Orbit functionality.
     Propagation currently includes following perturbations: Earth J2 and J3
-    harmonics. Additional perturbing forces can be added by editing the Force
+    harmonics. Additional perturbing forces can be added by editing the Force()
     function.
 
     :param spaceTelescopes: Array of SpaceTelescope objects, defaults to None
@@ -104,7 +104,7 @@ def Force(t0, u_, k):
 ###############################################################################
 
 def SatGroundAccess(spaceTelescopes, groundStations, time):
-    """Calculate range and elevation between space telescopes and groundstations,
+    """Calculate range and elevation from ground stations to space telescopes,
     measured in topocentric frame.
 
     :param spaceTelescopes: Array of SpaceTelescope objects, defaults to None

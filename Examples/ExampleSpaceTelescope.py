@@ -62,6 +62,7 @@ def BaselineBHEX(initTime):
     # rollAngle format: [time of transition 1 in sec, roll angle 1 in degrees,
     # etc.]
     rollAngle = [0, 0, 86400/4, 45, 86400/2, 90]
+    rollAngle = [0, 0]
     
 ###############################################################################
 #   Payload configuration

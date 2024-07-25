@@ -27,9 +27,9 @@ def TimeLoop(initTime, simLength, timeStep, spaceTelescopes, groundTelescopes,\
 
     :param initTime: Simulation start datetime, defaults to None
     :type initTime: str
-    :param simLength: simulation duration in seconds, defaults to None
+    :param simLength: Simulation duration in seconds, defaults to None
     :type simLength: int
-    :param timeStep: simulation time step in seconds, defaults to None
+    :param timeStep: Simulation time step in seconds, defaults to None
     :type timeStep: int
     :param spaceTelescopes: Array of SpaceTelescope objects, defaults to None
     :type spaceTelescopes: list

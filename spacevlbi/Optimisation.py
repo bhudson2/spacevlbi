@@ -31,7 +31,7 @@ def Optimisation(spaceTelescopes, sunExcl, earthExcl, \
         controls whether the Sun angle must be less than or greater than this
         value in order to perform an observation, defaults to None
     :type sunExcl: float
-    :param earthExcl: Earth exclusion anglle in degrees. The direction parameter
+    :param earthExcl: Earth exclusion angle in degrees. The direction parameter
         controls whether the Earth angle must be less than or greater than this
         value in order to perform an observation, defaults to None
     :type earthExcl: float
@@ -43,13 +43,13 @@ def Optimisation(spaceTelescopes, sunExcl, earthExcl, \
         the unit normal vector and the celestial body should be greater than 
         or less than the earthExcl, sunExcl or moonExcl in order for an 
         observation to take place. E.g. for a star tracker, direction is set 
-        to "lessthan" and the sunExcl parameter is set to the exclusion angle of 
+        to "greaterthan" and the sunExcl parameter is set to the exclusion angle of 
         the star tracker unit, defaults to "greaterthan"
     :type direction: str
     :return: List of unit vectors in the spacecraft body-fixed frame 
         and the associated number of time steps for which the Sun, Earth and/or
-        Moon exclusion angles were violated. I.e. Smaller number is more optimal.
-    :rtype: list
+        Moon exclusion angles were violated. I.e. smaller number is more optimal.
+    :rtype: numpy.ndarray
     """
     
     if spaceTelescopes:

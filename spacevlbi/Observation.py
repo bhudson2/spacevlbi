@@ -33,9 +33,9 @@ def Baselines(i, spaceTelescopes, groundTelescopes, sourceRa, sourceDec, \
     :type sourceDec: float
     :param frequency: Observation frequency in Hz, defaults to None
     :type frequency: float
-    :param simLength: simulation duration in seconds, defaults to None
+    :param simLength: Simulation duration in seconds, defaults to None
     :type simLength: int
-    :param timeStep: simulation time step in seconds, defaults to None
+    :param timeStep: Simulation time step in seconds, defaults to None
     :type timeStep: int
     :param allsky: Calculate all-sky coverage? Defaults to None
     :type allsky: bool    

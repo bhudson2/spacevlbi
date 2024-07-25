@@ -4,7 +4,7 @@ save_data_on_exit = True
 save_history = True
 save_non_project_files = False
 project_type = 'empty-project-type'
-recent_files = ['docs\\source\\Guide.rst', 'pyproject.toml', 'Examples\\ExampleSetup.py']
+recent_files = ['docs\\source\\Guide.rst', 'pyproject.toml', 'Examples\\ExampleSetup.py', 'spacevlbi\\Station.py', 'Examples\\ExampleSpaceTelescope.py', 'spacevlbi\\Figures.py', 'spacevlbi\\TimeLoop.py', 'spacevlbi\\Optimisation.py', 'spacevlbi\\Observation.py', 'spacevlbi\\Orbit.py']
 
 [main]
 version = 0.2.0

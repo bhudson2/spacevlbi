@@ -342,9 +342,9 @@ def AttitudeSphere(spaceTelescopes, telescopeSelect=0, azim=45, elev=30, \
     :param telescopeSelect: Index of spaceTelescope array to plot attitude 
         sphere of, defaults to 0
     :type telescopeSelect: int
-    :param azim: Plot viewing angle, azimuth in X-Y plane, defaults to 45
+    :param azim: Plot viewing angle, azimuth in X-Y plane, defaults to 45 degrees
     :type azim: float
-    :param elev: Plot viewing angle, elevation in Z plane, defaults to 30
+    :param elev: Plot viewing angle, elevation in Z plane, defaults to 30 degrees
     :type elev: float
     :param plotAntenna: Plot antenna? Defaults to 1
     :type plotAntenna: bool
@@ -685,7 +685,7 @@ def Cone3D(p0, p1, R0, R1, n):
     :type p0: list
     :param p1: Unit vector of base position, defaults to None
     :type p1: list
-    :param R0: Radius at base, defaults to None
+    :param R0: Radius at vertex, defaults to None
     :type R0: float
     :param R1: Radius at base, defaults to None
     :type R1: float

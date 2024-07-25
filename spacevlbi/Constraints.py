@@ -265,7 +265,7 @@ def Elevation(position, ra, dec):
     :type dec: float
     :type position: numpy.ndarray
     :return: Elevation of target source from horizon in degrees
-    :rtype float
+    :rtype: float
     """
     
     # Calculate source vector in ECI
