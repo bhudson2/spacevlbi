@@ -25,7 +25,7 @@ matplotlib.rcParams["text.usetex"] = False
 
 initTime = Time("2025-01-01 12:00", scale="utc")  # start time of simulation
 timeStep = 1000  # simulation time step, sec
-simLength = 86400/10  # length of simulation, sec
+simLength = 86400  # length of simulation, sec
 
 ###############################################################################
 # Observation Parameters
