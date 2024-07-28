@@ -154,7 +154,7 @@ def BaselineBHEX(initTime):
     
     commsName = "Optical Terminal"
     commsNorm = np.array([1,0,0])  # Normal vector in body frame
-    commsFov = 88  # Beamwidth/gimbal limit (half angle from normal vector), deg
+    commsFov = 70  # Beamwidth/gimbal limit (half angle from normal vector), deg
     groundReqObs = 0  # Is a ground station required insight for observations?
     # Initialise CommsSystem object
     comms1 = Station.CommsSystem(commsName,  commsNorm, commsFov, groundReqObs)

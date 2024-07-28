@@ -39,7 +39,7 @@ The ``GroundTelescope`` class enables a ground-based radio antenna to be
 modelled so that ground-space VLBI baselines can be calculated (see the 
 :ref:`groundtelescope` section below for more information).
 
-The ``Ground Station`` class enables a ground-based station for space telescope
+The ``GroundStation`` class enables a ground-based station for space telescope
 Telemetry, Tracking and Command (TT&C) to be modelled. This is useful for
 calculating the impact of a number of functional constraints (see the 
 :ref:`groundstation` and :ref:`constraints` sections below).
@@ -51,7 +51,7 @@ objects must be created. To model a ground-space VLBI mission, two or more
 are required for inclusion of some of the functional constraints.
 
 Once the desired VLBI array has been defined by creating objects of the classes
-described above, the ``TimeLoop()`` function can be executed to run the 
+described above, the ``TimeLoop()`` function is executed to run the 
 simulation over a defined time period and with a specific step size. At each
 time step, the ``TimeLoop()`` function:
 
@@ -71,7 +71,7 @@ user to plot key results:
     * ``UvPlot()`` - Plot of the (u,v) coverage achieved by the array, including the impact of any functional constraints modelled
     * ``AttitudeSphere()`` - Plot of a specified space telescope's attitude sphere in the body-fixed frame including Sun, Earth and Moon positions throughout the simulation and the positions of any spacecraft components that have been modelled
     * ``SolarPanelIncidence()`` - Plot of the angle between the Sun and the spacecraft's panel normal vectors throughout the simulation
-    * ``GroundStationElevation()`` - Plot of the elevation angle from each modelled ground station to a specified space telescope throughout the simulation
+    * ``GroundStationElevation()`` - Plot of the elevation angle from each ground station to a specified space telescope throughout the simulation
 
 Provided in the Examples folder is the script ``ExampleSetup.py``. This script 
 shows how the package can be used to model a VLBI array with a single space 
@@ -90,8 +90,8 @@ properties. The spacecraft orbit is defined using classical Keplerian elements
 and an initial true anomaly at the start of the simulation. The attitude state 
 of the spacecraft throughout the simulation must also be provided in terms of 
 a roll angle (see :ref:`attitudeprop` section below). As well as these 
-properties, the user can also attach a number of component objects to a space 
-telescope to model the key components which can impact when observations 
+properties, the user can attach a number of component objects to a space 
+telescope to model the key equipment onboard that can impact when observations 
 can be performed by the system.
 
 .. _radiopayload:
@@ -125,7 +125,7 @@ VLBI are an example of such missions requiring very high attitude knowledge
 accuracy which can only be provided by star trackers.
 
 A star tracker is a sensitive camera that captures images of the celestial 
-sphere. It identifies the stars in the image through processing and compares them 
+sphere. It identifies the stars in the image and compares them 
 to an internal star catalogue and finally estimates the attitude state of the 
 spacecraft by analysing the rotation of the star field in its Field-Of-View 
 (FOV). Star trackers typically have a limitation on the angle between their 
@@ -165,7 +165,7 @@ The radiator functional constraint works as follows: if at the current timestep
 the Sun / Earth / Moon exclusion angles for any of the modelled radiators are 
 violated, an observation cannot take place. In reality, it may be permissible 
 for some radiators to have the Sun / Earth / Moon within their FOV for a small 
-period of time. However, such time depdendence on the functional constraint 
+period of time. However, such time dependence on the functional constraint 
 is not currently modelled in the tool.
 
 The ``Radiator`` object can also be used to model more general thermal 
@@ -196,7 +196,7 @@ Communication System
 ~~~~~~~~~~~~~~~~~~~~
 
 The user can define what is known as a ``CommsSystem`` object within the tool 
-which can be used to model communications antennas or optical terminals onboard 
+that can be used to model communications antennas or optical terminals onboard 
 the spacecraft. Multiple ``CommsSystem`` objects can be defined, enabling the 
 differentiation between TT&C antennas and antennas / optical terminals for 
 payload data downlink, if required.
@@ -235,7 +235,7 @@ Ground Station
 To assess the access times between the ground and the spacecraft from a 
 TT&C perspective, the user can define any number of ``GroundStation`` objects. 
 During the simulation, the range and elevation of all space telescopes is 
-calculated for each modelled ground station.
+calculated for each ground station.
 
 To include the functional constraint related to either the real-time downlink 
 of data or the provision of a frequency standard to the space telescope, the 
@@ -279,14 +279,16 @@ Attitude Propagation
 
 In order to model the functional constraints impacting space telescope 
 operation, the attitude of the spacecraft is propagated within the tool. The 
-propagation of the attitude state is a simple calculation of the attitude matrix 
+propagation of the attitude state is a calculation of the attitude matrix 
 required to rotate the inertial frame into the body-fixed frame of the 
-spacecraft. The ``pointingVector`` parameter defines the body-fixed axis of the 
-spacecraft to point towards the target source throughout the simulation. The 
-``constraintVector`` parameter defines the body-fixed axis used to constrain 
-the 3-axis attitude of the spacecraft and is pointed in a direction perpendicular 
-to the target source. It is essential that the pointing and constraint vectors 
-are also perpendicular to each other.
+spacecraft. Errors in the contrl accuracy are not included as their effect on 
+the impact of functional constraints is negligible. The ``pointingVector`` 
+parameter defines the body-fixed axis of the spacecraft to point towards the 
+target source throughout the simulation. The ``constraintVector`` parameter 
+defines the body-fixed axis used to constrain the 3-axis attitude of the 
+spacecraft and is pointed in a direction perpendicular to the target source. 
+It is essential that the pointing and constraint vectors are also perpendicular 
+to each other.
 
 The user can also specify the ``rollAngle`` parameter which defines the 
 spacecraft's rotation about the pointing direction. The ``rollAngle`` 
@@ -320,7 +322,7 @@ ground (E.g. ground telescopes, ground stations).
 tool as *functional constraints* and optimise the design of the spacecraft and 
 mission architecture to mitigate their effect on observations. Each object 
 within the tool has some functional constraint associated with it and the 
-specifics of the constraints are described throughout this guide. However, as 
+specifics of the constraints are described throughout this guide. However, as a
 summary, the following constraints can be modelled with ``spacevlbi``:
 
     * Visibility of target source to space and ground telescopes (i.e. source is not blocked by the Earth)
@@ -339,7 +341,7 @@ during observations.
 Optimisation
 ------------
 
-The ``Optimisation()`` function can be used to find the optimal position for a 
+The ``Optimisation()`` function can be used to find the optimal position of a 
 specific spacecraft component to minimise the impact of its functional 
 constraint on observations. The functional constraint of the component must be 
 able to be defined in terms of a specific Sun / Earth / Moon relationship. 
