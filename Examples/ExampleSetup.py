@@ -130,7 +130,7 @@ Figures.UvPlot(spaceTelescopes, groundTelescopes, allsky, 1)
 
 # Plot attitude sphere (user can control which elements (e.g. Earth, Sun, Moon,
 # antenna, etc.) are included in plot with additional arguments)
-Figures.AttitudeSphere(spaceTelescopes, 0, 45, 30)
+Figures.AttitudeSphere(spaceTelescopes, 0, 120, 30)
 
 # Plot incidence angle of Sun on solar panels
 Figures.SolarPanelIncidence(spaceTelescopes, simTime, 0)
