@@ -23,7 +23,7 @@ matplotlib.rcParams["text.usetex"] = False
 # Simulation Time Definition
 ###############################################################################
 
-initTime = Time("2025-01-01 12:00", scale="utc")  # start time of simulation
+initTime = Time("2025-01-01 00:00", scale="utc")  # start time of simulation
 timeStep = 1000  # simulation time step, sec
 simLength = 86400  # length of simulation, sec
 
