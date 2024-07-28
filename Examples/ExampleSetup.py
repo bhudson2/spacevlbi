@@ -34,7 +34,7 @@ simLength = 86400  # length of simulation, sec
 obsFreq = 320e9  # frequency observations will be conducted at, Hz
 # Calculate (u,v) coverage for full celestial sphere? NOTE. Functional
 # constraints cannot be modelled in all-sky mode.
-allsky = 1
+allsky = 0
 
 # M87*
 sourceRa = 187.705930  # target source right ascension, deg
