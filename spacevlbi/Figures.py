@@ -579,6 +579,8 @@ def SolarPanelIncidence(spaceTelescopes, simTime, telescopeSelect=0):
             
             # Extract time
             time = simTime.time.value[1:]
+            for j in range(len(time)):
+                time[j] = time[j][11:-4]
                 
             # Iterate through solar panels and plot angle
             solarPanels = spaceTelescope.solarPanels
@@ -642,6 +644,8 @@ def GroundStationElevation(spaceTelescopes, groundStations, simTime, \
             
             # Extract time
             time = simTime.time.value[1:]
+            for j in range(len(time)):
+                time[j] = time[j][11:-4]
             
             # Iterate through solar panels and plot angle
             # solarPanels = spaceTelescope.solarPanels
