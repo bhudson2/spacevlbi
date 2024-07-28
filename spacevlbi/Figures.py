@@ -590,7 +590,7 @@ def SolarPanelIncidence(spaceTelescopes, simTime, telescopeSelect=0):
             # Configure axes
             ax.set_xlabel('Time')
             ax.set_ylabel('Incidence Angle [$ \degree $]')
-            ax.set_xticks(time[0::len(time)/10])
+            ax.set_xticks(time[0::np.floor(len(time)/10)])
             ax.legend(loc="upper right")
             plt.xticks(rotation=90)
             plt.show()
@@ -656,7 +656,7 @@ def GroundStationElevation(spaceTelescopes, groundStations, simTime, \
             ax.set(ylim=(0, 90))
             ax.set_xlabel('Time')
             ax.set_ylabel(ylabel)
-            ax.set_xticks(time[0::len(time)/10])
+            ax.set_xticks(time[0::np.floor(len(time)/10)])
             ax.legend(loc="upper right")
             plt.xticks(rotation=90)
             plt.show()
