@@ -2,16 +2,13 @@
 #
 # Functions to generate figures to show results of a spacevlbi simulation.
 #
-# @author: BenHudson - 05/07/2024
+# @author: BenHudson - 28/07/2024
 
-import matplotlib
 from matplotlib import pyplot as plt
 import numpy as np
 from numpy import radians
 from astropy import constants as const
 import os
-
-matplotlib.rcParams["text.usetex"] = False
 
 ###############################################################################
 # OrbitPlot
@@ -41,14 +38,19 @@ def OrbitPlot(spaceTelescopes):
         z = r * np.cos(v)
         ax.plot_surface(x, y, z, cmap=plt.cm.YlGnBu_r)
         
+        # Initialise maximum array
+        maxPos = 0
+        
         # Iterate through space telescopes and plot orbits
         for i in range(len(spaceTelescopes)):
             position = spaceTelescopes[i].eciPosition
+            if np.max(position.value) > maxPos:
+                maxPos = np.max(position.value)
             name = spaceTelescopes[i].name
             ax.plot(position[:,0], position[:,1], position[:,2], label=name)
         
         # Configure axes
-        axisLimit = 1.1 * np.max(position.value)
+        axisLimit = 1.1 * maxPos
         ax.set(xlim=(-axisLimit, axisLimit), ylim=(-axisLimit, axisLimit), \
                zlim=(-axisLimit, axisLimit))
         ax.set_xlabel('')
@@ -72,7 +74,7 @@ def OrbitPlot(spaceTelescopes):
         ax.add_artist(circle1)
         
         # Configure axes
-        axisLimit = 1.1 * np.max(position.value)
+        axisLimit = 1.1 * maxPos
         ax.set(xlim=(-axisLimit, axisLimit), ylim=(-axisLimit, axisLimit))
         ax.set_xlabel('x [km]')
         ax.set_ylabel('y [km]')
@@ -90,7 +92,7 @@ def OrbitPlot(spaceTelescopes):
         ax.add_artist(circle1)
         
         # Configure axes
-        axisLimit = 1.1 * np.max(position.value)
+        axisLimit = 1.1 * maxPos
         ax.set(xlim=(-axisLimit, axisLimit), ylim=(-axisLimit, axisLimit))
         ax.set_xlabel('x [km]')
         ax.set_ylabel('z [km]')
@@ -109,7 +111,7 @@ def OrbitPlot(spaceTelescopes):
         ax.add_artist(circle1)
         
         # Configure axes
-        axisLimit = 1.1 * np.max(position.value)
+        axisLimit = 1.1 * maxPos
         ax.set(xlim=(-axisLimit, axisLimit), ylim=(-axisLimit, axisLimit))
         ax.set_xlabel('y [km]')
         ax.set_ylabel('z [km]')
@@ -577,8 +579,6 @@ def SolarPanelIncidence(spaceTelescopes, simTime, telescopeSelect=0):
             
             # Extract time
             time = simTime.time.value[1:]
-            for j in range(len(time)):
-                time[j] = time[j][11:-4]
                 
             # Iterate through solar panels and plot angle
             solarPanels = spaceTelescope.solarPanels
@@ -590,7 +590,7 @@ def SolarPanelIncidence(spaceTelescopes, simTime, telescopeSelect=0):
             # Configure axes
             ax.set_xlabel('Time')
             ax.set_ylabel('Incidence Angle [$ \degree $]')
-            ax.set_xticks(time[0::10])
+            ax.set_xticks(time[0::len(time)/10])
             ax.legend(loc="upper right")
             plt.xticks(rotation=90)
             plt.show()
@@ -616,7 +616,7 @@ def SolarPanelIncidence(spaceTelescopes, simTime, telescopeSelect=0):
 ###############################################################################
 
 def GroundStationElevation(spaceTelescopes, groundStations, simTime, \
-                           telescopeSelect):
+                           telescopeSelect=0):
     """Plot elevation angle of selected space telescope at each ground station
     as a function of the simulation time. 
 
@@ -630,6 +630,7 @@ def GroundStationElevation(spaceTelescopes, groundStations, simTime, \
         station elevation of, defaults to 0
     :type telescopeSelect: int
     """
+    
     if spaceTelescopes:
         if len(groundStations) == 0:
             print("No ground stations are modelled")
@@ -646,7 +647,7 @@ def GroundStationElevation(spaceTelescopes, groundStations, simTime, \
             # solarPanels = spaceTelescope.solarPanels
             for i in range(len(groundStations)):
                 name = groundStations[i].name
-                elevation = groundStations[i].satElev[1:]
+                elevation = groundStations[i].satElev[1:,telescopeSelect]
                 ax.plot(time, elevation, label=name)
                 
             # Configure axes
@@ -655,7 +656,7 @@ def GroundStationElevation(spaceTelescopes, groundStations, simTime, \
             ax.set(ylim=(0, 90))
             ax.set_xlabel('Time')
             ax.set_ylabel(ylabel)
-            ax.set_xticks(time[0::10])
+            ax.set_xticks(time[0::len(time)/10])
             ax.legend(loc="upper right")
             plt.xticks(rotation=90)
             plt.show()

@@ -3,7 +3,7 @@
 # The primary simulation function of spacevlbi, executing all major functionality
 # of the tool.
 #
-# @author: BenHudson - 05/07/2024
+# @author: BenHudson - 28/07/2024
 
 from spacevlbi.Orbit import OrbitPropagation, SatGroundAccess
 from spacevlbi.Attitude import AttitudePropagation

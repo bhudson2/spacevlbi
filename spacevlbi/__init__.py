@@ -2,7 +2,7 @@
 #
 # __init__.py
 #
-#@author: BenHudson - 05/07/2024
+#@author: BenHudson - 28/07/2024
 
 from spacevlbi.Attitude import *
 from spacevlbi.Constraints import *

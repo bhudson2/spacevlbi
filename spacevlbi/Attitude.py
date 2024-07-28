@@ -3,7 +3,7 @@
 # Contains the function required to propagate a space telescope's attitude state
 # in spacevlbi.
 #
-# @author: BenHudson - 05/07/2024
+# @author: BenHudson - 28/07/2024
 
 import numpy as np
 from numpy.linalg import norm, inv
@@ -72,10 +72,13 @@ def AttitudePropagation(spaceTelescopes, rSun, rMoon, sourceRa, sourceDec, i,
             rollAngle = spaceTelescopes[j].rollAngle
             lastAngleFound = 0
             theta = 0
-            for k in range(1,int(len(rollAngle)/2)):
-                if ((i*timeStep) > rollAngle[k*-2]) and (lastAngleFound == 0):
-                    theta = radians(spaceTelescopes[j].rollAngle[k*-2 + 1])
-                    lastAngleFound = 1
+            if len(rollAngle) == 2:
+                theta = radians(spaceTelescopes[j].rollAngle[1])
+            else:
+                for k in range(1,int(len(rollAngle)/2)):
+                    if ((i*timeStep) > rollAngle[k*-2]) and (lastAngleFound == 0):
+                        theta = radians(spaceTelescopes[j].rollAngle[k*-2 + 1])
+                        lastAngleFound = 1
             
             r2 = cos(theta)*r2Temp + sin(theta)*cross(r1, r2Temp) + (1 - cos(theta))* \
                  dot(r1, r2Temp) * r1

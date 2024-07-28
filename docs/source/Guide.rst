@@ -245,6 +245,10 @@ insight of the communication systems 'FOV'. The user can also specify a minimum
 elevation at the ground station above which a link with the space telescope 
 can be maintained.
 
+Note: If the simulation timestep is too low the elevation and range calculated 
+for each space telescope will be truncated and the maximum values shown may not be 
+true.
+
 .. _orbitprop:
 Orbit Propagation
 -----------------

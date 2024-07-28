@@ -6,7 +6,7 @@
 # example only and are not intended to accurately represent BHEX's final design
 # - https://www.blackholeexplorer.org/
 #
-# @author: BenHudson - 05/07/2024
+# @author: BenHudson - 28/07/2024
 
 from spacevlbi import Station
 import numpy as np
@@ -27,8 +27,8 @@ def BaselineBHEX(initTime):
 
     name = "BHEX";
     mass = 300;  # Spacecraft mass, kg
-    areaDrag = 4;  # Spacecraft drag area, m^2
-    areaSolar = 4;  # Spacecraft solar area, m^2
+    areaDrag = 3.5;  # Spacecraft drag area, m^2
+    areaSolar = 3.5;  # Spacecraft solar area, m^2
     cD = 2.2;  # Spacecraft drag coefficient
     cR = 2.2;  # Spacecraft solar reflectivity coefficient
     
@@ -51,17 +51,13 @@ def BaselineBHEX(initTime):
     # RadioPayload antennaBoresight to point antenna at target
     pointingVector = np.array([0,0,1]) 
     # Constraint vector in body frame. Must be perpendicular to pointingVector.
-    # This axis will be pointed in a relative East direction, when viewing
-    # along the pointing vector. Please see diagram in Documentation for
-    # clarity
+    # The direction in which this axis is pointed is defined by the RollAngle
+    # parameter below
     constraintVector = np.array([0,1,0])
     # Roll angle of space telescope in degrees about the pointingVector. 
-    # Measured from the body-fixed axis pointed closest to the celestial north
-    # pole. Clockwise direction is positive when viewing along the 
-    # pointingVector direction. Please see diagram in Documentation for clarity.
+    # Please see diagram in the Guide section of the Documentation for clarity.
     # rollAngle format: [time of transition 1 in sec, roll angle 1 in degrees,
     # etc.]
-    rollAngle = [0, 0, 86400/4, 45, 86400/2, 90]
     rollAngle = [0, 0]
     
 ###############################################################################
@@ -92,7 +88,7 @@ def BaselineBHEX(initTime):
     reqStarTrackers = 2
     radModel = 1  # Model radiators?
     panelModel = 1  # Model solar panels?
-    commsModel = 0  # Model comms systems?
+    commsModel = 1  # Model comms systems?
     
 ###############################################################################
 #   Star tracker configuration
@@ -159,7 +155,7 @@ def BaselineBHEX(initTime):
     commsName = "Optical Terminal"
     commsNorm = np.array([1,0,0])  # Normal vector in body frame
     commsFov = 88  # Beamwidth/gimbal limit (half angle from normal vector), deg
-    groundReqObs = 1  # Is a ground station required insight for observations?
+    groundReqObs = 0  # Is a ground station required insight for observations?
     # Initialise CommsSystem object
     comms1 = Station.CommsSystem(commsName,  commsNorm, commsFov, groundReqObs)
     

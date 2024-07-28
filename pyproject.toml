@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 dependencies = ["astropy", "numpy", "poliastro", "matplotlib"]
 name = "spacevlbi"
-version = "1.0.22"
+version = "1.0.23"
 authors = [
   { name="Ben Hudson", email="benhudson@tudelft.nl" },
 ]

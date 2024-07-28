@@ -1,7 +1,9 @@
+# Observation.py
+#
 # Functions required to simulate VLBI observations of target source and calculate
 # baselines in spacevlbi.
 #
-# @author: BenHudson - 05/07/2024
+# @author: BenHudson - 28/07/2024
 
 from spacevlbi.Constraints import ObsMask
 from astropy import constants as const
@@ -131,7 +133,7 @@ def Baselines(i, spaceTelescopes, groundTelescopes, sourceRa, sourceDec, \
                         # If any conditions prohibiting observations are true, zero
                         # baseline, else calculate baseline
                         if obsFlag == 0:
-                            spaceTelescopes[j].baseline[r*len(declination)+d]\
+                            spaceTelescopes[j].baselines[r*len(declination)+d]\
                                 [i,baselineCount*3-3:baselineCount*3] = [0,0,0]
                             # Add lost baselines to space telescope property
                             spaceTelescopes[j].lostBaselines[r*len(declination)+d]\

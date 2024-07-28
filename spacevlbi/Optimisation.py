@@ -6,7 +6,7 @@
 # spacecraft's body-fixed frame that minimises the amount of times during a 
 # simulation that a defined functional constraint is violated.
 #
-# @author: BenHudson - 05/07/2024
+# @author: BenHudson - 28/07/2024
 
 import numpy as np
 from numpy.linalg import norm

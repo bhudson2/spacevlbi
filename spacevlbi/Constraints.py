@@ -4,7 +4,7 @@
 # and the ground telescopes that will impact when observations can be performed
 # in spacevlbi.
 #
-# @author: BenHudson - 05/07/2024
+# @author: BenHudson - 28/07/2024
 
 from astropy import constants as const
 from astropy import units as u
@@ -94,11 +94,11 @@ def ObsLimits(spaceTelescopes, groundTelescopes, groundStations, sourceRa, \
                         radioPayloads[k].sunFlag = vstack((radioPayloads[k].sunFlag,0))
                     else:
                         radioPayloads[k].sunFlag = vstack((radioPayloads[k].sunFlag,1))
-                    if degrees(moonAngle.value) < radioPayloads[j].antMoonExcl:
+                    if degrees(moonAngle.value) < radioPayloads[k].antMoonExcl:
                         radioPayloads[k].moonFlag = vstack((radioPayloads[k].moonFlag,0))
                     else:
                         radioPayloads[k].moonFlag= vstack((radioPayloads[k].moonFlag,1))
-                    if degrees(earthAngle.value) < radioPayloads[j].antEarthExcl:
+                    if degrees(earthAngle.value) < radioPayloads[k].antEarthExcl:
                         radioPayloads[k].earthFlag = vstack((radioPayloads[k].earthFlag,0))
                     else:
                         radioPayloads[k].earthFlag = vstack((radioPayloads[k].earthFlag,1))
@@ -126,7 +126,7 @@ def ObsLimits(spaceTelescopes, groundTelescopes, groundStations, sourceRa, \
                        starTrackers[k].strBlindFlag = vstack((starTrackers[k].strBlindFlag,0))
                     else:
                        starTrackers[k].strBlindFlag = vstack((starTrackers[k].strBlindFlag,1))
-                starTrackers[j].starTrackers = starTrackers
+                starTrackers[k].starTrackers = starTrackers
                     
             # Are the radiators pointing within Sun, Moon or Earth exclusion angles?
             radiators = spaceTelescopes[j].radiators
@@ -144,7 +144,7 @@ def ObsLimits(spaceTelescopes, groundTelescopes, groundStations, sourceRa, \
                             (degrees(radEarthAngle.value)<radiators[k].radEarthExcl):
                        radiators[k].radBlindFlag = vstack((radiators[k].radBlindFlag,0))
                     else:
-                       radiators[k].radBlindFlag = vstack((radiators[j].radBlindFlag,1))
+                       radiators[k].radBlindFlag = vstack((radiators[k].radBlindFlag,1))
                 spaceTelescopes[j].radiators = radiators
     
             # Are there any ground station limitations on observations?

@@ -4,7 +4,7 @@
 # SpaceTelescope, GroundTelescope and GroundStation. Also included are classes
 # for defining spacecraft components that can be modelled within the tool.
 #
-# @author: BenHudson - 09/07/2024
+# @author: BenHudson - 28/07/2024
 
 from astropy.coordinates import SkyCoord,GCRS,ITRS
 from astropy import constants as const
@@ -231,7 +231,7 @@ class GroundStation:
                        unit='m',frame='itrs',representation_type='cartesian',\
                            obstime = initTime)
         eci = (ecef.transform_to(GCRS)).cartesian       
-        self.eciPosition = np.array([eci.x.value, eci.y.value, eci.z.value]) \
+        self.eciPosition = np.array([eci.x.value, eci.y.value, eci.z.value])*1000 \
                         << u.m
         # Range of spacecraft from ground station
         self.satRange = np.array([0]) << u.m

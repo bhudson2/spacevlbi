@@ -2,7 +2,7 @@
 #
 # Contains the functions required to model a space telescope's orbit in spacevlbi.
 #
-# @author: BenHudson - 05/07/2024
+# @author: BenHudson - 28/07/2024
 
 import numpy as np
 from numpy.linalg import norm
@@ -144,6 +144,8 @@ def SatGroundAccess(spaceTelescopes, groundStations, time):
                     # Update ground station position
                     groundStations[k].eciPosition = np.vstack((groundStations[k].eciPosition, \
                                     eciPosition.reshape((1,3))))
+                    #print(eciPosition)
+                    #print(spacecraftPos)
                     # Calculate satellite - ground station range magnitude
                     satGroundRange = norm(spacecraftPos - eciPosition)
                     # Calculate satellite - ground station range vector
@@ -152,7 +154,7 @@ def SatGroundAccess(spaceTelescopes, groundStations, time):
                     # Calculate elevation of spacecraft w.r.t ground station
                     elRad = np.dot(satGroundVector[:,0], eciPosition[:,0]) / \
                                     (norm(satGroundVector)*norm(eciPosition))
-                    el = degrees((np.pi/2) - arccos(elRad).value)
+                    el = degrees((np.pi/2) - arccos(elRad.value))
                     
                     # Assign to temporary vector
                     satRange[0,j] = satGroundRange
@@ -172,6 +174,8 @@ def SatGroundAccess(spaceTelescopes, groundStations, time):
                                                         satRange))
                 groundStations[k].satElev = np.vstack((groundStations[k].satElev,\
                                                         elevation))
+                    
+                #print(elevation)
             
     return spaceTelescopes, groundStations
 
