@@ -116,7 +116,7 @@ groundStations = [Haleakala, CerroParanal, Nemea, Perth]
 spaceTelescopes, groundTelescopes, groundStations, simTime = TimeLoop(initTime, \
                 simLength, timeStep, spaceTelescopes, groundTelescopes, \
                 groundStations, obsFreq, sourceRa, sourceDec, dutyCycle, \
-                intTime, allsky)
+                intTime, allsky) 
 
 ###############################################################################
 # Plot Figures
