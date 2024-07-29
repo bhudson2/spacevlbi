@@ -128,7 +128,7 @@ def Baselines(i, spaceTelescopes, groundTelescopes, sourceRa, sourceDec, \
                     u = dot((eciVector1-eciVector2)/wavelength, projU)/1e9
                     v = dot((eciVector1-eciVector2)/wavelength, projV)/1e9
                     vector = np.array([u.value,v.value,0]).reshape((3,1))
-            
+                    
                     if j != l:
                         # If any conditions prohibiting observations are true, zero
                         # baseline, else calculate baseline
@@ -166,7 +166,7 @@ def Baselines(i, spaceTelescopes, groundTelescopes, sourceRa, sourceDec, \
                     # Determine whether observation is possible with these two antenna
                     # based on operational limitations
                     if allsky == 0:
-                        obsFlag = ObsMask(spaceTelescopes[j], groundTelescopes[j])
+                        obsFlag = ObsMask(spaceTelescopes[j], groundTelescopes[l])
                     else:
                         obsFlag = 1
                     

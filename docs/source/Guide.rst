@@ -353,7 +353,7 @@ sphere of the spacecraft. For each position, the function calculates the angle
 to the Sun / Earth / Moon limb and checks these against their definition in 
 the function parameters to determine the position's fitness. The function returns 
 the full list of evaluated positions along with their fitness (defined as the 
-number of time steps within the simulation for which the functional constraint 
+percentage of the simulation for which the functional constraint 
 impacts observations). Some examples of how the ``Optimisation()`` function 
 can be used include:
 

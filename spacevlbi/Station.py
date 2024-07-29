@@ -183,7 +183,7 @@ class GroundTelescope:
         self.sysTemp = sysTemp
         self.apertureEff = apertureEff
         self.SEFD = (2*const.k_B*sysTemp)/(self.apertureEff * np.pi *\
-            (diameter/2)**2)/10**-26;  # Jy
+            (diameter/2)**2)/(10**-26);  # Jy
         self.ecefPosition = np.array([ecefPosition*1000 << u.m])
         self.minEl = minEl
         # Convert ECEF to ECI positions
@@ -280,7 +280,7 @@ class RadioPayload:
         self.sysTemp = sysTemp
         self.apertureEff = apertureEff
         self.SEFD = (2*const.k_B*sysTemp)/(self.apertureEff * np.pi *\
-            (diameter/2)**2)/10**-26  # Jy
+            (diameter/2)**2)/(10**-26)  # Jy
         self.antBoresight = antBoresight
         self.antSunExcl = antSunExcl
         self.antEarthExcl = antEarthExcl

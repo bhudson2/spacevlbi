@@ -24,7 +24,7 @@ matplotlib.rcParams["text.usetex"] = False
 ###############################################################################
 
 initTime = Time("2025-01-01 00:00", scale="utc")  # start time of simulation
-timeStep = 1000  # simulation time step, sec
+timeStep = 500  # simulation time step, sec
 simLength = 86400  # length of simulation, sec
 
 ###############################################################################
@@ -34,7 +34,7 @@ simLength = 86400  # length of simulation, sec
 obsFreq = 320e9  # frequency observations will be conducted at, Hz
 # Calculate (u,v) coverage for full celestial sphere? NOTE. Functional
 # constraints cannot be modelled in all-sky mode.
-allsky = 1
+allsky = 0
 
 # M87*
 sourceRa = 187.705930  # target source right ascension, deg
@@ -130,7 +130,7 @@ Figures.UvPlot(spaceTelescopes, groundTelescopes, allsky, 1)
 
 # Plot attitude sphere (user can control which elements (e.g. Earth, Sun, Moon,
 # antenna, etc.) are included in plot with additional arguments)
-Figures.AttitudeSphere(spaceTelescopes, 0, 45, 30)
+Figures.AttitudeSphere(spaceTelescopes, 0, 120, 30)
 
 # Plot incidence angle of Sun on solar panels
 Figures.SolarPanelIncidence(spaceTelescopes, simTime, 0)

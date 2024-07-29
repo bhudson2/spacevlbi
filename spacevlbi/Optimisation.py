@@ -47,7 +47,7 @@ def Optimisation(spaceTelescopes, sunExcl, earthExcl, \
         the star tracker unit, defaults to "greaterthan"
     :type direction: str
     :return: List of unit vectors in the spacecraft body-fixed frame 
-        and the associated number of time steps for which the Sun, Earth and/or
+        and the associated percentage of the simulation for which the Sun, Earth and/or
         Moon exclusion angles were violated. I.e. smaller number is more optimal.
     :rtype: numpy.ndarray
     """

@@ -71,7 +71,7 @@ def BaselineBHEX(initTime):
     antSunExcl = 90   # Antenna - Sun exclusion angle, deg
     antEarthExcl = 5  # Antenna - Earth limb exclusion angle, deg
     antMoonExcl = 0  # Antenna - Moon exclusion angle, deg
-    sysTemp = 4  # System noise temperature, Kelvin
+    sysTemp = 4.5  # System noise temperature, Kelvin
     
     # Initialise RadioPayload object
     payload1 = Station.RadioPayload(payloadName, antennaDiameter, apertureEff,\
