@@ -166,7 +166,7 @@ def ObsLimits(spaceTelescopes, groundTelescopes, groundStations, sourceRa, \
                             # Caculate angle between spacecraft comms system normal
                             # vector and the ground station
                             commsInertial = commsSystems[k].commsInertial[-1,:]
-                            spaceGround = groundECI - position
+                            spaceGround = -(groundECI - position)
                             spaceGround = spaceGround / norm(spaceGround)
                             commsGroundAngle = degrees(abs(arccos(dot(commsInertial, \
                                         spaceGround)/ (norm(commsInertial)* \
