@@ -102,11 +102,11 @@ def ObsLimits(spaceTelescopes, groundTelescopes, groundStations, sourceRa, \
                         radioPayloads[k].earthFlag = vstack((radioPayloads[k].earthFlag,0))
                     else:
                         radioPayloads[k].earthFlag = vstack((radioPayloads[k].earthFlag,1))
-                else:
-                    radioPayloads[k].sunFlag = vstack((radioPayloads[k].sunFlag,1))
-                    radioPayloads[k].moonFlag = vstack((radioPayloads[k].moonFlag,1))
-                    radioPayloads[k].earthFlag = vstack((radioPayloads[k].earthFlag,1))
-                spaceTelescopes[j].radioPayloads = radioPayloads
+            else:
+                radioPayloads[k].sunFlag = vstack((radioPayloads[k].sunFlag,1))
+                radioPayloads[k].moonFlag = vstack((radioPayloads[k].moonFlag,1))
+                radioPayloads[k].earthFlag = vstack((radioPayloads[k].earthFlag,1))
+            spaceTelescopes[j].radioPayloads = radioPayloads
     
             # Are the star trackers pointing within Sun, Moon or Earth exclusion
             # angles?
