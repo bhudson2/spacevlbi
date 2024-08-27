@@ -99,7 +99,7 @@ def TimeLoop(initTime, simLength, timeStep, spaceTelescopes, groundTelescopes,\
                 
         # Spacecraft Orbit Propagation
         spaceTelescopes = OrbitPropagation(spaceTelescopes, simTime.time[i],\
-                                         i*timeStep, rSun, rMoon)
+                                           rSun, rMoon, i, timeStep)
         
         # Spacecraft Attitude Propagation
         spaceTelescopes = AttitudePropagation(spaceTelescopes, rSun, \

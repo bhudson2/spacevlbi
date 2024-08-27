@@ -9,31 +9,37 @@ from numpy.linalg import norm
 from numpy import degrees, arccos
 from astropy.coordinates import SkyCoord,GCRS,ITRS
 from astropy import units as u
-from poliastro.bodies import Earth
+from poliastro.bodies import Earth, Moon, Sun
 from poliastro.twobody.propagation import CowellPropagator
 from poliastro.core.propagation import func_twobody
-from poliastro.core.perturbations import J2_perturbation, J3_perturbation
+from poliastro.core.perturbations import J2_perturbation, J3_perturbation, \
+    atmospheric_drag_exponential
+from poliastro.constants import rho0_earth, H0_earth
 
 ###############################################################################
 # OrbitPropagation
 ###############################################################################
 
-def OrbitPropagation(spaceTelescopes, time, duration, rSun, rMoon):
+def OrbitPropagation(spaceTelescopes, time, rSun, rMoon, i, timeStep):
     """Propagate space telescopes' orbits using poliastro Orbit functionality.
-    Propagation currently includes following perturbations: Earth J2 and J3
-    harmonics. Additional perturbing forces can be added by editing the Force()
-    function.
+    Propagation currently includes following perturbations: Earth J2, J3
+    harmonics, luni-solar third-body, atmospheric drag and solar radiation pressure. 
+    Propulsive burns in the form of a low-thrust, long-duration electric 
+    propulsion system can also be modelled. Additional perturbing forces can be 
+    added by editing the Force() function.
 
     :param spaceTelescopes: Array of SpaceTelescope objects, defaults to None
     :type spaceTelescopes: list 
     :param time: Current time in simulation, defaults to None
     :type time: str
-    :param duration: Time across which to propagate orbits, defaults to None
-    :type duration: int
     :param rSun: Sun position vector in ECI frame in metres, defaults to None
-    :type rSun: float
+    :type rSun: list
     :param rMoon: Moon position vector in ECI frame in metres, defaults to None
-    :type rMoon: float
+    :type rMoon: list
+    :param i: Current time step, defaults to None
+    :type i: int
+    :param timeStep: simulation time step in seconds, defaults to None
+    :type timeStep: int
     :return: Array of spaceTelescope objects
     :rtype: list
     """
@@ -45,9 +51,26 @@ def OrbitPropagation(spaceTelescopes, time, duration, rSun, rMoon):
             # Extract initial orbit from space telescope
             initPosition = spaceTelescopes[j].orbit
             
+            # Extract spacecraft properties
+            mass = spaceTelescopes[j].mass
+            areaDrag = spaceTelescopes[j].areaDrag * 1e-6  # Convert to km^2
+            cD = spaceTelescopes[j].cD
+            areaSolar = spaceTelescopes[j].areaSolar * 1e-6  # Convert to km^2
+            cR = spaceTelescopes[j].cR
+            gravityJ2 = spaceTelescopes[j].gravityJ2
+            gravityJ3 = spaceTelescopes[j].gravityJ3
+            atmosDrag = spaceTelescopes[j].atmosDrag
+            solarPress = spaceTelescopes[j].solarPress
+            solarFlux = spaceTelescopes[j].solarFlux
+            gravityLuniSolar = spaceTelescopes[j].gravityLuniSolar
+            
+            duration = i * timeStep
             # Propagate orbit using Cowell's method and defined perturbations
             currentPosition = initPosition.propagate(duration << u.s, \
-                                method=CowellPropagator(f=Force))
+                                method=CowellPropagator(f=Force_Wrapper(rSun,\
+                                rMoon,mass,areaDrag,cD,areaSolar,cR, gravityJ2, \
+                                gravityJ3, atmosDrag, solarPress, \
+                                solarFlux, gravityLuniSolar)))
                 
             # Convert propagated orbit to ECI
             posNow = np.array(currentPosition.r*1000) << u.m
@@ -71,32 +94,104 @@ def OrbitPropagation(spaceTelescopes, time, duration, rSun, rMoon):
 # Perturbations
 ###############################################################################
 
-def Force(t0, u_, k):
-    """Force model for performing orbit propagation.
-
-    :param t0: Current simulation time in seconds, defaults to None
-    :type t0: float 
-    :param u_: Current spacecraft state vector in ECI, defaults to None
-    :type u_: numpy.ndarray
-    :param k: Gravitational parameter of central body, defaults to None
-    :type k: float
-    :return: Acceleration vector imparted by perturbations in m/s^2
-    :rtype: numpy.ndarray
-    """
-
-    du_kep = func_twobody(t0, u_, k)
-    # J2 acceleration
-    ax, ay, az = J2_perturbation(t0, u_, k, J2=Earth.J2.value, \
-                    R=Earth.R.to(u.km).value)
-    # J3 acceleration
-    ax1, ay1, az1 = J3_perturbation(t0, u_, k, J3=Earth.J3.value, \
-                    R=Earth.R.to(u.km).value)
-    # Form acceleration vectors
-    du_ad = np.array([0, 0, 0, ax, ay, az])
-    du_ad1 = np.array([0, 0, 0, ax1, ay1, az1])
-    # Total acceleration
-    accel = du_kep + du_ad + du_ad1
-    return accel
+def Force_Wrapper(rSun, rMoon, mass, areaDrag, cD, areaSolar, cR, gravityJ2=1, \
+                  gravityJ3=1, atmosDrag=1, solarPress=1, solarFlux=1367, \
+                  gravityLuniSolar=1):
+    def Force(t0, u_, k):
+        """Force model for performing orbit propagation.
+    
+        :param t0: Current simulation time in seconds, defaults to None
+        :type t0: float 
+        :param u_: Current spacecraft state vector in ECI, defaults to None
+        :type u_: numpy.ndarray
+        :param k: Gravitational parameter of central body, defaults to None
+        :type k: float
+        :param rSun: Sun position vector in ECI frame in metres, defaults to None
+        :type rSun: list
+        :param rMoon: Moon position vector in ECI frame in metres, defaults to None
+        :type rMoon: list
+        :param mass: Spacecraft mass in kg, defaults to None
+        :type mass: float
+        :param areaDrag: Spacecraft drag area in km^2, defaults to None
+        :type areaDrag: float
+        :param cD: Spacecraft drag coefficient, defaults to None
+        :type cD: float
+        :param areaSolar: Spacecraft solar area in km^2, defaults to None
+        :type areaSolar: float
+        :param cR: Spacecraft reflectivity coefficient, defaults to None
+        :type cR: float
+        :param gravityJ2: Model Earth gravity harmonic J2? Defaults to 1
+        :type gravityJ2: BOOL
+        :param gravityJ3: Model Earth gravity harmonic J3? Defaults to 1
+        :type gravityJ3: BOOL
+        :param atmosDrag: Model atmospheric drag? Defaults to 1
+        :type atmosDrag: BOOL
+        :param solarPress: Model solar radiation pressure? Defaults to 1
+        :type solarPress: BOOL
+        :param solarFlux: Solar flux in W/m^2, defaults to 1367
+        :type solarFlux: float
+        :param gravityLuniSolar: Model luni-solar point model gravity? Defaults to 1
+        :type gravityLuniSolar: BOOL
+        :return: Acceleration vector imparted by perturbations in m/s^2
+        :rtype: numpy.ndarray
+        """
+    
+        # Two body acceleration
+        du_kep = func_twobody(t0, u_, k)
+        accel = du_kep
+        
+        # Sun - Moon parameters
+        kMoon = Moon.k.to(u.km**3 / u.s**2).value
+        kSun = Sun.k.to(u.km**3 / u.s**2).value
+        
+        rSat = u_[0:3]
+        rEarthMoon = rMoon.value / 1000
+        rSatMoon = rEarthMoon - rSat
+        
+        rEarthSun = rSun.value / 1000
+        rSatSun = rEarthSun - rSat
+        
+        if gravityJ2 == 1:
+            # J2 acceleration
+            ax, ay, az = J2_perturbation(t0, u_, k, J2=Earth.J2.value, \
+                            R=Earth.R.to(u.km).value)
+            accel = accel + np.array([0, 0, 0, ax, ay, az])
+            
+        
+        if gravityJ3 == 1:
+            # J3 acceleration
+            ax1, ay1, az1 = J3_perturbation(t0, u_, k, J3=Earth.J3.value, \
+                            R=Earth.R.to(u.km).value)
+            accel = accel + np.array([0, 0, 0, ax1, ay1, az1])            
+            
+        if gravityLuniSolar == 1:
+            # Luni-Solar acceleration
+            ax2, ay2, az2 = kMoon*((rSatMoon/(rSatMoon**3))-(rEarthMoon/(rEarthMoon**3)))
+            ax3, ay3, az3 = kSun*((rSatSun/(rSatSun**3))-(rEarthSun/(rEarthSun**3)))
+            
+            accel = accel + np.array([0, 0, 0, ax2, ay2, az2]) + \
+                np.array([0, 0, 0, ax3, ay3, az3])  
+            
+        if atmosDrag == 1:
+            # Drag acceleration
+            R = Earth.R.to(u.km).value
+            rho0 = rho0_earth.to(u.kg / u.km**3).value  # kg/km^3
+            H0 = H0_earth.to(u.km).value
+            A_m = areaDrag / mass
+            ax4, ay4, az4 = atmospheric_drag_exponential(t0, u_, k, R=R, C_D=cD, \
+                                                          A_over_m=A_m, H0=H0, rho0=rho0)
+            accel = accel + np.array([0, 0, 0, ax4, ay4, az4])
+            
+        if solarPress == 1:
+            # Solar pressure acceleration
+            flux = solarFlux * 1e-6  # W/km^2
+            p = flux / 299792.458
+            ax5, ay5, az5 = -p*cR*(areaSolar/mass)*(rSatSun/np.linalg.norm(rSatSun))
+            accel = accel + np.array([0, 0, 0, ax5, ay5, az5])
+        
+        return accel
+    
+    return Force
 
 
 ###############################################################################
@@ -144,8 +239,6 @@ def SatGroundAccess(spaceTelescopes, groundStations, time):
                     # Update ground station position
                     groundStations[k].eciPosition = np.vstack((groundStations[k].eciPosition, \
                                     eciPosition.reshape((1,3))))
-                    #print(eciPosition)
-                    #print(spacecraftPos)
                     # Calculate satellite - ground station range magnitude
                     satGroundRange = norm(spacecraftPos - eciPosition)
                     # Calculate satellite - ground station range vector

@@ -6,7 +6,7 @@
 # example only and are not intended to accurately represent BHEX's final design
 # - https://www.blackholeexplorer.org/
 #
-# @author: BenHudson - 28/07/2024
+# @author: BenHudson - 27/08/2024
 
 from spacevlbi import Station
 import numpy as np
@@ -20,6 +20,19 @@ def BaselineBHEX(initTime):
     :return: sc: SpaceTelescope object representing BHEX
     :rtype sc: SpaceTelescope
     """
+    
+###############################################################################
+#   Environment properties
+###############################################################################
+
+    # Orbit perturbation models used in the propagation of the spacecraft's 
+    # orbit. If set to 1, the perturbation will be modelled.
+    gravityJ2 = 1  # Earth gravity field J2 harmonic
+    gravityJ3 = 1  # Earth gravity field J3 harmonic
+    atmosDrag = 1  # Atmospheric drag, exponential density model
+    solarPress = 1  # Solar radiation pressure
+    solarFlux = 1367  # W/m^2, solar flux from Sun
+    gravityLuniSolar = 1  # Luni-Solar point model gravity perturbations
     
 ###############################################################################
 #   General spacecraft properties
@@ -41,7 +54,7 @@ def BaselineBHEX(initTime):
     inc = 90  # Inclination, deg
     ra = 247.7  # Right ascension of the ascending node, deg
     aop = 0  # Argument of perigee in degrees
-    ta = 90  #  Starting true anomaly in degrees
+    ta = 0  #  Starting true anomaly in degrees
     
 ###############################################################################
 #   Attitude configuration
@@ -83,12 +96,12 @@ def BaselineBHEX(initTime):
 #   Equipment Model configuration
 ###############################################################################
     
-    strModel = 1 # Model star trackers?
+    strModel = 0 # Model star trackers?
     # Number of unblinded star trackers required for observation
     reqStarTrackers = 2
-    radModel = 1  # Model radiators?
-    panelModel = 1  # Model solar panels?
-    commsModel = 1  # Model comms systems?
+    radModel = 0  # Model radiators?
+    panelModel = 0  # Model solar panels?
+    commsModel = 0  # Model comms systems?
     
 ###############################################################################
 #   Star tracker configuration
@@ -137,11 +150,11 @@ def BaselineBHEX(initTime):
 
     # Note. During the simulation, if a radiator is blinded at the current
     # time step, an observation cannot be performed.
-    radName = "Rad1"
+    radName = "Rad"
     radNorm = np.array([-0.809, -0.588, 0]);  # Normal vector in body frame
-    radSunExcl = 30  # Radiator - Sun exclusion angle, deg
-    radEarthExcl = 30  # Radiator - Earth exclusion angle, deg
-    radMoonExcl = 30  # Radiator - Moon exclusion angle, deg
+    radSunExcl = 40  # Radiator - Sun exclusion angle, deg
+    radEarthExcl = 40  # Radiator - Earth exclusion angle, deg
+    radMoonExcl = 40  # Radiator - Moon exclusion angle, deg
     # Initialise Radiator object
     rad1 = Station.Radiator(radName, radNorm, radSunExcl, radEarthExcl, \
                  radMoonExcl)
@@ -152,10 +165,10 @@ def BaselineBHEX(initTime):
 #   Comms configuration
 ###############################################################################
     
-    commsName = "Optical Terminal"
+    commsName = "Optical"
     commsNorm = np.array([1,0,0])  # Normal vector in body frame
-    commsFov = 70  # Beamwidth/gimbal limit (half angle from normal vector), deg
-    groundReqObs = 0  # Is a ground station required insight for observations?
+    commsFov = 90  # Beamwidth/gimbal limit (half angle from normal vector), deg
+    groundReqObs = 1  # Is a ground station required insight for observations?
     # Initialise CommsSystem object
     comms1 = Station.CommsSystem(commsName,  commsNorm, commsFov, groundReqObs)
     
@@ -169,5 +182,7 @@ def BaselineBHEX(initTime):
                  initTime, sma, ecc, inc, ra, aop, ta,  pointingVector, \
                  constraintVector, rollAngle, radioPayloads, starTrackers, \
                  reqStarTrackers, radiators, commsSystems, solarPanels, \
-                 strModel, radModel, commsModel, panelModel)
+                 strModel, radModel, commsModel, panelModel, gravityJ2, \
+                 gravityJ3, atmosDrag, solarPress, solarFlux, gravityLuniSolar)
+        
     return sc

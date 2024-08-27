@@ -102,11 +102,11 @@ def ObsLimits(spaceTelescopes, groundTelescopes, groundStations, sourceRa, \
                         radioPayloads[k].earthFlag = vstack((radioPayloads[k].earthFlag,0))
                     else:
                         radioPayloads[k].earthFlag = vstack((radioPayloads[k].earthFlag,1))
-                else:
-                    radioPayloads[k].sunFlag = vstack((radioPayloads[k].sunFlag,1))
-                    radioPayloads[k].moonFlag = vstack((radioPayloads[k].moonFlag,1))
-                    radioPayloads[k].earthFlag = vstack((radioPayloads[k].earthFlag,1))
-                spaceTelescopes[j].radioPayloads = radioPayloads
+            else:
+                radioPayloads[k].sunFlag = vstack((radioPayloads[k].sunFlag,1))
+                radioPayloads[k].moonFlag = vstack((radioPayloads[k].moonFlag,1))
+                radioPayloads[k].earthFlag = vstack((radioPayloads[k].earthFlag,1))
+            spaceTelescopes[j].radioPayloads = radioPayloads
     
             # Are the star trackers pointing within Sun, Moon or Earth exclusion
             # angles?
@@ -166,7 +166,7 @@ def ObsLimits(spaceTelescopes, groundTelescopes, groundStations, sourceRa, \
                             # Caculate angle between spacecraft comms system normal
                             # vector and the ground station
                             commsInertial = commsSystems[k].commsInertial[-1,:]
-                            spaceGround = groundECI - position
+                            spaceGround = -(groundECI - position)
                             spaceGround = spaceGround / norm(spaceGround)
                             commsGroundAngle = degrees(abs(arccos(dot(commsInertial, \
                                         spaceGround)/ (norm(commsInertial)* \
@@ -322,7 +322,7 @@ def ObsMask(telescope1, telescope2):
         if starTrackers != [] and telescope1.strModel == 1:    
             for j in range(len(starTrackers)):
                 blindFlag = starTrackers[j].strBlindFlag[-1,:]
-                if blindFlag == 0:
+                if blindFlag == 1:
                     strCount = strCount + 1
             
             if strCount < strReq:
@@ -366,12 +366,20 @@ def ObsMask(telescope1, telescope2):
                 earthFlag = radioPayloads[j].earthFlag[-1,:]
                 moonFlag = radioPayloads[j].moonFlag[-1,:]
                 radioFlag = radioFlag * sunFlag * earthFlag * moonFlag
-
+                
         strFlag = 1
+        strReq = telescope2.reqStarTrackers
+        strCount = 0
         if starTrackers != [] and telescope2.strModel == 1:    
             for j in range(len(starTrackers)):
                 blindFlag = starTrackers[j].strBlindFlag[-1,:]
-                strFlag = strFlag * blindFlag
+                if blindFlag == 1:
+                    strCount = strCount + 1
+            
+            if strCount < strReq:
+                strFlag = 0
+            else:
+                strFlag = 1
         
         radFlag = 1
         if radiators != [] and telescope2.radModel == 1:    

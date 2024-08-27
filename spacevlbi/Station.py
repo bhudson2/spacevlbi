@@ -84,6 +84,18 @@ class SpaceTelescope:
     :param panelModel: Flag indicating whether SolarPanels should be
         modelled, defaults to None
     :type panelModel: bool
+    :param gravityJ2: Model Earth gravity harmonic J2? Defaults to None
+    :type gravityJ2: BOOL
+    :param gravityJ3: Model Earth gravity harmonic J3? Defaults to None
+    :type gravityJ3: BOOL
+    :param atmosDrag: Model atmospheric drag? Defaults to None
+    :type atmosDrag: BOOL
+    :param solarPress: Model solar radiation pressure? Defaults to None
+    :type solarPress: BOOL
+    :param solarFlux: Solar flux in W/m^2, defaults to None
+    :type solarFlux: float
+    :param gravityLuniSolar: Model luni-solar point model gravity? Defaults to None
+    :type gravityLuniSolar: BOOL
     :return: SpaceTelescope object
     :rtype: SpaceTelescope
     """
@@ -92,7 +104,8 @@ class SpaceTelescope:
                  ecc, inc, ra, aop, ta,  pointingVector, constraintVector, \
                  rollAngle, radioPayloads, starTrackers, reqStarTrackers, \
                  radiators, commsSystems, solarPanels, strModel, radModel, 
-                 commsModel, panelModel):
+                 commsModel, panelModel, gravityJ2, gravityJ3, atmosDrag, \
+                 solarPress, solarFlux, gravityLuniSolar):
                
         self.name = name
         self.pointingVector = np.array([pointingVector])
@@ -128,6 +141,12 @@ class SpaceTelescope:
         self.starTrackers = starTrackers
         self.reqStarTrackers = reqStarTrackers
         self.panelModel = panelModel
+        self.gravityJ2 = gravityJ2
+        self.gravityJ3 = gravityJ3
+        self.atmosDrag = atmosDrag
+        self.solarPress = solarPress
+        self.solarFlux = solarFlux
+        self.gravityLuniSolar = gravityLuniSolar
         self.solarPanels = solarPanels
         self.radModel = radModel
         self.radiators = radiators
@@ -416,7 +435,3 @@ class CommsSystem:
         self.commsGroundAngle = np.array([0])
         # Array of flags indicating which ground stations are insight
         self.groundStationInsight = np.array([0])
-        
-
-        
-

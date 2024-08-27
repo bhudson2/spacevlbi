@@ -5,7 +5,7 @@
 # The example given is a simplified representation of the Black Hole Explorer
 # (BHEX) mission - https://www.blackholeexplorer.org/
 
-# @author: BenHudson - 28/07/2024
+# @author: BenHudson - 27/08/2024
 
 from spacevlbi import Station
 from spacevlbi.TimeLoop import TimeLoop
@@ -16,15 +16,17 @@ from poliastro.util import Time
 from ExampleSpaceTelescope import BaselineBHEX
 import matplotlib
 
-# Set to True to use Latex to interpret figures
-matplotlib.rcParams["text.usetex"] = False
+# Plot configurations
+matplotlib.rcParams['mathtext.fontset'] = 'stix'
+matplotlib.rcParams['font.family'] = 'STIXGeneral'
+matplotlib.rcParams.update({'font.size': 20})
 
 ###############################################################################
 # Simulation Time Definition
 ###############################################################################
 
 initTime = Time("2025-01-01 00:00", scale="utc")  # start time of simulation
-timeStep = 500  # simulation time step, sec
+timeStep = 100  # simulation time step, sec
 simLength = 86400  # length of simulation, sec
 
 ###############################################################################
@@ -41,10 +43,10 @@ sourceRa = 187.705930  # target source right ascension, deg
 sourceDec = 12.391123  # target source declination, deg
 
 # Sgr A*
-# sourceRa = 266.25  # target source right ascension, deg
-# sourceDec = -29.0078 # target source declination, deg
+#sourceRa = 266.25  # target source right ascension, deg
+#sourceDec = -29.0078 # target source declination, deg
 
-intTime = 300  # integration time, sec
+intTime = 0  # integration time, sec
 dutyCycle = 0  # time between the start of one integration and the next, sec
 bandwidth = 32e9  # bandwidth of observations, sec
 
@@ -53,28 +55,29 @@ bandwidth = 32e9  # bandwidth of observations, sec
 ###############################################################################
 
 # See GroundTelescope class for definition of input parameters
+elev = 15
 ALMA = Station.GroundTelescope("ALMA", 73, 0.68, 76, \
-                np.array([2225.0613,-5440.0617,-2481.6812]), 15, initTime)
+                np.array([2225.0613,-5440.0617,-2481.6812]), elev, initTime)
 IRAM = Station.GroundTelescope("IRAM", 30, 0.47, 226, \
-                np.array([5088.9678,-301.6812,3825.0122]), 15, initTime)
+                np.array([5088.9678,-301.6812,3825.0122]), elev, initTime)
 APEX = Station.GroundTelescope("APEX", 12, 0.61, 118, \
-                np.array([2225.0395, -5441.1976, -2479.3034]), 15, initTime)
+                np.array([2225.0395, -5441.1976, -2479.3034]), elev, initTime)
 JCMT = Station.GroundTelescope("JCMT", 15, 0.52, 345, \
-                np.array([-5464.5847, -2493.0012, 2150.6540]), 15, initTime)
+                np.array([-5464.5847, -2493.0012, 2150.6540]), elev, initTime)
 LMT = Station.GroundTelescope("LMT", 32.5, 0.28, 371, \
-                np.array([-768.7156, -5988.5071, 2063.3549]), 15, initTime)
+                np.array([-768.7156, -5988.5071, 2063.3549]), elev, initTime)
 SMA = Station.GroundTelescope("SMA", 14.7, 0.75, 285, \
-                np.array([-5464.5555, -2492.9280, 2150.7972]), 15, initTime)
+                np.array([-5464.5555, -2492.9280, 2150.7972]), elev, initTime)
 SMT = Station.GroundTelescope("SMT", 10, 0.60, 291, \
-                np.array([-1828.7962, -5054.4068, 3427.8652]), 15, initTime)
+                np.array([-1828.7962, -5054.4068, 3427.8652]), elev, initTime)
 SPT = Station.GroundTelescope("SPT", 6, 0.60, 118, \
-                np.array([0.8098, -0.8169, -6359.5687]), 15, initTime)
+                np.array([0.8098, -0.8169, -6359.5687]), elev, initTime)
 NOEMA = Station.GroundTelescope("NOEMA", 52,   0.50, 270,\
-                np.array([4524.0004, 468.0421, 4460.5098]), 15, initTime)
+                np.array([4524.0004, 468.0421, 4460.5098]), elev, initTime)
 HAY = Station.GroundTelescope("HAY", 52, 0.50, 270, \
-                np.array([1492.341, -4457.234,  4296.933]), 15, initTime)
+                np.array([1492.341, -4457.234,  4296.933]), elev, initTime)
 PV = Station.GroundTelescope("PV", 15, 0.47, 226, \
-                np.array([5088.9678, -301.6812,  3825.012]), 15, initTime)
+                np.array([5088.9678, -301.6812,  3825.012]), elev, initTime)
 
 ###############################################################################
 # Spacecraft Definition
@@ -93,8 +96,8 @@ Svalbard = Station.GroundStation("Svalbard", \
                 np.array([1258.4, 346.3, 6222.2]), 5, initTime);
 Haleakala = Station.GroundStation("Haleakala", \
                 np.array([-5466.003,-2404.290, 2242.294]), 5, initTime);
-CerroParanal = Station.GroundStation("Cerro Paranal", \
-                np.array([1946.434,-5467.640,-2642.704]), 5, initTime);
+Lasilla = Station.GroundStation("La Silla", \
+                np.array([1838.689,5259.299,3099.28]), 5, initTime);
 Nemea = Station.GroundStation("Nemea", \
                 np.array([4654.281,1947.909,3888.707]), 5, initTime);
 Perth = Station.GroundStation("Perth", \
@@ -105,8 +108,8 @@ Perth = Station.GroundStation("Perth", \
 ###############################################################################
 
 spaceTelescopes = [sc1]
-groundTelescopes = [ALMA, LMT, SMA, APEX, JCMT, SPT, SMT, PV, NOEMA, HAY, IRAM]
-groundStations = [Haleakala, CerroParanal, Nemea, Perth]
+groundTelescopes = [ALMA, LMT, SMA, APEX, JCMT, SPT, SMT, NOEMA, HAY, IRAM]
+groundStations = [Haleakala, Lasilla, Nemea, Perth]
 
 ###############################################################################
 # Simulation
@@ -117,7 +120,7 @@ spaceTelescopes, groundTelescopes, groundStations, simTime = TimeLoop(initTime, 
                 simLength, timeStep, spaceTelescopes, groundTelescopes, \
                 groundStations, obsFreq, sourceRa, sourceDec, dutyCycle, \
                 intTime, allsky) 
-
+    
 ###############################################################################
 # Plot Figures
 ###############################################################################

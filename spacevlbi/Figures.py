@@ -253,7 +253,7 @@ def UvPlot(spaceTelescopes, groundTelescopes, allsky, plotLost=1):
         
         # Calculate number of stations
         stationNo = len(spaceTelescopes) + len(groundTelescopes)
-        
+
         if stationNo > 1:
     
             fig = plt.figure(figsize=(20,40))
@@ -268,7 +268,7 @@ def UvPlot(spaceTelescopes, groundTelescopes, allsky, plotLost=1):
             for r in range(len(raan)):
                 # Iterate through declination range
                 for d in range(len(dec)):
-            
+                    
                     # Iterate through space telescopes and plot (u,v) coverage
                     for i in range(len(spaceTelescopes)):
                         for j in range(1, int(stationNo)+1):
@@ -373,24 +373,17 @@ def AttitudeSphere(spaceTelescopes, telescopeSelect=0, azim=45, elev=30, \
         ax = fig.add_subplot(projection = '3d')
         print("Generating attitude sphere...")
         
-        textScale = 1.1
+        textScale = 1.3
         axisScale = 1.25
+        transparency = 0.3
         
         # Extract SpaceTelescope from array and plot attitude sphere
         spaceTelescope = spaceTelescopes[telescopeSelect]
         
-        # Plot spacecraft body axis
-        ax.plot([0,axisScale], [0,0], [0,0], c='black')
-        ax.plot([0,0], [0,axisScale], [0,0], c='black')
-        ax.plot([0,0], [0,0], [0,axisScale], c='black')
-        ax.text(1.3, 0, 0, "X", color='black')
-        ax.text(0, 1.3, 0, "Y", color='black')
-        ax.text(0, 0, 1.3, "Z", color='black')
-        
         # Plot antenna surface
         if plotAntenna==1:
             vector = spaceTelescope.radioPayloads[0].antBoresight
-            [X,Y,Z] = Cone3D([0,0,0], 0.1*vector, 0, 0.1*np.tan(radians(80)), 20)
+            [X,Y,Z] = Cone3D([0,0,0], 0.1*vector, 0, 0.15*np.tan(radians(80)), 20)
             ax.plot_surface(X, Y, Z, color='grey', linewidth=0, antialiased=False, \
                             alpha=0.5)
         
@@ -407,7 +400,7 @@ def AttitudeSphere(spaceTelescopes, telescopeSelect=0, azim=45, elev=30, \
                                           starTrackers[k].strMoonExcl]))            
                 ax.plot([0,vector[0]], [0,vector[1]], [0,vector[2]], c='red')
                 ax.text(textScale*vector[0], textScale*vector[1], textScale*\
-                        vector[2], name, color='red')
+                        vector[2], name, color='red', horizontalalignment='center', verticalalignment='center')
                 # Plot 3D cone showing FOV
                 if fov > radians(45):
                     scale = (1 - fov/radians(90))*2
@@ -415,7 +408,7 @@ def AttitudeSphere(spaceTelescopes, telescopeSelect=0, azim=45, elev=30, \
                     scale = 1
                 [X,Y,Z] = Cone3D([0,0,0], scale*vector, 0, scale*np.tan(fov), 20)
                 ax.plot_surface(X, Y, Z, color='red', linewidth=0, antialiased=False, \
-                                alpha=0.1)
+                                alpha=transparency)
             
         # Plot radiator
         radiators = spaceTelescope.radiators
@@ -430,14 +423,14 @@ def AttitudeSphere(spaceTelescopes, telescopeSelect=0, azim=45, elev=30, \
                                           radiators[k].radMoonExcl]))
                 ax.plot([0,vector[0]], [0,vector[1]], [0,vector[2]], c='red')
                 ax.text(textScale*vector[0], textScale*vector[1], textScale*vector[2], \
-                        name, color='red')
+                        name, color='red', horizontalalignment='center', verticalalignment='center')
                 if fov > radians(45):
                     scale = (1 - fov/radians(90))*2
                 else:
                     scale = 1
                 [X,Y,Z] = Cone3D([0,0,0], scale*vector, 0, scale*np.tan(fov), 20)
                 ax.plot_surface(X, Y, Z, color='red', linewidth=0, antialiased=False, \
-                                alpha=0.1)
+                                alpha=transparency)
         
         # Plot solar panel directions
         solarPanels = spaceTelescope.solarPanels
@@ -448,7 +441,7 @@ def AttitudeSphere(spaceTelescopes, telescopeSelect=0, azim=45, elev=30, \
                 name = solarPanels[k].name
                 ax.plot([0,vector[0]], [0,vector[1]], [0,vector[2]], c='red')
                 ax.text(textScale*vector[0], textScale*vector[1], textScale*vector[2], \
-                        name, color='red')
+                        name, color='red', horizontalalignment='center', verticalalignment='center')
                 
         # Plot comms system
         commsSystems = spaceTelescope.commsSystems
@@ -459,24 +452,24 @@ def AttitudeSphere(spaceTelescopes, telescopeSelect=0, azim=45, elev=30, \
                 fov = radians(commsSystems[k].commsFov)
                 ax.plot([0,vector[0]], [0,vector[1]], [0,vector[2]], c='red')
                 ax.text(textScale*vector[0], textScale*vector[1], textScale*vector[2], \
-                        name, color='red')
+                        name, color='red', horizontalalignment='center', verticalalignment='center')
                 if fov > radians(45):
                     scale = (1 - fov/radians(90))*2
                 else:
                     scale = 1
                 [X,Y,Z] = Cone3D([0,0,0], scale*vector, 0, scale*np.tan(fov), 20)
                 ax.plot_surface(X, Y, Z, color='red', linewidth=0, antialiased=False, \
-                                alpha=0.1)
+                                alpha=transparency)
         
         # Plot initial Earth, Sun and Moon positions
         if plotEarth == 1:
             earthBody = spaceTelescope.earthBody[1,:]
-            ax.plot([0,earthBody[0]], [0,earthBody[1]], [0,earthBody[2]], c='green', \
+            ax.plot([0,earthBody[0]], [0,earthBody[1]], [0,earthBody[2]], c='limegreen', \
                     label="Earth")
             # Plot 3D cone showing Earth, Sun and Moon limbs
             fov = spaceTelescope.earthLimbAngle[1]
             [X,Y,Z] = Cone3D([0,0,0], earthBody, 0, np.tan(fov), 5)
-            ax.plot_surface(X, Y, Z, color='green', linewidth=0, antialiased=False, \
+            ax.plot_surface(X, Y, Z, color='limegreen', linewidth=0, antialiased=False, \
                             alpha=0.1)
         if plotSun == 1:
             sunBody = spaceTelescope.sunBody[1,:]
@@ -489,7 +482,7 @@ def AttitudeSphere(spaceTelescopes, telescopeSelect=0, azim=45, elev=30, \
         if plotMoon == 1:
             moonBody = spaceTelescope.moonBody[1,:]
             ax.plot([0,moonBody[0]], [0,moonBody[1]], [0,moonBody[2]], c='blue', \
-                    label="moon")
+                    label="Moon")
             fov = spaceTelescope.moonLimbAngle[1]
             [X,Y,Z] = Cone3D([0,0,0], moonBody, 0, np.tan(fov), 5)
             ax.plot_surface(X, Y, Z, color='blue', linewidth=0, antialiased=False, \
@@ -500,11 +493,11 @@ def AttitudeSphere(spaceTelescopes, telescopeSelect=0, azim=45, elev=30, \
             # Plot initial Earth, Sun and Moon positions
             if plotEarth == 1:
                 earthBody = spaceTelescope.earthBody[i,:]
-                ax.plot([0,earthBody[0]], [0,earthBody[1]], [0,earthBody[2]], c='green')
+                ax.plot([0,earthBody[0]], [0,earthBody[1]], [0,earthBody[2]], c='limegreen')
                 # Plot 3D cone showing Earth, Sun and Moon limbs
                 fov = spaceTelescope.earthLimbAngle[1]
                 [X,Y,Z] = Cone3D([0,0,0], earthBody, 0, np.tan(fov), 5)
-                ax.plot_surface(X, Y, Z, color='green', linewidth=0, antialiased=False, \
+                ax.plot_surface(X, Y, Z, color='limegreen', linewidth=0, antialiased=False, \
                                 alpha=0.1)
             if plotSun == 1:
                 sunBody = spaceTelescope.sunBody[i,:]
@@ -521,8 +514,16 @@ def AttitudeSphere(spaceTelescopes, telescopeSelect=0, azim=45, elev=30, \
                 ax.plot_surface(X, Y, Z, color='blue', linewidth=0, antialiased=False, \
                                 alpha=0.1)
         
+        # Plot spacecraft body axis
+        ax.plot([0,axisScale], [0,0], [0,0], c='black')
+        ax.plot([0,0], [0,axisScale], [0,0], c='black')
+        ax.plot([0,0], [0,0], [0,axisScale], c='black')
+        ax.text(1.3, 0, 0, "X", color='black', horizontalalignment='center', verticalalignment='center')
+        ax.text(0, 1.3, 0, "Y", color='black', horizontalalignment='center', verticalalignment='center')
+        ax.text(0, 0, 1.3, "Z", color='black', horizontalalignment='center', verticalalignment='center')
+        
         # Configure axes
-        axisLimit = 1.1
+        axisLimit = 1.3
         ax.set(xlim=(-axisLimit, axisLimit), ylim=(-axisLimit, axisLimit), \
                 zlim=(-axisLimit, axisLimit))
         ax.set_xlabel('')

@@ -258,18 +258,16 @@ propagated using the Python package `poliastro`_.
 Poliastro's Orbit functionality can be used to perform a two-body propagation 
 of a spacecraft's orbit and also include additional perturbing forces. 
 
-Currently, only the J2 and J3 harmonics of the Earth's gravitational field are 
-included in the orbit propagation of space telescopes. This could be expanded 
-by implementing additional accelerations in the ``Force()`` function. The 
-propagation is therefore sufficient for short duration simulation of space 
-telescope observations in Earth orbit at altitudes below Geostationary Earth 
-Orbit (GEO). Above GEO, luni-solar perturbations start to become more 
-significant for longer duration simulation. In Low Earth Orbit (LEO), the 
-accuracy of long duration simulations will be impacted by the lack of drag 
-force included in the perturbation model.
+The following perturbing forces are currently included in the orbit propagation:
 
-The tool will be updated in the near-future to include luni-solar, solar 
-pressure and atmospheric drag perturbations.
+    * J2 and J3 Earth gravitational field harmonics
+    * Third body perturbation from the Moon and Sun, modelled as point mass contributions
+    * Atmospheric drag utilising the exponential density model built in to `poliastro`_
+    * Solar radiation pressure utilising a solar flux that can be varied by the user
+
+Additional perturbing forces could be included by editing the 
+``Force_Wrapper()`` function in which are calculated the accelerations imparted 
+by each perturbation.
 
 .. _poliastro: https://www.poliastro.space/
 
