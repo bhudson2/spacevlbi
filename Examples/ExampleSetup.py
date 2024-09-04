@@ -47,7 +47,7 @@ sourceDec = 12.391123  # target source declination, deg
 #sourceDec = -29.0078 # target source declination, deg
 
 intTime = 0  # integration time, sec
-dutyCycle = 0  # time between the start of one integration and the next, sec
+dutyCycle = 0  # time between the start of one scan and the next, sec
 bandwidth = 32e9  # bandwidth of observations, sec
 
 ###############################################################################
