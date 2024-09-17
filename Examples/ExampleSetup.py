@@ -97,7 +97,7 @@ Svalbard = Station.GroundStation("Svalbard", \
 Haleakala = Station.GroundStation("Haleakala", \
                 np.array([-5466.003,-2404.290, 2242.294]), 5, initTime);
 Lasilla = Station.GroundStation("La Silla", \
-                np.array([1838.689,5259.299,3099.28]), 5, initTime);
+                np.array([1838.689,-5259.299,-3099.28]), 5, initTime);
 Nemea = Station.GroundStation("Nemea", \
                 np.array([4654.281,1947.909,3888.707]), 5, initTime);
 Perth = Station.GroundStation("Perth", \
