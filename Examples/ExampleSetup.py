@@ -1,3 +1,21 @@
+"""
+Library for simulating space-based VLBI missions (spacevlbi)
+
+Copyright 2024 Ben Hudson
+
+Licensed under the GNU General Public License, Version 3.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.gnu.org/licenses/gpl-3.0.en.html
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+"""
+
 # ExampleSetup.py
 #
 # An example implementation of the spacevlbi package to demonstrate how the
@@ -5,7 +23,7 @@
 # The example given is a simplified representation of the Black Hole Explorer
 # (BHEX) mission - https://www.blackholeexplorer.org/
 
-# @author: BenHudson - 27/08/2024
+# @author: BenHudson - 22/09/2024
 
 from spacevlbi import Station
 from spacevlbi.TimeLoop import TimeLoop
@@ -95,13 +113,13 @@ sc1 = BaselineBHEX(initTime)
 Svalbard = Station.GroundStation("Svalbard", \
                 np.array([1258.4, 346.3, 6222.2]), 5, initTime);
 Haleakala = Station.GroundStation("Haleakala", \
-                np.array([-5466.003,-2404.290, 2242.294]), 5, initTime);
+                np.array([-5463.394,-2403.165, 2241.185]), 15, initTime);
 Lasilla = Station.GroundStation("La Silla", \
-                np.array([1838.689,5259.299,3099.28]), 5, initTime);
-Nemea = Station.GroundStation("Nemea", \
-                np.array([4654.281,1947.909,3888.707]), 5, initTime);
+                np.array([1837.134,-5257.272,-3098.702]), 15, initTime);
+Achaea = Station.GroundStation("Achaea", \
+                np.array([4660.348,1901.702,3904.176]), 15, initTime);
 Perth = Station.GroundStation("Perth", \
-                np.array([-2384.691,4860.073,-3361.166]), 5, initTime);
+                np.array([-2384.681,4860.089,-3361.149]), 15, initTime);
     
 ###############################################################################
 # Initialise Station Arrays
@@ -109,7 +127,7 @@ Perth = Station.GroundStation("Perth", \
 
 spaceTelescopes = [sc1]
 groundTelescopes = [ALMA, LMT, SMA, APEX, JCMT, SPT, SMT, NOEMA, HAY, IRAM]
-groundStations = [Haleakala, Lasilla, Nemea, Perth]
+groundStations = [Haleakala, Lasilla, Achaea, Perth]
 
 ###############################################################################
 # Simulation
