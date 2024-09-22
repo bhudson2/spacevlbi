@@ -45,7 +45,7 @@ Citation
 --------
 If you use spacevlbi in your publication, please cite: 
 
-Hudson, B., 2024. spacevlbi. 4TU.ResearchData. Software. https://doi.org/10.4121/21711227 
+Hudson, B., 2024. spacevlbi. 4TU.ResearchData. Software. https://doi.org/10.4121/392b8d8c-4eb2-4420-b46b-1cb697764a2b
 
 Would you like to contribute?
 -----------------------------
