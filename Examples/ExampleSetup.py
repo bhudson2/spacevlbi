@@ -115,15 +115,9 @@ Svalbard = Station.GroundStation("Svalbard", \
 Haleakala = Station.GroundStation("Haleakala", \
                 np.array([-5463.394,-2403.165, 2241.185]), 15, initTime);
 Lasilla = Station.GroundStation("La Silla", \
-<<<<<<< HEAD
                 np.array([1837.134,-5257.272,-3098.702]), 15, initTime);
 Achaea = Station.GroundStation("Achaea", \
                 np.array([4660.348,1901.702,3904.176]), 15, initTime);
-=======
-                np.array([1838.689,-5259.299,-3099.28]), 5, initTime);
-Nemea = Station.GroundStation("Nemea", \
-                np.array([4654.281,1947.909,3888.707]), 5, initTime);
->>>>>>> 193ca8ea9527bad33e54c89d93b69a1170a8b64c
 Perth = Station.GroundStation("Perth", \
                 np.array([-2384.681,4860.089,-3361.149]), 15, initTime);
     

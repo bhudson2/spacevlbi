@@ -150,7 +150,7 @@ def Baselines(i, spaceTelescopes, groundTelescopes, sourceRa, sourceDec, \
                     if j != l:
                         # If any conditions prohibiting observations are true, zero
                         # baseline, else calculate baseline
-                        if obsFlag == 0:
+                        if obsFlag == 0 and sourceVis1 == 1 and sourceVis2 == 1:
                             spaceTelescopes[j].baselines[r*len(declination)+d]\
                                 [i,baselineCount*3-3:baselineCount*3] = [0,0,0]
                             # Add lost baselines to space telescope property
@@ -203,7 +203,7 @@ def Baselines(i, spaceTelescopes, groundTelescopes, sourceRa, sourceDec, \
                     
                     # If any conditions prohibiting observations are true, zero
                     # baseline, else calculate baseline
-                    if obsFlag == 0:
+                    if obsFlag == 0 and sourceVis1 == 1 and sourceVis2 == 1:
                         spaceTelescopes[j].baselines[r*len(declination)+d]\
                             [i,baselineCount*3-3:baselineCount*3] = [0,0,0]
                         # Add lost baselines to space telescope property
@@ -280,7 +280,7 @@ def Baselines(i, spaceTelescopes, groundTelescopes, sourceRa, sourceDec, \
                     if j != l:
                         # If any conditions prohibiting observations are true, zero
                         # baseline, else calculate baseline
-                        if obsFlag == 0:
+                        if obsFlag == 0 and sourceVis1 == 1 and sourceVis2 == 1:
                             groundTelescopes[j].baselines[r*len(declination)+d]\
                                 [i,baselineCount*3-3:baselineCount*3] = [0,0,0]
                             # Add lost baselines to space telescope property
@@ -329,7 +329,7 @@ def Baselines(i, spaceTelescopes, groundTelescopes, sourceRa, sourceDec, \
             
                     # If any conditions prohibiting observations are true, zero
                     # baseline, else calculate baseline
-                    if obsFlag == 0:
+                    if obsFlag == 0 and sourceVis1 == 1 and sourceVis2 == 1:
                         groundTelescopes[j].baselines[r*len(declination)+d]\
                             [i,baselineCount*3-3:baselineCount*3] = [0,0,0]
                         # Add lost baselines to space telescope property

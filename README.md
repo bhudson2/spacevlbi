@@ -1,8 +1,8 @@
 spacevlbi
 =========
-Python package for simulating and optimising a space-based VLBI mission. This package enables multiple space telescopes to be modelled by propagating their orbital and attitude state. Elements of the spacecraft design that impact when observations can be performed can also be included in the simulation to assess and mitigate their impact on the science return of the mission (e.g. source visibility including Sun/Earth/Moon avoidance, star trackers, radiators, solar panels, ground station access times, etc.).
+Python package for simulating and optimising a space-based Very Long Baseline Interferometry (VLBI) mission. This package enables multiple space telescopes to be modelled by propagating their orbital and attitude state. Elements of the spacecraft design that impact when observations can be performed can also be included in the simulation to assess and mitigate their impact on the science return of the mission (e.g. source visibility including Sun/Earth/Moon avoidance, star trackers, radiators, solar panels, ground station access times, etc.).
 
-A ground-based array of radio antenna can also be modelled, enabling the (u,v) coverage that the full interferometer can achieve of a given source(s) to be calculated.
+A ground-based array of radio antenna can also be modelled, enabling the $(u,v)$ coverage that the full interferometer can achieve of a given source(s) to be calculated.
 
 Although the package has been developed specifically for space VLBI applications, it can also be used more generally for modelling other types of astronomy mission and assessing the impact of the spacecraft design on the science return.
 
@@ -25,7 +25,15 @@ Documentation
 -------------
 More detailed documentation for the package is available [here](https://spacevlbi.readthedocs.io/en/latest/).
 
-Provided in the Examples folder is the script ExampleSetup.py. This script shows how the package can be used to model a VLBI array with a single space element. This example is based upon the preliminary concept for the [Black Hole Explorer (BHEX)](https://www.blackholeexplorer.org/) mission. The script ExampleSpaceTelescope.py shows how an object of the SpaceTelescope class can be defined.
+Provided in the Examples folder is the script `ExampleSetup.py`. This script shows how the package can be used to model a VLBI array with a single space element. This example is based upon the preliminary concept for the [Black Hole Explorer (BHEX)](https://www.blackholeexplorer.org/) mission. The script `ExampleSpaceTelescope.py` shows how an object of the `SpaceTelescope` class can be defined.
+
+Running the provided example will produce the following figures in an `Output` folder:
+- `AttitudeSphere.pdf`
+- `GroundStationAccess.pdf`
+- `Orbit.pdf`
+- `UV.pdf`
+
+The terminal will show the simulation progress by printing the current timestep. Once the simulation is complete, additional print statements will confirm the generation of the four figures listed previously. The example script will also calculate the optimal position(s) for a star tracker to avoid Sun and Earth blinding.
 
 Author(s)
 ---------
@@ -45,7 +53,7 @@ Citation
 --------
 If you use spacevlbi in your publication, please cite: 
 
-Hudson, B., 2024. spacevlbi. 4TU.ResearchData. Software. https://doi.org/10.4121/392b8d8c-4eb2-4420-b46b-1cb697764a2b
+Hudson, Ben (2024): Python package for simulating and optimising a space-based VLBI mission. 4TU.ResearchData. software. https://doi.org/10.4121/392b8d8c-4eb2-4420-b46b-1cb697764a2b
 
 Would you like to contribute?
 -----------------------------
