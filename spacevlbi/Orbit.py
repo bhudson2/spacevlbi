@@ -67,8 +67,11 @@ def OrbitPropagation(spaceTelescopes, time, rSun, rMoon, i, timeStep):
         for j in range(len(spaceTelescopes)):
             
             # Extract initial orbit from space telescope
-            initPosition = spaceTelescopes[j].orbit
-            
+            if i == 0:
+                initPosition = spaceTelescopes[j].orbit
+            else:
+                initPosition = spaceTelescopes[j].orbitLast
+                
             # Extract spacecraft properties
             mass = spaceTelescopes[j].mass
             areaDrag = spaceTelescopes[j].areaDrag * 1e-6  # Convert to km^2
@@ -82,7 +85,7 @@ def OrbitPropagation(spaceTelescopes, time, rSun, rMoon, i, timeStep):
             solarFlux = spaceTelescopes[j].solarFlux
             gravityLuniSolar = spaceTelescopes[j].gravityLuniSolar
             
-            duration = i * timeStep
+            duration = timeStep
             # Propagate orbit using Cowell's method and defined perturbations
             currentPosition = initPosition.propagate(duration << u.s, \
                                 method=CowellPropagator(f=Force_Wrapper(rSun,\
@@ -104,6 +107,8 @@ def OrbitPropagation(spaceTelescopes, time, rSun, rMoon, i, timeStep):
             spaceTelescopes[j].eciPosition = np.vstack((spaceTelescopes[j].eciPosition, posNow))
             spaceTelescopes[j].eciVelocity = np.vstack((spaceTelescopes[j].eciVelocity, velNow))
             spaceTelescopes[j].ecefPosition = np.vstack((spaceTelescopes[j].ecefPosition, ecefNow))
+            
+            spaceTelescopes[j].orbitLast = currentPosition
             
     return spaceTelescopes
 

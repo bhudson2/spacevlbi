@@ -137,6 +137,7 @@ class SpaceTelescope:
         self.ta = ta << u.deg
         self.orbit = Orbit.from_classical(Earth, self.a, self.ecc, self.inc, \
                       self.ra, self.aop, self.ta, initTime)
+        self.orbitLast = self.orbit
         self.eciPosition = np.array([self.orbit.r*1000])<< u.m
         self.eciVelocity = np.array([self.orbit.v*1000])<< (u.m / u.s)
         eci =SkyCoord(x=self.eciPosition[0,0],y=self.eciPosition[0,1],\

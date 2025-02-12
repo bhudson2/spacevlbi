@@ -27,6 +27,8 @@ import numpy as np
 from numpy import radians
 from astropy import constants as const
 import os
+import geopandas
+from shapely import Polygon
 
 ###############################################################################
 # OrbitPlot
@@ -241,8 +243,8 @@ def UvPlot(spaceTelescopes, groundTelescopes, allsky, plotLost=1):
             # Configure axes
             axisLimit = 1.3 * np.max(np.array([maxSpace, maxGround]))
             ax.set(xlim=(-axisLimit, axisLimit), ylim=(-axisLimit, axisLimit))
-            ax.set_xlabel('u [G$ \lambda $]')
-            ax.set_ylabel('v [G$ \lambda $]')
+            ax.set_xlabel(r'u [G$ \lambda $]')
+            ax.set_ylabel(r'v [G$ \lambda $]')
             ax.set_aspect('equal', 'box')
             ax.legend(loc="upper right")
             ax.xaxis.set_inverted(True)
@@ -326,8 +328,8 @@ def UvPlot(spaceTelescopes, groundTelescopes, allsky, plotLost=1):
                                                   '300','330'])
             ax.set_yticks(range(scale*-90,scale*120,scale*30), ['-90','-60','-30',\
                                                   '0','30','60','90'])
-            ax.set_xlabel('Right Ascension [$ \degree $]')
-            ax.set_ylabel('Declination [$ \degree $]')
+            ax.set_xlabel(r'Right Ascension [$ \degree $]')
+            ax.set_ylabel(r'Declination [$ \degree $]')
             ax.set_aspect('equal', 'box')
             plt.show()
             
@@ -610,7 +612,7 @@ def SolarPanelIncidence(spaceTelescopes, simTime, telescopeSelect=0):
                 
             # Configure axes
             ax.set_xlabel('Time')
-            ax.set_ylabel('Incidence Angle [$ \degree $]')
+            ax.set_ylabel(r'Incidence Angle [$ \degree $]')
             ax.set_xticks(time[0::int(np.floor(len(time)/10))])
             ax.legend(loc="upper right")
             plt.xticks(rotation=90)
@@ -672,7 +674,7 @@ def GroundStationElevation(spaceTelescopes, groundStations, simTime, \
                 ax.plot(time, elevation, label=name)
                 
             # Configure axes
-            ylabel = spaceTelescopes[telescopeSelect].name + " Elevation Angle [$ \
+            ylabel = spaceTelescopes[telescopeSelect].name + r" Elevation Angle [$ \
                 \degree $]"
             ax.set(ylim=(0, 90))
             ax.set_xlabel('Time')
@@ -695,6 +697,126 @@ def GroundStationElevation(spaceTelescopes, groundStations, simTime, \
                         bbox_inches='tight')
     else:
         print("Cannot generate Ground Station Elevation plot, no space telescopes are modelled")
+        
+###############################################################################
+# Elevation Earth Map
+###############################################################################
+        
+def ElevationEarthMap(spaceTelescopes, groundStations, telescopeSelect=0):
+    """Plot Earth map showing spacecraft ground track and visibility to ground
+    stations. 
+
+    :param spaceTelescopes: Array of SpaceTelescope objects, defaults to None
+    :type spaceTelescopes: list
+    :param groundStations: Array of GroundStation objects, defaults to None
+    :type groundStations: list
+    :param telescopeSelect: Index of spaceTelescope array to plot ground 
+        station elevation of, defaults to 0
+    :type telescopeSelect: int
+    """
+    
+    url = "https://naciscdn.org/naturalearth/110m/cultural/ne_110m_admin_0_countries.zip"
+    gdf = geopandas.read_file(url)
+    spacecraft = spaceTelescopes[telescopeSelect]
+    colours = ['g', 'b', 'r', 'c', 'y', 'm', 'orange', 'limegreen', 'lightsteelblue', \
+               'gold', 'brown', 'indigo', 'violet', 'whitesmoke']
+    # Creating axes and plotting world map
+    fig, ax = plt.subplots(figsize=(16, 10))
+    gdf.plot(color="lightgrey", ax=ax)
+    
+    # Iterate through ground stations and plot
+    for i in range(0,len(groundStations)):
+        gs_ecef = groundStations[i].ecefPosition / 1000
+        
+        r_sc = np.linalg.norm(spacecraft.eciPosition[0,:].value)
+        r_gs = np.linalg.norm(gs_ecef*1000)
+        min_el = groundStations[i].minEl
+        beta = np.arcsin(r_gs*np.sin(np.radians(min_el+90)) / r_sc)
+        radius = np.degrees(np.pi - np.radians(min_el+90) - beta)
+        
+        gs_lla = ecef_to_lla(gs_ecef)
+        lon_0 = np.radians(gs_lla[1])
+        lat_0 = np.radians(gs_lla[0])
+                
+        if gs_ecef[0] < 0:
+            lon_0 = -np.pi - lon_0
+        if lon_0 < -np.pi:
+            lon_0 = lon_0 + 2*np.pi
+        rad = np.radians(radius)
+        lat=[]
+        lon=[]
+        for beta in np.linspace(0,np.pi*2,200):
+           lat_new = ((np.pi/2) - np.arccos(np.cos((np.pi/2)-lat_0)*np.cos(rad) + np.sin((np.pi/2)-lat_0)*np.sin(rad)*np.cos(beta)))
+           if beta == 0 or beta == 2*np.pi:
+               lon_delta = 0
+           if beta < np.pi and beta > 0:
+               lon_delta = np.arccos((np.cos(rad) - np.cos((np.pi/2)-lat_0)*np.cos((np.pi/2)-lat_new)) / (np.sin((np.pi/2)-lat_0)*np.sin((np.pi/2)-lat_new)))
+           if beta >= np.pi and beta < 2*np.pi:
+               lon_delta = -np.arccos((np.cos(rad) - np.cos((np.pi/2)-lat_0)*np.cos((np.pi/2)-lat_new)) / (np.sin((np.pi/2)-lat_0)*np.sin((np.pi/2)-lat_new)))
+           lat_new = np.degrees(lat_new)
+           lon_new = np.degrees(lon_0 + lon_delta)
+           lat.append(lat_new)
+           lon.append(lon_new)
+        
+        if (np.abs(lat_0) + rad) > np.pi/2:
+            lon2 = [0,180,180,0,-180,-180,0]
+            offset = -0.1
+            lat2 = [np.max(np.abs(lat))+offset,np.max(np.abs(lat))+offset,90,90,90,np.max(np.abs(lat))+offset,np.max(np.abs(lat))+offset]
+            lat2 = [i * np.sign(lat_0) for i in lat2]
+            
+            polygon_geom2 = Polygon(zip(lon2, lat2))
+            pol2 = geopandas.GeoDataFrame(index=[0], crs='epsg:4326', geometry=[polygon_geom2])
+            pol2.plot(ax=ax, alpha=0.5, fc=colours[i], ec='none')  
+        
+        if np.abs(lon_0) + rad > np.radians(170):
+            lon3 = [i - np.sign(lon_0)*360 for i in lon]
+            lat3 = lat
+            polygon_geom3 = Polygon(zip(lon3, lat3))
+            pol3 = geopandas.GeoDataFrame(index=[0], crs='epsg:4326', geometry=[polygon_geom3])
+            pol3.plot(ax=ax, alpha=0.5, fc=colours[i], ec='none')
+            
+        plt.scatter(np.degrees(lon_0), np.degrees(lat_0), s=100, c=colours[i], alpha=0.6, label=groundStations[i].name)
+        polygon_geom = Polygon(zip(lon, lat))
+        pol = geopandas.GeoDataFrame(index=[0], crs='epsg:4326', geometry=[polygon_geom])
+        pol.plot(ax=ax, alpha=0.5, fc=colours[i], ec='none') 
+        
+        # Extract spacecraft positions when visible to ground stations and plot
+        latlon = np.zeros((len(groundStations[i].satElev),2))
+        for j in range(0,len(groundStations[i].satElev)):
+            sc_ecef = spacecraft.ecefPosition[j,:].value
+            sc_lla = ecef_to_lla(sc_ecef)
+            sc_x = sc_lla[1]
+            sc_y = sc_lla[0]
+            if sc_ecef[0] < 0:
+                sc_x = -180 - sc_lla[1]
+            if sc_x < -180:
+                sc_x = 360 + sc_x
+            latlon[j,:] = [sc_x,sc_y]
+        ax.scatter(latlon[:,0], latlon[:,1], s=10, c='k')
+    
+    # Creating axis limits and title
+    plt.xlim([-180, 180])
+    plt.ylim([-90, 90])
+    
+    #plt.title("Tourist arrivals from main countries to Sri Lanka\n  Year : 2021")
+    plt.xlabel(r"Longitude [$\degree$]")
+    plt.ylabel(r"Latitude [$\degree$]")
+    ax.set_aspect('equal')
+    ax.legend(loc="upper right")
+    ax.set_title('Ground station visibility (minimum elevation = ' + str(min_el) + r'$\degree$)')
+    plt.show()
+
+    #python program to check if a directory exists
+    path = "Outputs"
+    # Check whether the specified path exists or not
+    isExist = os.path.exists(path)
+    if not isExist:
+       # Create a new directory because it does not exist
+       os.makedirs(path)
+       print("Creating Outputs folder")
+       
+    fig.savefig('Outputs/GroundStationContact.pdf', dpi=600, format='pdf', \
+                bbox_inches='tight')
 
 ###############################################################################
 # Miscellaneous
@@ -743,3 +865,43 @@ def Cone3D(p0, p1, R0, R1, n):
                np.sin(theta) * n1[i] + R * np.cos(theta) * n2[i] for i in \
               [0, 1, 2]]
     return X, Y, Z
+
+def ecef_to_lla(ecef_pos):
+    """Function to convert Earth-centered Earth-fixed coordinates to latitude, 
+    longitude and altitude. Equation from Vallado Algorithm 12.
+    
+    :param ecef_pos: Position vector in ECEF, defaults to None
+    :type ecef_pos: np.array
+    :return: Array of latitude, longitude and altitude
+    :rtype: list
+    """
+    
+    r_delta_sat = np.sqrt(ecef_pos[0]**2 + ecef_pos[1]**2)
+    # Use WGS84 reference ellipsoid for transformation
+    a = 6378.137
+    b = 6356.752314
+
+    e = np.sqrt(1 - b**2 / a**2)
+    
+    alpha = np.arcsin(ecef_pos[1] / r_delta_sat)
+    lam = alpha
+    delta = np.arcsin(ecef_pos[2] / np.linalg.norm(ecef_pos))
+    
+    # Iterate to calculate latitude
+    phi = delta
+    phi_old = 0
+    tol = 0.01  # tolerance for iteration
+    while phi - phi_old > tol:
+        c = a / np.sqrt(1 - e**2*np.sin(phi)**2)
+        phi_old = phi
+        phi = np.arctan((ecef_pos[2] + c*e**2*np.sin(phi)) / r_delta_sat)
+        
+    # Calculate altitude
+    c = a / np.sqrt(1 - e**2*np.sin(phi)**2)
+    if (90 - np.abs(np.degrees(lam))) < 1:
+        s = c * (1-e**2)
+        h = (ecef_pos[2] / np.sin(phi)) - s
+    else:
+        h = (r_delta_sat / np.cos(phi)) - c
+    
+    return([np.degrees(phi),np.degrees(lam),h])

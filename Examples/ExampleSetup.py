@@ -159,6 +159,9 @@ Figures.SolarPanelIncidence(spaceTelescopes, simTime, 0)
 # Plot elevation of space telescope from ground station
 Figures.GroundStationElevation(spaceTelescopes, groundStations, simTime, 0)
 
+# Plot Earth map with space telescope ground track and ground station visibility
+Figures.ElevationEarthMap(spaceTelescopes, groundStations, 0)
+
 ###############################################################################
 # Optimisation
 ###############################################################################

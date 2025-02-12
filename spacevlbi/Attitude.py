@@ -160,7 +160,7 @@ def AttitudePropagation(spaceTelescopes, rSun, rMoon, sourceRa, sourceDec, i,
             moonBody = matmul(attMat, rSatMoon.reshape((3,1))) 
             spaceTelescopes[j].moonBody = vstack((spaceTelescopes[j].moonBody, \
                                 moonBody.reshape((1,3))))
-            earthBody = matmul(attMat, (rECI / norm(rECI)).reshape((3,1)))
+            earthBody = matmul(attMat, (-rECI / norm(rECI)).reshape((3,1)))
             spaceTelescopes[j].earthBody = vstack((spaceTelescopes[j].earthBody, \
                                 earthBody.reshape((1,3))))
         
