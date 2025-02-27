@@ -75,27 +75,27 @@ bandwidth = 32e9  # bandwidth of observations, sec
 # See GroundTelescope class for definition of input parameters
 elev = 15
 ALMA = Station.GroundTelescope("ALMA", 73, 0.68, 76, \
-                np.array([2225.0613,-5440.0617,-2481.6812]), elev, initTime)
+                np.array([-23.02920517, -67.75475214, 5.07441706]), elev, initTime)
 IRAM = Station.GroundTelescope("IRAM", 30, 0.47, 226, \
-                np.array([5088.9678,-301.6812,3825.0122]), elev, initTime)
+                np.array([37.06613845, -3.39260427, 2.92014542]), elev, initTime)
 APEX = Station.GroundTelescope("APEX", 12, 0.61, 118, \
-                np.array([2225.0395, -5441.1976, -2479.3034]), elev, initTime)
+                np.array([-23.00577926, -67.75914002, 5.10474176]), elev, initTime)
 JCMT = Station.GroundTelescope("JCMT", 15, 0.52, 345, \
-                np.array([-5464.5847, -2493.0012, 2150.6540]), elev, initTime)
+                np.array([  19.82283802, -155.47702794, 4.12030997]), elev, initTime)
 LMT = Station.GroundTelescope("LMT", 32.5, 0.28, 371, \
-                np.array([-768.7156, -5988.5071, 2063.3549]), elev, initTime)
+                np.array([ 18.98577444, -97.31477955, 4.59354009]), elev, initTime)
 SMA = Station.GroundTelescope("SMA", 14.7, 0.75, 285, \
-                np.array([-5464.5555, -2492.9280, 2150.7972]), elev, initTime)
+                np.array([  19.82422848, -155.47754761, 4.11529924]), elev, initTime)
 SMT = Station.GroundTelescope("SMT", 10, 0.60, 291, \
-                np.array([-1828.7962, -5054.4068, 3427.8652]), elev, initTime)
+                np.array([  32.70161115, -109.89124471, 3.15926115]), elev, initTime)
 SPT = Station.GroundTelescope("SPT", 6, 0.60, 118, \
-                np.array([0.8098, -0.8169, -6359.5687]), elev, initTime)
+                np.array([-90,0,0]), elev, initTime)
 NOEMA = Station.GroundTelescope("NOEMA", 52,   0.50, 270,\
-                np.array([4524.0004, 468.0421, 4460.5098]), elev, initTime)
+                np.array([44.63495268,  5.90666814, 2.7590566 ]), elev, initTime)
 HAY = Station.GroundTelescope("HAY", 52, 0.50, 270, \
-                np.array([1492.341, -4457.234,  4296.933]), elev, initTime)
+                np.array([ 42.62394744, -71.48877143, 0.11466984]), elev, initTime)
 PV = Station.GroundTelescope("PV", 15, 0.47, 226, \
-                np.array([5088.9678, -301.6812,  3825.012]), elev, initTime)
+                np.array([37.06613701, -3.39260427, 2.92002487]), elev, initTime)
 
 ###############################################################################
 # Spacecraft Definition
@@ -110,16 +110,14 @@ sc1 = BaselineBHEX(initTime)
 ###############################################################################
 
 # See GroundStation class for definition of input parameters
-Svalbard = Station.GroundStation("Svalbard", \
-                np.array([1258.4, 346.3, 6222.2]), 5, initTime);
 Haleakala = Station.GroundStation("Haleakala", \
-                np.array([-5463.394,-2403.165, 2241.185]), 15, initTime);
+                np.array([20.42,-156.15,3.052]), 20, initTime);
 Lasilla = Station.GroundStation("La Silla", \
-                np.array([1837.134,-5257.272,-3098.702]), 15, initTime);
+                np.array([-29.15,-70.44,2.4]), 20, initTime);
 Achaea = Station.GroundStation("Achaea", \
-                np.array([4660.348,1901.702,3904.176]), 15, initTime);
+                np.array([37.48, 22.42, 0]), 20, initTime);
 Perth = Station.GroundStation("Perth", \
-                np.array([-2384.681,4860.089,-3361.149]), 15, initTime);
+                np.array([-31.57, 115.51, 0]), 20, initTime);
     
 ###############################################################################
 # Initialise Station Arrays

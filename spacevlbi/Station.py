@@ -27,6 +27,7 @@ limitations under the License.
 from astropy.coordinates import SkyCoord,GCRS,ITRS
 from astropy import constants as const
 import numpy as np
+from numpy import radians, sin, cos
 from astropy import units as u
 from poliastro.twobody import Orbit
 from poliastro.bodies import Earth
@@ -201,9 +202,9 @@ class GroundTelescope:
     :type apertureEff: float
     :param sysTemp: System temperature in Kelvin, defaults to None
     :type sysTemp: float
-    :param ecefPosition: Ground telescope position in Earth Centered, Earth
-        Fixed (ECEF) frame in km, defaults to None
-    :type ecefPosition: numpy.ndarray
+    :param lla: Ground telescope position in latitude [deg], longitude [deg], 
+        altitude [km], defaults to None
+    :type lla: numpy.ndarray
     :param minEl: Minimum elevation at which observation can be performed
         in degrees, defaults to None
     :type minEl: float
@@ -214,7 +215,7 @@ class GroundTelescope:
     """
     
     def __init__(self, name, diameter, apertureEff, sysTemp, \
-               ecefPosition, minEl, initTime):
+               lla, minEl, initTime):
 
         self.name = name
         self.diameter = diameter
@@ -222,6 +223,9 @@ class GroundTelescope:
         self.apertureEff = apertureEff
         self.SEFD = (2*const.k_B*sysTemp)/(self.apertureEff * np.pi *\
             (diameter/2)**2)/(10**-26);  # Jy
+        self.lla = lla
+        ecefPosition = self.lla_to_ecef(lla)
+        self.ecefPosition = ecefPosition
         self.ecefPosition = np.array([ecefPosition*1000 << u.m])
         self.minEl = minEl
         # Convert ECEF to ECI positions
@@ -236,7 +240,26 @@ class GroundTelescope:
         # Elevation of source from ground telescope in topocentric frame
         self.elevation = np.array([0])
         self.elevationFlag = np.array([0])
-
+        
+    def lla_to_ecef(self,lla):
+        """Function to convert latitude, longitude, altitude coordinates to 
+        Earth-Centered Earth-Fixed, assuming a WGS84 Earth model.
+        """
+        # WGS84 constants
+        a = 6378.137  # km
+        b = 6356.752314245  # km
+        
+        phi = radians(lla[0])  # latitude
+        lam = radians(lla[1])  # longitude
+        h = lla[2]  # altitude
+        N = a**2 / np.sqrt(a**2*cos(phi)**2 + b**2*sin(phi)**2)
+        
+        # Convert to ECEF
+        x = (N+h)*cos(phi)*cos(lam)
+        y = (N+h)*cos(phi)*sin(lam)
+        z = (N*b**2/a**2 + h)*sin(phi)
+        
+        return np.array([x,y,z])
 
 ###############################################################################
 #   GroundStation
@@ -247,9 +270,9 @@ class GroundStation:
     
     :param name: Ground telescope name, defaults to None
     :type name: str 
-    :param ecefPosition: Ground station position in Earth Centered, Earth
-        Fixed (ECEF) frame in km, defaults to None
-    :type ecefPosition: numpy.ndarray
+    :param lla: Ground station position in latitude [deg], longitude [deg], 
+        altitude [km], defaults to None
+    :type lla: numpy.ndarray
     :param minEl: Minimum elevation at which link with spacecraft can be 
         achieved in degrees, defaults to None
     :type minEl: float
@@ -259,10 +282,12 @@ class GroundStation:
     :rtype: GroundStation
     """
     
-    def __init__(self, name, ecefPosition, minEl, initTime):
+    def __init__(self, name, lla, minEl, initTime):
         
         self.name = name
-        self.ecefPosition = ecefPosition*1000
+        self.lla = lla
+        ecefPosition = self.lla_to_ecef(lla)
+        self.ecefPosition = ecefPosition
         self.minEl = minEl
         # Convert ECEF to ECI positions
         ecef =SkyCoord(x=ecefPosition[0],y=ecefPosition[1],z=ecefPosition[2],\
@@ -275,6 +300,26 @@ class GroundStation:
         self.satRange = np.array([0]) << u.m
         # Elevation of spacecraft from ground station
         self.satElev = np.array([0])
+        
+    def lla_to_ecef(self,lla):
+        """Function to convert latitude, longitude, altitude coordinates to 
+        Earth-Centered Earth-Fixed, assuming a WGS84 Earth model.
+        """
+        # WGS84 constants
+        a = 6378.137  # km
+        b = 6356.752314245  # km
+        
+        phi = radians(lla[0])  # latitude
+        lam = radians(lla[1])  # longitude
+        h = lla[2]  # altitude
+        N = a**2 / np.sqrt(a**2*cos(phi)**2 + b**2*sin(phi)**2)
+        
+        # Convert to ECEF
+        x = (N+h)*cos(phi)*cos(lam)
+        y = (N+h)*cos(phi)*sin(lam)
+        z = (N*b**2/a**2 + h)*sin(phi)
+        
+        return np.array([x,y,z])
         
         
 ###############################################################################

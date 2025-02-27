@@ -24,7 +24,7 @@ limitations under the License.
 
 from matplotlib import pyplot as plt
 import numpy as np
-from numpy import radians
+from numpy import radians, degrees
 from astropy import constants as const
 import os
 import geopandas
@@ -726,22 +726,17 @@ def ElevationEarthMap(spaceTelescopes, groundStations, telescopeSelect=0):
     
     # Iterate through ground stations and plot
     for i in range(0,len(groundStations)):
-        gs_ecef = groundStations[i].ecefPosition / 1000
+        gs_ecef = groundStations[i].ecefPosition
         
         r_sc = np.linalg.norm(spacecraft.eciPosition[0,:].value)
         r_gs = np.linalg.norm(gs_ecef*1000)
         min_el = groundStations[i].minEl
         beta = np.arcsin(r_gs*np.sin(np.radians(min_el+90)) / r_sc)
         radius = np.degrees(np.pi - np.radians(min_el+90) - beta)
-        
-        gs_lla = ecef_to_lla(gs_ecef)
+        gs_lla = groundStations[i].lla
         lon_0 = np.radians(gs_lla[1])
         lat_0 = np.radians(gs_lla[0])
-                
-        if gs_ecef[0] < 0:
-            lon_0 = -np.pi - lon_0
-        if lon_0 < -np.pi:
-            lon_0 = lon_0 + 2*np.pi
+
         rad = np.radians(radius)
         lat=[]
         lon=[]
@@ -784,13 +779,9 @@ def ElevationEarthMap(spaceTelescopes, groundStations, telescopeSelect=0):
         latlon = np.zeros((len(groundStations[i].satElev),2))
         for j in range(0,len(groundStations[i].satElev)):
             sc_ecef = spacecraft.ecefPosition[j,:].value
-            sc_lla = ecef_to_lla(sc_ecef)
+            sc_lla = ECEF_to_LLA(sc_ecef)
             sc_x = sc_lla[1]
             sc_y = sc_lla[0]
-            if sc_ecef[0] < 0:
-                sc_x = -180 - sc_lla[1]
-            if sc_x < -180:
-                sc_x = 360 + sc_x
             latlon[j,:] = [sc_x,sc_y]
         ax.scatter(latlon[:,0], latlon[:,1], s=10, c='k')
     
@@ -866,42 +857,42 @@ def Cone3D(p0, p1, R0, R1, n):
               [0, 1, 2]]
     return X, Y, Z
 
-def ecef_to_lla(ecef_pos):
-    """Function to convert Earth-centered Earth-fixed coordinates to latitude, 
-    longitude and altitude. Equation from Vallado Algorithm 12.
-    
-    :param ecef_pos: Position vector in ECEF, defaults to None
-    :type ecef_pos: np.array
-    :return: Array of latitude, longitude and altitude
-    :rtype: list
+def ECEF_to_LLA(ecef):
+    """Convert ECEF to LLA using WGS84 ellipsoid model.
+ 
+    :param ecef: Earth-Centered Earth-Fixed vector in km, defaults to None
+    :type ecef: np.array
+    :return: latitude [deg], longitude [deg], altitude [km]
+    :rtype: np.array
     """
-    
-    r_delta_sat = np.sqrt(ecef_pos[0]**2 + ecef_pos[1]**2)
-    # Use WGS84 reference ellipsoid for transformation
-    a = 6378.137
-    b = 6356.752314
+	# x, y and z are scalars or vectors in meters
+    x = ecef[0]*1000
+    y = ecef[1]*1000
+    z = ecef[2]*1000
 
-    e = np.sqrt(1 - b**2 / a**2)
-    
-    alpha = np.arcsin(ecef_pos[1] / r_delta_sat)
-    lam = alpha
-    delta = np.arcsin(ecef_pos[2] / np.linalg.norm(ecef_pos))
-    
-    # Iterate to calculate latitude
-    phi = delta
-    phi_old = 0
-    tol = 0.01  # tolerance for iteration
-    while phi - phi_old > tol:
-        c = a / np.sqrt(1 - e**2*np.sin(phi)**2)
-        phi_old = phi
-        phi = np.arctan((ecef_pos[2] + c*e**2*np.sin(phi)) / r_delta_sat)
-        
-    # Calculate altitude
-    c = a / np.sqrt(1 - e**2*np.sin(phi)**2)
-    if (90 - np.abs(np.degrees(lam))) < 1:
-        s = c * (1-e**2)
-        h = (ecef_pos[2] / np.sin(phi)) - s
-    else:
-        h = (r_delta_sat / np.cos(phi)) - c
-    
-    return([np.degrees(phi),np.degrees(lam),h])
+    a=6378137
+    e_sq = 6.69437999014e-3
+   
+    f = 1/298.257223563
+    b = a*(1-f)
+   
+    # calculations:
+    r = np.sqrt(x**2 + y**2)
+    ep_sq  = (a**2-b**2)/b**2
+    ee = (a**2-b**2)
+    f = (54*b**2)*(z**2)
+    g = r**2 + (1 - e_sq)*(z**2) - e_sq*ee*2
+    c = (e_sq**2)*f*r**2/(g**3)
+    s = (1 + c + np.sqrt(c**2 + 2*c))**(1/3)
+    p = f/(3.*(g**2)*(s + (1./s) + 1)**2)
+    q = np.sqrt(1 + 2*p*e_sq**2)
+    r_0 = -(p*e_sq*r)/(1+q) + np.sqrt(0.5*(a**2)*(1+(1./q)) - p*(z**2)*(1-e_sq)/(q*(1+q)) - 0.5*p*(r**2))
+    u = np.sqrt((r - e_sq*r_0)**2 + z**2)
+    v = np.sqrt((r - e_sq*r_0)**2 + (1 - e_sq)*z**2)
+    z_0 = (b**2)*z/(a*v)
+    h = u*(1 - b**2/(a*v))
+    phi = np.arctan((z + ep_sq*z_0)/r)
+    lambd = np.arctan2(y, x)    
+    lla = np.array([degrees(phi), degrees(lambd), h/1000])
+   
+    return lla
