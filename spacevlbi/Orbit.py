@@ -258,7 +258,7 @@ def SatGroundAccess(spaceTelescopes, groundStations, time):
                                     'cartesian', obstime = time)
                     eci = (ecef.transform_to(GCRS)).cartesian    
                     eciPosition = np.array([eci.x.value, eci.y.value, \
-                                    eci.z.value]).reshape((3,1)) << u.m
+                                    eci.z.value]).reshape((3,1))*1000 << u.m
                     # Update ground station position
                     groundStations[k].eciPosition = np.vstack((groundStations[k].eciPosition, \
                                     eciPosition.reshape((1,3))))

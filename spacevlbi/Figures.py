@@ -674,8 +674,8 @@ def GroundStationElevation(spaceTelescopes, groundStations, simTime, \
                 ax.plot(time, elevation, label=name)
                 
             # Configure axes
-            ylabel = spaceTelescopes[telescopeSelect].name + r" Elevation Angle [$ \
-                \degree $]"
+            unit = r" Elevation Angle [$ \degree $]"
+            ylabel = spaceTelescopes[telescopeSelect].name + unit
             ax.set(ylim=(0, 90))
             ax.set_xlabel('Time')
             ax.set_ylabel(ylabel)
@@ -866,9 +866,9 @@ def ECEF_to_LLA(ecef):
     :rtype: np.array
     """
 	# x, y and z are scalars or vectors in meters
-    x = ecef[0]*1000
-    y = ecef[1]*1000
-    z = ecef[2]*1000
+    x = ecef[0]
+    y = ecef[1]
+    z = ecef[2]
 
     a=6378137
     e_sq = 6.69437999014e-3
