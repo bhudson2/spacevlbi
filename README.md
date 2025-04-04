@@ -36,6 +36,10 @@ Running the provided example will produce the following figures in an `Output` f
 
 The terminal will show the simulation progress by printing the current timestep. Once the simulation is complete, additional print statements will confirm the generation of the four figures listed previously. The example script will also calculate the optimal position(s) for a star tracker to avoid Sun and Earth blinding.
 
+Citation
+--------
+If you use spacevlbi in your publication, please cite: [Hudson+ 2025](https://ui.adsabs.harvard.edu/abs/2025arXiv250320312H/abstract)
+
 Author(s)
 ---------
 This software has been developed by
@@ -49,10 +53,6 @@ Technische Universiteit Delft hereby disclaims all copyright interest in the pro
 Ben Hudson, Faculty of Aerospace Engineering, Technische Universiteit Delft.
 
 &copy; 2024, B. Hudson
-
-Citation
---------
-If you use spacevlbi in your publication, please cite: [Hudson+ 2025](https://ui.adsabs.harvard.edu/abs/2025arXiv250320312H/abstract)
 
 Would you like to contribute?
 -----------------------------
