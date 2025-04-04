@@ -52,9 +52,7 @@ Ben Hudson, Faculty of Aerospace Engineering, Technische Universiteit Delft.
 
 Citation
 --------
-If you use spacevlbi in your publication, please cite: 
-
-Hudson, Ben (2024): Python package for simulating and optimising a space-based VLBI mission. 4TU.ResearchData. software. https://doi.org/10.4121/392b8d8c-4eb2-4420-b46b-1cb697764a2b
+If you use spacevlbi in your publication, please cite: [Hudson+ 2025](https://ui.adsabs.harvard.edu/abs/2025arXiv250320312H/abstract)
 
 Would you like to contribute?
 -----------------------------
