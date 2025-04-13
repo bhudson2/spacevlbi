@@ -2,6 +2,9 @@
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
+[tool.hatch.metadata]
+allow-direct-references = true
+
 [project]
 dependencies = ["astropy >= 5.3.4", "numpy >= 1.26.4", "poliastro@git+https://github.com/poliastro/poliastro/tree/v0.18.dev0%2Btestdocs", "matplotlib >= 3.9.1", "geopandas >= 1.0.1"]
 name = "spacevlbi"
