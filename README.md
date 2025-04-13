@@ -16,7 +16,7 @@ The latest version of spacevlbi is available on [PyPi](https://pypi.org/project/
 
 `pip install spacevlbi`
 
-Installing with pip will install/update the other required libraries automatically ([numpy](http://www.numpy.org/), [matplotlib](http://www.matplotlib.org/), [astropy](http://www.astropy.org/)) and [geopandas](https://geopandas.org/en/stable/index.html)).
+Installing with pip will install/update the other required libraries automatically ([numpy](http://www.numpy.org/), [matplotlib](http://www.matplotlib.org/), [astropy](http://www.astropy.org/) and [geopandas](https://geopandas.org/en/stable/index.html)).
 
 Structure
 ---------
