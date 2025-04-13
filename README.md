@@ -8,11 +8,15 @@ Although the package has been developed specifically for space VLBI applications
 
 Installation
 ------------
-The latest version is available on [PyPi](https://pypi.org/project/spacevlbi/). Ensure that pip is installed and run the following command:
+spacevlbi requires the latest development version of the [poliastro](https://www.poliastro.space/) package. Ensure that pip is installed and run the following command before trying to install spacevlbi:
+
+`pip install https://github.com/poliastro/poliastro/archive/main.zip`
+
+The latest version of spacevlbi is available on [PyPi](https://pypi.org/project/spacevlbi/). Run the following command to install:
 
 `pip install spacevlbi`
 
-Installing with pip will install/update all of the required libraries automatically ([numpy](http://www.numpy.org/), [poliastro](https://www.poliastro.space/), [matplotlib](http://www.matplotlib.org/), [astropy](http://www.astropy.org/)).
+Installing with pip will install/update the other required libraries automatically ([numpy](http://www.numpy.org/), [matplotlib](http://www.matplotlib.org/), [astropy](http://www.astropy.org/)) and [geopandas](https://geopandas.org/en/stable/index.html)).
 
 Structure
 ---------
