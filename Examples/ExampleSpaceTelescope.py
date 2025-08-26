@@ -46,11 +46,11 @@ def BaselineBHEX(initTime):
     # Orbit perturbation models used in the propagation of the spacecraft's 
     # orbit. If set to 1, the perturbation will be modelled.
     gravityJ2 = 1  # Earth gravity field J2 harmonic
-    gravityJ3 = 1  # Earth gravity field J3 harmonic
-    atmosDrag = 1  # Atmospheric drag, exponential density model
-    solarPress = 1  # Solar radiation pressure
+    gravityJ3 = 0  # Earth gravity field J3 harmonic
+    atmosDrag = 0  # Atmospheric drag, exponential density model
+    solarPress = 0  # Solar radiation pressure
     solarFlux = 1367  # W/m^2, solar flux from Sun
-    gravityLuniSolar = 1  # Luni-Solar point model gravity perturbations
+    gravityLuniSolar = 0  # Luni-Solar point model gravity perturbations
     
 ###############################################################################
 #   General spacecraft properties

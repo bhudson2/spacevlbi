@@ -23,7 +23,7 @@ limitations under the License.
 # The example given is a simplified representation of the Black Hole Explorer
 # (BHEX) mission - https://www.blackholeexplorer.org/
 
-# @author: BenHudson - 22/09/2024
+# @author: BenHudson - 26/08/2025
 
 from spacevlbi import Station
 from spacevlbi.TimeLoop import TimeLoop
@@ -51,7 +51,7 @@ simLength = 86400  # length of simulation, sec
 # Observation Parameters
 ###############################################################################
 
-obsFreq = 320e9  # frequency observations will be conducted at, Hz
+obsFreq = [86e9, 320e9]  # frequencies observations will be conducted at, Hz
 # Calculate (u,v) coverage for full celestial sphere? NOTE. Functional
 # constraints cannot be modelled in all-sky mode.
 allsky = 0
@@ -64,9 +64,9 @@ sourceDec = 12.391123  # target source declination, deg
 #sourceRa = 266.25  # target source right ascension, deg
 #sourceDec = -29.0078 # target source declination, deg
 
-intTime = 0  # integration time, sec
+intTime = 10  # integration time, sec
 dutyCycle = 0  # time between the start of one scan and the next, sec
-bandwidth = 32e9  # bandwidth of observations, sec
+bandwidth = 8e9  # bandwidth of observations, Hz
 
 ###############################################################################
 # Ground Telescope Definition
@@ -145,7 +145,7 @@ spaceTelescopes, groundTelescopes, groundStations, simTime = TimeLoop(initTime, 
 Figures.OrbitPlot(spaceTelescopes)
 
 # Plot (u,v) coverage
-Figures.UvPlot(spaceTelescopes, groundTelescopes, allsky, 1)
+Figures.UvPlot(spaceTelescopes, groundTelescopes, allsky, obsFreq, 1)
 
 # Plot attitude sphere (user can control which elements (e.g. Earth, Sun, Moon,
 # antenna, etc.) are included in plot with additional arguments)

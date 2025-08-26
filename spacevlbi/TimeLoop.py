@@ -21,7 +21,7 @@ limitations under the License.
 # The primary simulation function of spacevlbi, executing all major functionality
 # of the tool.
 #
-# @author: BenHudson - 22/09/2024
+# @author: BenHudson - 26/08/2025
 
 from spacevlbi.Orbit import OrbitPropagation, SatGroundAccess
 from spacevlbi.Attitude import AttitudePropagation
@@ -55,8 +55,8 @@ def TimeLoop(initTime, simLength, timeStep, spaceTelescopes, groundTelescopes,\
     :type groundTelescopes: list
     :param groundStations: Array of GroundStation objects, defaults to None
     :type groundStations: list
-    :param frequency: Observation frequency in Hz, defaults to None
-    :type frequency: float
+    :param frequency: Observation frequencies in Hz, defaults to None
+    :type frequency: list
     :param sourceRa: Right ascension of target source in degrees, defaults to None
     :type sourceRa: float
     :param sourceDec: Declination of target source in degrees, defaults to None
